@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<he.mySlides>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
@@ -15,7 +15,7 @@
     }
 
     header {
-        background-color: blue;
+        background-color: #9195F6;
         color: #fff;
         padding: 20px 0;
     }
@@ -55,12 +55,11 @@
         color: #fff;
         text-decoration: none;
         padding: 10px;
-        transition: background-color 0.3s ease;
         border-radius: 5px;
     }
 
     .navbar li a:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: #B5C0D0;
     }
 
     .active {
@@ -77,7 +76,7 @@
     }
 
     footer {
-        background-color: blue;
+        background-color: #9195F6;
         color: #fff;
         text-align: center;
         padding: 10px 0;
@@ -87,7 +86,10 @@
         max-width: 800px;
         position: relative;
         margin: auto;
+        overflow: hidden;
+        /* Menambahkan overflow untuk clear fix */
     }
+
 
     .slideshow-container img {
         max-width: 100%;
@@ -129,94 +131,146 @@
     .dot:hover {
         background-color: #717171;
     }
+
+    .mySlides {
+        float: left;
+        /* Mengatur gambar-gambar untuk float ke kiri */
+        margin-right: 20px;
+        /* Memberikan jarak antar gambar */
+    }
+
+
+    .mySlides img {
+        width: 200px;
+        /* Atur lebar gambar di sini */
+        height: auto;
+        margin-right: 20px;
+    }
+
+
+    /* Clear fix untuk membersihkan float */
+    .slideshow-container::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
     </style>
-</head>
 
-<body>
-    <header>
-        <nav>
-            <div class="logo">
-                <img src="rpl-removebg-preview (3).png" alt="Library Logo">
-                <h1>Reading Me</h1>
-            </div>
-            <ul class="navbar">
-                <li><a href="#">Home</a></li>
-                <li><a href="registrasi.php" class="active">Signup</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section id="home">
-            <div class="container">
-                <h2>Selamat datang di Perpustakaan Online</h2>
-                <p>Perpustakaan Online menyediakan koleksi buku terbaru dan terpopuler. Temukan dan baca buku favorit
-                    Anda secara online.</p>
-            </div>
-        </section>
-        <section id="buku">
-            <div class="container">
-                <h2>Buku Terpopuler</h2>
-                <div class="slideshow-container">
-                    <div class="mySlides fade">
-                        <img src="asset/laut bercerita.png" alt="">
-                    </div>
-                    <div class="mySlides fade">
-                        <img src="asset/my ice boy.jpeg" alt="">
-                    </div>
-                    <div class="mySlides fade">
-                        <img src="asset/friendzone.jpg" alt="">
-                    </div>
 
+    <body>
+        <header>
+            <nav>
+                <div class="logo">
+                    <img src="smk1.png" alt="Library Logo">
+                    <h1>Reading Me</h1>
                 </div>
-                <br>
-                <!-- Dots/bullets -->
-                <div style="text-align:center">
-                    <span class="dot" onclick="currentSlide(1)"></span>
-                    <span class="dot" onclick="currentSlide(2)"></span>
-                    <span class="dot" onclick="currentSlide(3)"></span>
+                <ul class="navbar">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="registrasi.php" class="active">Signup</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <section id="home">
+                <div class="container">
+                    <h2>Selamat datang di Perpustakaan Online</h2>
+                    <p>Perpustakaan Online menyediakan koleksi buku terbaru dan terpopuler. Temukan dan baca buku
+                        favorit
+                        Anda secara online.</p>
                 </div>
+            </section>
+            <section id="buku">
+                <div class="container">
+                    <h2>Buku Terpopuler</h2>
+                    <div class="slideshow-container">
+                        <?php
+                    // Database configuration
+                    $servername = "localhost";
+                    $username = "root";
+                    $password = "";
+                    $dbname = "perpustakaan";
+
+                    // Create connection
+                    $conn = new mysqli($servername, $username, $password, $dbname);
+
+                    // Check connection
+                    if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                    }
+
+                    // Query to fetch books
+                    $sql = "SELECT * FROM buku";
+                    $result = $conn->query($sql);
+
+                    // Display books
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<div class="mySlides fade">';
+                            echo '<img src="asset/' . $row["cover"] . '" alt="' . $row["judul"] . '">';
+                            echo '</div>';
+                        }
+                    } else {
+                        echo "0 results";
+                    }
+                    $conn->close();
+                    ?>
+                    </div>
+                    <br>
+                    <!-- Dots/bullets -->
+                    <div style="text-align:center">
+                        <span class="dot" onclick="currentSlide(1)"></span>
+                        <span class="dot" onclick="currentSlide(2)"></span>
+                        <span class="dot" onclick="currentSlide(3)"></span>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <div class="container">
+                <p>&copy; 2024 Perpustakaan Online. All rights reserved.</p>
             </div>
-        </section>
-    </main>
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 Perpustakaan Online. All rights reserved.</p>
-        </div>
-    </footer>
-    <script src="script.js"></script>
+        </footer>
+        <script src="script.js"></script>
 
-    <script>
-    var slideIndex = 1;
-    showSlides(slideIndex);
+        <script>
+        var slideIndex = 1;
+        showSlides(slideIndex);
 
-    function plusSlides(n) {
-        showSlides(slideIndex += n);
-    }
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
 
-    function currentSlide(n) {
-        showSlides(slideIndex = n);
-    }
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
 
-    function showSlides(n) {
-        var i;
-        var slides = document.getElementsByClassName("mySlides");
-        var dots = document.getElementsByClassName("dot");
-        if (n > slides.length) {
-            slideIndex = 1
+        function showSlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("dot");
+            if (n > slides.length) {
+                slideIndex = 1
+            }
+            if (n < 1) {
+                slideIndex = slides.length
+            }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            for (i = slideIndex - 1; i < slideIndex + 2; i++) {
+                if (slides[i]) {
+                    slides[i].style.display = "block";
+                }
+            }
+            if (dots[slideIndex - 1]) {
+                dots[slideIndex - 1].className += " active";
+            }
         }
-        if (n < 1) {
-            slideIndex = slides.length
-        }
-        for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
-        }
-        for (i = 0; i < dots.length; i++) {
-            dots[i].className = dots[i].className.replace(" active", "");
-        }
-        slides[slideIndex - 1].style.display = "block";
-        dots[slideIndex - 1].className += " active";
-    }
-    </script>
-</body>
+        </script>
+
+    </body>
 
 </html>

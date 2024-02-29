@@ -2,6 +2,7 @@
 include 'koneksi.php'; // Sertakan file koneksi database
 
 $buku_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$result_ulasan = null; // Inisialisasi variabel $result_ulasan
 
 // Periksa apakah $buku_id lebih besar dari 0
 if ($buku_id > 0) {
@@ -11,28 +12,9 @@ if ($buku_id > 0) {
     mysqli_stmt_bind_param($stmt, 'i', $buku_id);
     mysqli_stmt_execute($stmt);
     $result_ulasan = mysqli_stmt_get_result($stmt);
-
-    // Periksa apakah $result_ulasan tidak null sebelum menggunakannya
-    if ($result_ulasan !== false) {
-        // Periksa apakah ada baris dalam hasil query
-        if (mysqli_num_rows($result_ulasan) > 0) {
-            // Tampilkan ulasan
-            while ($ulasan = mysqli_fetch_assoc($result_ulasan)) {
-                echo "<li>";
-                echo "<p><strong>Rating:</strong> " . $ulasan['rating'] . "/5</p>";
-                echo "<p>" . $ulasan['ulasan'] . "</p>";
-                echo "</li>";
-            }
-        } else {
-            echo "<li>Belum ada ulasan untuk buku ini.</li>";
-        }
-    } else {
-        // Tangani kasus ketika $result_ulasan null
-        echo "Error in query: " . mysqli_error($koneksi);
-    }
 }
-?>
 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -113,26 +95,25 @@ if ($buku_id > 0) {
 <body>
 
     <div class="container">
-        <!-- Tanda silang untuk keluar -->
         <a href="detail_baca.php?id=<?= $buku_id ?>" class="close-button">&times;</a>
 
         <h2>Ulasan Pengguna:</h2>
         <ul>
-            <?php 
-            // Periksa apakah $result_ulasan tidak null sebelum menggunakannya
-            if ($result_ulasan !== false && mysqli_num_rows($result_ulasan) > 0) {
-                while ($ulasan = mysqli_fetch_assoc($result_ulasan)): ?>
+            <!-- Daftar ulasan yang sudah ada -->
+            <?php if ($result_ulasan !== null && mysqli_num_rows($result_ulasan) > 0) : ?>
+            <?php while ($ulasan = mysqli_fetch_assoc($result_ulasan)) : ?>
             <li>
                 <p><strong>Rating:</strong> <?= $ulasan['rating'] ?>/5</p>
                 <p><?= $ulasan['ulasan'] ?></p>
             </li>
-            <?php endwhile;
-            } else { ?>
+            <?php endwhile; ?>
+            <?php else : ?>
             <li>Belum ada ulasan untuk buku ini.</li>
-            <?php } ?>
+            <?php endif; ?>
         </ul>
 
         <h2>Tambah Ulasan:</h2>
+        <!-- Formulir untuk menambah ulasan -->
         <form action="proses_ulasan.php" method="post">
             <input type="hidden" name="buku_id" value="<?= $buku_id ?>">
             <textarea name="ulasan" rows="4" placeholder="Masukkan ulasan Anda" required></textarea><br><br>
@@ -149,5 +130,6 @@ if ($buku_id > 0) {
     </div>
 
 </body>
+
 
 </html>

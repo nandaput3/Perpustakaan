@@ -3,14 +3,15 @@ include 'koneksi.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Mengambil data dari formulir
     $judul = $_POST["judul"];
-    $rating = $_POST["rating"];
-    $ketersediaan = $_POST["ketersediaan"];
+    $stok = $_POST["stok"];
+
     $sinopsis = $_POST["sinopsis"]; // Perhatikan bahwa ini sudah diperbaiki menjadi "sinopsis"
     $penulis = $_POST["penulis"];
     $penerbit = $_POST["penerbit"];
     $tahun_terbit = $_POST["tahun_terbit"];
     $kategori_id = $_POST["kategori_id"];
     $upload_dir = "../asset/";
+
 
     // Mengatur direktori untuk menyimpan file cover
     if (isset($_FILES["image"]["name"])) {
@@ -21,14 +22,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
+    // Mengatur direktori untuk menyimpan file PDF
+    if (isset($_FILES["pdf"]["name"])) {
+        $pdf_path = $upload_dir.basename($_FILES["pdf"]["name"]);
+    } else {
+        echo "Error: PDF file not uploaded.";
+        // Berhenti eksekusi lebih lanjut jika file PDF tidak diunggah
+        exit;
+    }
+
     // Pindahkan file cover yang diunggah ke direktori upload
     if (isset($_FILES["image"]["tmp_name"]) && !empty($_FILES["image"]["tmp_name"])) {
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $cover_path)) {
-            echo "File has been uploaded successfully.";
+            echo "Cover file has been uploaded successfully.";
+        } else {
+            echo "Error uploading cover file: " . $_FILES["image"]["error"];
+            exit;
+        }
+    } else {
+        echo "Error: Cover file not uploaded.";
+        exit;
+    }
+
+    // Pindahkan file PDF yang diunggah ke direktori upload
+    if (isset($_FILES["pdf"]["tmp_name"]) && !empty($_FILES["pdf"]["tmp_name"])) {
+        if (move_uploaded_file($_FILES["pdf"]["tmp_name"], $pdf_path)) {
+            echo "PDF file has been uploaded successfully.";
 
             // Query untuk menyimpan data ke dalam tabel
-            $sql = "INSERT INTO buku (perpus_id, judul, rating, ketersediaan, sinopsis, penulis, penerbit, tahun_terbit, kategori_id, cover) 
-                    VALUES (1, '$judul', '$rating', '$ketersediaan', '$sinopsis', '$penulis', '$penerbit', '$tahun_terbit', '$kategori_id', '$cover_path')";
+            $sql = "INSERT INTO buku (perpus_id, judul,stok, sinopsis, penulis, penerbit, tahun_terbit, kategori_id, cover, pdf_path) 
+                    VALUES (1, '$judul', '$stok', '$sinopsis', '$penulis', '$penerbit', '$tahun_terbit', '$kategori_id', '$cover_path', '$pdf_path')";
 
             if ($koneksi->query($sql)) {
                 echo "Data buku berhasil ditambahkan!";
@@ -37,10 +60,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Error: " . $sql . "<br>" . $koneksi->error;
             }
         } else {
-            echo "Error uploading file: " . $_FILES["image"]["error"];
+            echo "Error uploading PDF file: " . $_FILES["pdf"]["error"];
         }
     } else {
-        echo "Error: File not uploaded.";
+        echo "Error: PDF file not uploaded.";
     }
 
     // Tutup koneksi

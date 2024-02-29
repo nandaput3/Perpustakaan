@@ -92,7 +92,7 @@
                     <i class="fas fa-fw fa-file"></i> <span>Data Peminjam </span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="create_regis.php">
+                <a class="nav-link" href="laporan.php">
                     <i class="fas fa-fw fa-download"></i>
                     <span>Laporan </span></a>
             </li>
@@ -136,19 +136,6 @@
 
                     <!-- Topbar Search -->
 
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
@@ -199,65 +186,78 @@
                         <head>
                             <meta charset="UTF-8">
                             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <title>Document</title>
+                            <title>Data Peminjaman</title>
 
                             <style>
                             table {
                                 width: 100%;
                                 border-collapse: collapse;
                                 margin-top: 20px;
-                                margin-right: 20px;
                             }
 
-                            tr,
-                            th {
-                                border: 1px solid;
-                                padding: 8px;
+                            th,
+                            td {
+                                padding: 10px;
+                                border: 1px solid #ddd;
                                 text-align: center;
+                            }
+
+                            th {
+                                background-color: grey;
+                                color: white;
+                            }
+
+                            tr:nth-child(even) {
+                                background-color: #fff;
+                            }
+
+                            tr:hover {
+                                background-color: #ddd;
                             }
                             </style>
                         </head>
 
                         <body>
-                            <form class="form" action=".php" method="post">
-                                <h2>Data Peminjaman</h2>
+                            <h1>Data Peminjaman</h1>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nama Lengkap</th>
+                                        <th> Buku</th>
+                                        <th>Tanggal Pinjam</th>
+                                        <th>Status Pinjam</th>
+                                        <th>Tanggal Kembali</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+// Query untuk mengambil data peminjaman dari database dengan nama lengkap pengguna
+$sql = "SELECT peminjaman.*, user.nama_lengkap AS nama_lengkap, buku.judul AS judul_buku
+        FROM peminjaman 
+        INNER JOIN buku ON peminjaman.buku_id = buku.buku_id 
+        INNER JOIN user ON peminjaman.user_id = user.user_id";
 
-                                <table border='1'>
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <th>ID Peminjaman</th>
-                                            <th>ID Buku</th>
-                                            <th>Tanggal Pinjam</th>
-                                            <th>UserID</th> <!-- Ubah dari User ID menjadi Username -->
-                                            <th>Tanggal Kembali</th>
-                                            <th>Status Pinjam</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-            // Query untuk mengambil data peminjaman dari database
-            $sql = "SELECT peminjaman.*, user.username FROM peminjaman INNER JOIN user ON peminjaman.user_id = user.user_id";
-            $result = mysqli_query($koneksi, $sql);
+$result = mysqli_query($koneksi, $sql);
 
-            // Tampilkan data peminjaman dalam tabel
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>";
-                echo "<td>" . $row['peminjaman_id'] . "</td>";
-                echo "<td>" . $row['buku_id'] . "</td>";
-                echo "<td>" . $row['tgl_pinjam'] . "</td>";
-                echo "<td>" . $row['user_id'] . "</td>"; // Mengganti user_id dengan username
-                echo "<td>" . $row['tgl_kembali'] . "</td>";
-                echo "<td>" . $row['status_pinjam'] . "</td>";
-                echo "</tr>";
-            }
-            ?>
-                                    </tbody>
-                                </table>
-                            </form>
+// Tampilkan data peminjaman dalam tabel
+while ($row = mysqli_fetch_assoc($result)) {
+    echo "<tr>";
+    echo "<td>" . $row['nama_lengkap'] . "</td>"; // Menampilkan nama lengkap pengguna
+    echo "<td>" . $row['judul_buku'] . "</td>"; // Menampilkan judul buku
+    echo "<td>" . $row['tgl_pinjam'] . "</td>";
+    echo "<td>" . $row['status_pinjam'] . "</td>";
+    echo "<td>" . $row['tgl_kembali'] . "</td>";
+    echo "</tr>";
+}
+?>
 
+
+                                </tbody>
+                            </table>
                         </body>
 
                         </html>
+
 
                     </div>
 

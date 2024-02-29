@@ -1,6 +1,7 @@
 <?php 
     include "koneksi.php";
-
+    session_start();
+    ob_start();
     $sql = "SELECT buku.*, buku_kategori.nama_kategori FROM buku INNER JOIN buku_kategori ON buku.kategori_id = buku_kategori.kategori_id";
     $result = mysqli_query($koneksi, $sql);
 
@@ -95,7 +96,7 @@
                     <i class="fas fa-fw fa-file"></i> <span>Data Peminjam </span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="create_regis.php">
+                <a class="nav-link" href="laporan.php">
                     <i class="fas fa-fw fa-download"></i>
                     <span>Laporan </span></a>
             </li>
@@ -205,72 +206,113 @@
                         <head>
                             <meta charset="UTF-8">
                             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <title>Document</title>
+                            <title>Data Pengguna</title>
 
                             <style>
                             table {
                                 width: 100%;
                                 border-collapse: collapse;
                                 margin-top: 20px;
-                                margin-right: 20px;
                             }
 
-                            tr,
+                            th,
+                            td {
+                                padding: 10px;
+                                border: 1px solid #ddd;
+                                text-align: left;
+                            }
+
                             th {
-                                border: 1px solid;
-                                padding: 8px;
-                                text-align: center;
+                                background-color: grey;
+                                color: white;
+                                /* Warna teks putih */
+
+                            }
+
+                            tr:nth-child(even) {
+                                background-color: #fff;
+                            }
+
+                            tr:hover {
+                                background-color: #ddd;
+                            }
+
+                            /* Tambahkan margin antara tombol */
+                            .btn-container button {
+                                margin-right: 5px;
                             }
                             </style>
                         </head>
 
                         <body>
-                            <form class="form" action="proses/proses_pendataan_buku.php" method="post">
-                                <h1>Data Pengguna</h1>
+                            <h1>Data Pengguna</h1>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Nama Lengkap</th>
+                                        <th>Nomor HP</th>
+                                        <th>Alamat</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
 
-                                <form action="pendataan.php" method="post">
-                                    <table border='1'>
-                                        <thead class="table-dark">
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Username</th>
-                                                <th>Email</th>
-                                                <th>Nama Lengkap</th>
-                                                <th>Nomor HP</th>
-                                                <th>Alamat</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-    // Mengambil data pengguna dari database dan menampilkannya dalam tabel
-    $sql = "SELECT * FROM user";
-    $result = mysqli_query($koneksi, $sql);
-
-    if (mysqli_num_rows($result) > 0) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr>";
-            echo "<td>" . $row['user_id'] . "</td>";
-            echo "<td>" . $row['username'] . "</td>";
-            echo "<td>" . $row['email'] . "</td>";
-            echo "<td>" . $row['nama_lengkap'] . "</td>";
-            echo "<td>" . $row['no_hp'] . "</td>";
-            echo "<td>" . $row['alamat'] . "</td>";
-            echo "<td>" . $row['role'] . "</td>";
-            echo "</tr>";
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+    if(isset($_GET['delete_user_id'])) {
+        $delete_id = $_GET['delete_user_id'];
+        // Lakukan kueri SQL untuk menghapus data pengguna dengan ID tertentu
+        $delete_query = "DELETE FROM user WHERE user_id = $delete_id";
+        $delete_result = mysqli_query($koneksi, $delete_query);
+        if($delete_result) {
+            // Redirect kembali ke halaman data_user.php setelah penghapusan berhasil
+            header("Location: data_user.php");
+            exit;
+        } else {
+            echo "Gagal menghapus pengguna.";
         }
-    } else {
-        echo "<tr><td colspan='7'>Tidak ada data pengguna</td></tr>";
     }
-    ?> </tbody>
-                                    </table>
+?>
+
+                                    <?php
+            // Mengambil data pengguna dari database dan menampilkannya dalam tabel
+            $sql = "SELECT * FROM user";
+            $result = mysqli_query($koneksi, $sql);
+
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<tr>";
+                    echo "<td>" . $row['user_id'] . "</td>";
+                    echo "<td>" . $row['username'] . "</td>";
+                    echo "<td>" . $row['email'] . "</td>";
+                    echo "<td>" . $row['nama_lengkap'] . "</td>";
+                    echo "<td>" . $row['no_hp'] . "</td>";
+                    echo "<td>" . $row['alamat'] . "</td>";
+                    echo "<td>" . $row['role'] . "</td>";
+                    echo "<td>";
+                    // Tombol Edit dengan hyperlink menuju halaman edit_user.php dengan mengirimkan parameter ID pengguna
+                    echo "<a href='edit_user.php?id=" . $row['user_id'] . "' class='btn btn-primary'><i class='fas fa-pen to-square'></i> </a>";
+                    // Tombol Hapus dengan memanggil fungsi JavaScript deleteUser() dan mengirimkan ID pengguna sebagai parameter
+                    echo "<button class='btn btn-danger' onclick='deleteUser(" . $row['user_id'] . ")'><i class='fas fa-trash'></i></button>";
+                    echo "</td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='7'>Tidak ada data pengguna</td></tr>";
+            }
+            ?>
+
+                                </tbody>
+                            </table>
 
 
-                                </form>
-                            </form>
                         </body>
 
                         </html>
+
 
                     </div>
 
@@ -348,6 +390,14 @@
             </div>
         </div>
     </div>
+    <script>
+    function deleteUser(userId) {
+        if (confirm("Anda yakin ingin menghapus pengguna ini?")) {
+            window.location.href = "data_user.php?delete_user_id=" + userId;
+        }
+    }
+    </script>
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="assets/vendor/jquery/jquery.min.js"></script>

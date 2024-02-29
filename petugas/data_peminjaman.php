@@ -1,11 +1,16 @@
-<?php 
-    include "koneksi.php";
+<?php
 
-    $sql = "SELECT buku.*, buku_kategori.nama_kategori FROM buku INNER JOIN buku_kategori ON buku.kategori_id = buku_kategori.kategori_id";
-    $result = mysqli_query($koneksi, $sql);
+session_start();
 
-    
+// Periksa apakah pengguna sudah login atau belum
+if (!isset($_SESSION["user_id"])) {
+    // Jika belum, arahkan ke halaman login
+    header("Location: login.php");
+    exit();
+}
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -56,27 +61,11 @@
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
                 <a class="nav-link" href="admin.php">
-                    <span>Dashboard Admin</span></a>
+                    <span>Dashboard Petugas</span></a>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
-
-
-
-
-
-
-
-
-
-            <!-- Heading -->
-
-
-
-
-
-
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
@@ -108,14 +97,6 @@
                     <i class="fas fa-fw fa-sign-out-alt"></i>
                     <span>Logout</span></a>
             </li>
-
-
-            <!-- Divider -->
-
-            <!-- Sidebar Toggler (Sidebar) -->
-
-
-
 
         </ul>
         <!-- End of Sidebar -->
@@ -304,7 +285,6 @@
                 </div>
             </footer>
             <!-- End of Footer -->
-
         </div>
         <!-- End of Content Wrapper -->
 

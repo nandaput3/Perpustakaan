@@ -148,7 +148,11 @@ body {
                     <i class="fas fa-fw fa-file"></i> <span>Data Peminjam </span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="create_regis.php">
+                <a class="nav-link" href="data_ulasan.php">
+                    <i class="fas fa-fw fa-comments"></i> <span>Ulasan</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="laporan.php">
                     <i class="fas fa-fw fa-download"></i>
                     <span>Laporan </span></a>
             </li>
@@ -241,25 +245,31 @@ try {
     die("Koneksi gagal: " . $e->getMessage());
 }
 
-// Query untuk mengambil data peminjaman
-$sql = "SELECT * FROM peminjaman";
+// Query untuk menghitung jumlah ulasan
+$sql = "SELECT COUNT(*) AS total_ulasan FROM buku_ulasan";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
-$peminjamans = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Query untuk mengambil data buku
-$sql = "SELECT * FROM buku";
-$stmt = $pdo->prepare($sql);
-$stmt->execute();
-$bukus = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Query untuk mengambil data user
-$sql = "SELECT * FROM user";
-$stmt = $pdo->prepare($sql);
-$stmt->execute();
-$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Tampilkan data
+// Query untuk menghitung jumlah buku
+$sql = "SELECT COUNT(*) AS total_buku FROM buku";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$total_buku = $stmt->fetch(PDO::FETCH_ASSOC)['total_buku'];
+
+// Query untuk menghitung jumlah pengguna
+$sql = "SELECT COUNT(*) AS total_pengguna FROM user";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$total_pengguna = $stmt->fetch(PDO::FETCH_ASSOC)['total_pengguna'];
+
+// Query untuk menghitung jumlah peminjam
+$sql = "SELECT COUNT(*) AS total_peminjam FROM peminjaman";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$total_peminjam = $stmt->fetch(PDO::FETCH_ASSOC)['total_peminjam'];
+
 
 ?>
 
@@ -279,15 +289,8 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Data Buku</div>
-                                            <?php
-                            // Query untuk menghitung jumlah buku
-                            $sql = "SELECT COUNT(*) AS total_buku FROM buku";
-                            $stmt = $pdo->prepare($sql);
-                            $stmt->execute();
-                            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-                            ?>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $result['total_buku']; ?></div>
+                                                <?php echo $total_buku; ?></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-book fa-2x text-gray-300"></i>
@@ -305,15 +308,8 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Data
                                                 Pengguna
                                             </div>
-                                            <?php
-                            // Query untuk menghitung jumlah pengguna
-                            $sql = "SELECT COUNT(*) AS total_pengguna FROM user";
-                            $stmt = $pdo->prepare($sql);
-                            $stmt->execute();
-                            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-                            ?>
                                             <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                <?php echo $result['total_pengguna']; ?></div>
+                                                <?php echo $total_pengguna; ?></div>
 
                                         </div>
                                         <div class="col-auto">
@@ -330,15 +326,8 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                 Data Peminjam</div>
-                                            <?php
-                            // Query untuk menghitung jumlah peminjam
-                            $sql = "SELECT COUNT(*) AS total_peminjam FROM peminjaman";
-                            $stmt = $pdo->prepare($sql);
-                            $stmt->execute();
-                            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-                            ?>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo $result['total_peminjam']; ?></div>
+                                                <?php echo $total_peminjam; ?></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -347,6 +336,25 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </div>
                             </div>
                         </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Data Ulasan</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <?php echo $result['total_ulasan']; ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
 
                         <!-- Pending Requests Card Example -->
 

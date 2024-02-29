@@ -2,35 +2,39 @@
 include 'koneksi.php';
 session_start();
 
-// Pastikan ada data yang dikirimkan melalui URL
-if(isset($_GET['id'])) {
-    // Tangkap data ID buku dari URL
-    $buku_id = $_GET['id'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Periksa jika pengguna sudah login
+    if (!isset($_SESSION["user_id"])) {
+        // Alihkan pengguna ke halaman login jika belum login
+        header("Location: login.php");
+        exit();
+    }
+    
+    // Ambil ID buku dari pengiriman formulir
+    $buku_id = isset($_POST['buku_id']) ? intval($_POST['buku_id']) : 0;
 
-    // Variabel $user_id bisa diganti sesuai dengan user yang sedang aktif
-    $user_id = $_SESSION['user_id']; // Ganti dengan user_id yang sesuai
+    // Ambil ID pengguna dari sesi
+    $user_id = $_SESSION["user_id"];
 
-    // Tanggal pinjam, dapat menggunakan tanggal saat ini
-    $tgl_pinjam = date('Y-m-d');
-
-    // Tanggal kembali, bisa diatur sesuai kebutuhan, contoh: 7 hari setelah tanggal pinjam
-    $tgl_kembali = "0000-00-00";
-
-    // Status pinjam awal, bisa disesuaikan dengan kebutuhan
+    // Masukkan ke dalam tabel peminjaman
+    $tgl_pinjam = date("Y-m-d");
+    $tgl_kembali = date("Y-m-d", strtotime("+1 days")); // Contoh: 7 hari dari sekarang
     $status_pinjam = 'dipinjam';
 
-    // Query SQL untuk memasukkan data pinjaman buku ke dalam database
-    $sql = "INSERT INTO peminjaman (user_id, buku_id, tgl_pinjam, tgl_kembali, status_pinjam) VALUES ('$user_id', '$buku_id', '$tgl_pinjam', '$tgl_kembali', '$status_pinjam')";
-    $result = mysqli_query($koneksi,$sql);
+    $query = "INSERT INTO peminjaman (buku_id, tgl_pinjam, user_id, tgl_kembali, status_pinjam) VALUES (?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($koneksi, $query);
+    mysqli_stmt_bind_param($stmt, "isiss", $buku_id, $tgl_pinjam, $user_id, $tgl_kembali, $status_pinjam);
+    
+    if (mysqli_stmt_execute($stmt)) {
+        // Alihkan pengguna ke halaman sukses atau lakukan proses lebih lanjut
+        header("Location: data_peminjaman_buku.php");
+        exit();
+    } else {
+        // Tangani kesalahan
+        echo "Error: " . mysqli_error($koneksi);
+    }
 
-    // Eksekusi query dan periksa apakah berhasil
-    if($result) {
-        echo "<script>alert('Data pinjaman buku berhasil ditambahkan.'); window.location.href = 'data_peminjaman_buku.php?pinjam_id;
-</script>";
-} else {
-echo "Error: " . $sql . "<br>" . mysqli_error($koneksi);
-}
-} else {
-echo "ID buku tidak ditemukan.";
+    mysqli_stmt_close($stmt);
+    mysqli_close($koneksi);
 }
 ?>

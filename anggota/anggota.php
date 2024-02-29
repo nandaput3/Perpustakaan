@@ -1,29 +1,28 @@
 <?php
-?>
+include 'koneksi.php';
+session_start();
+// Query untuk mengambil data kategori buku
+$query = "SELECT * FROM buku_kategori";
+$result = mysqli_query($koneksi, $query);
 
-<?php
 // Periksa apakah ada pesan notifikasi yang disimpan dalam session
 if (isset($_SESSION['notification'])) {
-    // Tampilkan pesan notifikasi
-    echo '<div class="notification">' . $_SESSION['notification'] . '</div>';
-    // Hapus pesan notifikasi dari session agar tidak ditampilkan lagi setelah refresh
-    unset($_SESSION['notification']);
+// Tampilkan pesan notifikasi
+echo '<div class="notification">' . $_SESSION['notification'] . '</div>';
+// Hapus pesan notifikasi dari session agar tidak ditampilkan lagi setelah refresh
+unset($_SESSION['notification']);
 }
-?>
-<?php
-
-session_start();
 
 // Periksa apakah pengguna sudah login atau belum
 if (!isset($_SESSION["user_id"])) {
-    // Jika belum, arahkan ke halaman login
-    header("Location: login.php");
-    exit();
+// Jika belum, arahkan ke halaman login
+header("Location: login.php");
+exit();
 }
 
 // Mendapatkan bagian nama pengguna dari alamat email
 function getUsernameFromEmail($email) {
-    return strstr($email, '@', true); // Mengambil bagian sebelum '@'
+return strstr($email, '@', true); // Mengambil bagian sebelum '@'
 }
 
 ?>
@@ -116,14 +115,30 @@ function getUsernameFromEmail($email) {
                             </div>
                         </li>
 
-                        <!-- Nav Item - Alerts -->
-
-
-                        <!-- Nav Item - Messages -->
-
+                        <!-- Dropdown untuk kategori buku -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="kategoriDropdown" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Kategori</span>
+                            </a>
+                            <div class="dropdown">
+                                <ul class="dropdown-menu" aria-labelledby="kategoriDropdown">
+                                    <?php
+            // Loop through each category
+            while ($row = mysqli_fetch_assoc($result)) {
+                $kategori_id = $row['kategori_id'];
+                $nama_kategori = $row['nama_kategori'];
+                // Link pointing to the page or action corresponding to the selected category
+                echo "<li><a class='dropdown-item' href='kategori.php?kategori_id=$kategori_id'>$nama_kategori</a></li>";
+            }
+            // Reset the result pointer back to the first row
+            mysqli_data_seek($result, 0);
+            ?>
+                                </ul>
+                            </div>
+                        </li>
 
                         <div class="topbar-divider d-none d-sm-block"></div>
-
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
@@ -160,11 +175,7 @@ function getUsernameFromEmail($email) {
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Buku</h1>
 
-                    </div>
 
                     <!-- Content Row -->
                     <div class="row">
@@ -279,54 +290,47 @@ function getUsernameFromEmail($email) {
                         </head>
 
                         <body>
-                            <?php 
-        include "koneksi.php";
 
-        $sql = "SELECT buku.*, buku_kategori.nama_kategori FROM buku INNER JOIN buku_kategori ON buku.kategori_id = buku_kategori.kategori_id";
-        $result = mysqli_query($koneksi, $sql);
-        
-    ?>
+                            <?php
+include 'koneksi.php';
+
+// Ubah query untuk mengambil buku yang belum ditambahkan ke koleksi
+$sql = "SELECT buku.*, buku_kategori.nama_kategori 
+        FROM buku 
+        INNER JOIN buku_kategori ON buku.kategori_id = buku_kategori.kategori_id
+        WHERE buku.buku_id NOT IN (SELECT buku_id FROM koleksi_pribadi WHERE user_id = ".$_SESSION["user_id"].")";
+$result = mysqli_query($koneksi, $sql);
+?>
 
                             <div class="book-container-wrapper">
                                 <?php while($data = mysqli_fetch_assoc($result)): ?>
                                 <div class="book-container">
-                                    <div class="book-cover" style="background-image: url('<?= $data['cover']?>')">
-                                    </div>
+                                    <a href="detail_baca.php?id=<?= $data['buku_id'] ?>">
+                                        <!-- Tambahkan tautan ke halaman detail_buku.php dengan ID buku sebagai parameter -->
+                                        <div class="book-cover" style="background-image: url('<?= $data['cover']?>')">
+                                        </div>
+                                    </a>
+
                                     <div class="book-title"><?= $data['judul']?></div>
 
                                     <div class="book-details">
-                                        <p>Rating: <?= $data['rating']?></p>
-                                        <p>Penulis: <?= $data['penulis']?></p>
-                                        <p>Tahun Terbit: <?= $data['tahun_terbit']?></p>
+                                        <p> <?= $data['penulis']?></p>
                                         <p>Kategori: <?= $data['nama_kategori']?></p>
 
                                     </div>
                                     <div class="action-buttons">
-                                        <a href="detail_baca.php?id=<?= $data['buku_id'] ?> <?= $data['judul']  ?>"><button
-                                                type="button" class="btn btn-primary"><i
-                                                    class="fas fa-book-open"></i></button></a>
-
-
-
-                                        <a href="proses_koleksi.php?buku_id=<?php echo $data["buku_id"] ?>"
-                                            id="tambahKoleksi">
-                                            <button type="button" class="btn btn-danger"><i
-                                                    class="fas fa-bookmark"></i></button>
+                                        <a href="#" class="btn btn-info btn-bookmark"
+                                            data-buku-id="<?= $data['buku_id'] ?>"
+                                            onclick="bookmarkBuku(<?= $data['buku_id'] ?>)"
+                                            id="bookmark_button_<?= $data['buku_id'] ?>">
+                                            <i class="fas fa-regular fa-heart"></i>
                                         </a>
 
-                                        <a href="ulasan.php?id=<?= $data['buku_id'] ?>&judul=<?= $data['judul'] ?>"><button
-                                                type="button" class="btn btn-warning"><i
-                                                    class="fas fa-comment"></i></button></a>
-
-                                        <button type="button" class="btn btn-success pinjam-btn"
-                                            data-id="<?= $data['buku_id'] ?>" data-judul="<?= $data['judul'] ?>"
-                                            onclick="disableButton(this)">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
                                     </div>
                                 </div>
                                 <?php endwhile; ?>
                             </div>
+
 
                         </body>
 
@@ -373,13 +377,7 @@ function getUsernameFromEmail($email) {
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2024</span>
-                    </div>
-                </div>
-            </footer>
+
             <!-- End of Footer -->
 
         </div>
@@ -432,22 +430,53 @@ function getUsernameFromEmail($email) {
             </div>
         </div>
     </div>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Cari tombol dengan ID "tambahKoleksi"
-        var tombolTambahKoleksi = document.getElementById('tambahKoleksi');
+    <!-- Tambahkan script jQuery untuk menangani permintaan AJAX -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-        // Tambahkan event listener untuk menangani klik tombol
-        tombolTambahKoleksi.addEventListener('click', function() {
-            // Menonaktifkan tombol setelah diklik
-            tombolTambahKoleksi.disabled = true;
+    <script>
+    $(document).ready(function() {
+        // Tangani klik pada tautan kategori
+        $('.dropdown-item').click(function(e) {
+            e.preventDefault(); // Mencegah tindakan default dari tautan
+
+            // Ambil URL kategori dari tautan yang diklik
+            var url = $(this).attr('href');
+
+            // Lakukan permintaan AJAX untuk mendapatkan konten kategori
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response) {
+                    // Ganti konten buku dengan konten kategori yang baru
+                    $('.book-container-wrapper').html(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
         });
     });
     </script>
 
+    <script>
+    function bookmarkBuku(buku_id) {
+        $.ajax({
+            type: "POST",
+            url: "proses_koleksi.php", // Ubah ini sesuai dengan lokasi file bookmark.php di server Anda
+            data: {
+                buku_id: buku_id
+            },
+            success: function(response) {
+                alert(response); // Tampilkan pesan dari server
+            }
+        });
+    }
+    </script>
+
+
     <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
     $(document).ready(function() {
         console.log("Script is running"); // Menambahkan pesan log untuk memeriksa apakah skrip dijalankan
@@ -472,45 +501,6 @@ function getUsernameFromEmail($email) {
 
 
 
-    <script>
-    document.getElementById("tambahKoleksi").addEventListener("click", function(event) {
-        event.preventDefault(); // Menghentikan perilaku default dari link
-
-        // Memeriksa apakah tombol sudah dinonaktifkan
-        if (this.getAttribute('data-disabled') === 'true') {
-            return; // Jika sudah dinonaktifkan, hentikan fungsi
-        }
-
-        var btn = this.querySelector('button');
-        btn.disabled = true; // Menonaktifkan tombol
-        this.setAttribute('data-disabled', 'true'); // Menandai tombol sebagai dinonaktifkan
-
-        // Membuat elemen notifikasi
-        var notifElement = document.createElement('div');
-        notifElement.className = 'floating-notification';
-        notifElement.innerHTML = 'Koleksi ditambahkan';
-
-        // Memasukkan elemen notifikasi ke dalam dokumen
-        document.body.appendChild(notifElement);
-
-        // Mengatur waktu penghapusan notifikasi (misal: 3 detik)
-        setTimeout(function() {
-            notifElement.remove(); // Menghapus elemen notifikasi dari dokumen
-        }, 3000);
-
-        // Mengirimkan permintaan HTTP ke proses_koleksi.php
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", this.href, true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                // Memuat data koleksi
-                var dataKoleksi = xhr.responseText;
-                document.getElementById("dataKoleksi").innerHTML = dataKoleksi;
-            }
-        };
-        xhr.send();
-    });
-    </script>
 
 
     <script>
@@ -538,6 +528,7 @@ function getUsernameFromEmail($email) {
     }
     </script>
 
+
     <script>
     $(document).ready(function() {
         var buku_id;
@@ -545,13 +536,19 @@ function getUsernameFromEmail($email) {
         // Event listener for clicking pinjam button
         $('.pinjam-btn').click(function() {
             buku_id = $(this).data('id'); // Get book ID
-            $('#confirmModal').modal('show'); // Show confirmation modal
-        });
 
-        // Event listener for clicking 'Ya' on confirmation modal
-        $('#confirmPinjam').click(function() {
-            // Redirect to pinjam_buku.php with book ID as parameter
-            window.location.href = 'data_peminjaman_buku.php ? id = ' + buku_id;
+            // Lakukan permintaan AJAX untuk mendapatkan data peminjaman
+            $.ajax({
+                url: 'data_peminjaman.php?buku_id=' + buku_id,
+                type: 'GET',
+                success: function(response) {
+                    // Ganti konten dengan data peminjaman yang diperoleh dari server
+                    $('#content').html(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
         });
     });
     </script>

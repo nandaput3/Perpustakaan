@@ -79,7 +79,7 @@
                         Buku</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="data_buku.php"> <i class="fas fa-fw fa-book"></i> <span>Laporan</span></a>
+                <a class="nav-link" href="data_buku.php"> <i class="fas fa-fw fa-download"></i> <span>Laporan</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
