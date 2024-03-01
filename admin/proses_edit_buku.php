@@ -10,7 +10,7 @@
         $penulis = $_POST['penulis'];
         $penerbit = $_POST['penerbit'];
         $tahun_terbit = $_POST['tahun_terbit'];
-        $stok = $_POST['stok'];
+        $stok = $_POST['stok']; // Ambil data stok dari formulir
         $kategori_id = $_POST['kategori'];
 
         // Query untuk mengupdate data buku di database

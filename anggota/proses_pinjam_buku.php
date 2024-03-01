@@ -21,6 +21,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tgl_kembali = date("Y-m-d", strtotime("+1 days")); // Contoh: 7 hari dari sekarang
     $status_pinjam = 'dipinjam';
 
+    // Perbarui stok buku
+    $updateStokSql = "UPDATE buku SET stok = stok - 1 WHERE buku_id = $buku_id";
+    mysqli_query($koneksi, $updateStokSql);
+
     $query = "INSERT INTO peminjaman (buku_id, tgl_pinjam, user_id, tgl_kembali, status_pinjam) VALUES (?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($koneksi, $query);
     mysqli_stmt_bind_param($stmt, "isiss", $buku_id, $tgl_pinjam, $user_id, $tgl_kembali, $status_pinjam);

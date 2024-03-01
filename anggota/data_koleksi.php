@@ -76,7 +76,6 @@ if(isset($_GET['action']) && $_GET['action'] == 'hapus_koleksi') {
                             <h4 class="float-left ml-3">Daftar Koleksi Buku</h4>
                         </div>
                     </div>
-                    <hr>
 
                     <!-- Content Row -->
                     <div class="row">
@@ -214,7 +213,7 @@ if(mysqli_num_rows($result_koleksi) > 0) {
 
                                 <a href="#" class="btn btn-info btn-bookmark"
                                     onclick="toggleKoleksi(<?= $data['buku_id'] ?>)">
-                                    <i class="fas fa-bookmark"></i>
+                                    <i class="fas fa-heart"></i>
                                 </a>
 
 
@@ -228,40 +227,6 @@ if(mysqli_num_rows($result_koleksi) > 0) {
 
                         <hr>
                         <!-- Content Row -->
-                        <div class="row">
-                            <div class="col">
-                                <div class="book-container-wrapper">
-                                    <?php while($data = mysqli_fetch_assoc($result_koleksi)): ?>
-                                    <div class="book-container" id="book_<?= $data['buku_id'] ?>">
-                                        <a href="detail_baca.php?id=<?= $data['buku_id'] ?>">
-                                            <!-- Tambahkan tautan ke halaman detail_buku.php dengan ID buku sebagai parameter -->
-                                            <div class="book-cover"
-                                                style="background-image: url('<?= $data['cover']?>')">
-                                            </div>
-                                        </a>
-                                        <div class="book-title"><?= $data['judul']?></div>
-                                        <div class="book-details">
-                                            <p><?= $data['penulis']?></p>
-                                            <p>Kategori: <?= $data['nama_kategori']?></p>
-                                        </div>
-                                        <div class="action-buttons">
-
-                                            <a href="#" onclick="toggleKoleksi(<?= $data['buku_id'] ?>)">
-                                                <button type="button" class="btn btn-danger"><i
-                                                        class="fas fa-bookmark"></i></button>
-                                            </a>
-
-
-
-                                            </a>
-
-
-                                        </div>
-                                    </div>
-                                    <?php endwhile; ?>
-                                </div>
-                            </div>
-                        </div>
 
 
                         <!-- Content Row -->

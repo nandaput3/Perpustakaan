@@ -213,6 +213,8 @@ if(isset($_GET['pinjam_id'])) {
                             <div class="book-title"><?= $data_pinjam['judul']?></div>
                             <div class="book-details">
                                 <p>Tanggal Pinjam: <?= $data_pinjam['tgl_pinjam']?></p>
+                                <p>Tanggal Kembali: <?= $data_pinjam['tgl_kembali']?></p>
+
 
                                 <?php 
                 // Check if the book is already borrowed or not

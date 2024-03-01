@@ -74,6 +74,11 @@
                                 <div class="card-body">
                                     <form action="proses_edit_buku.php" method="POST">
                                         <input type="hidden" name="id" value="<?= $data['buku_id'] ?>">
+
+                                        <label for="cover">Cover:</label>
+                                        <input type="file" class="form-control" id="foto" name="image"
+                                            value="<?= $data['cover'] ?>">
+
                                         <div class="form-group">
                                             <label for="judul">Judul:</label>
                                             <input type="text" class="form-control" id="judul" name="judul"
@@ -96,20 +101,11 @@
                                                 name="tahun_terbit" value="<?= $data['tahun_terbit'] ?>">
                                         </div>
                                         <div class="form-group">
-                                            <label for="stok">stok:</label>
-                                            <select class="form-control" id="stok" name="stok">
-                                                <option value="Tersedia"
-                                                    <?= ($data['stok'] == 'Tersedia') ? 'selected' : '' ?>>
-                                                    5</option>
-                                                <option value="Dipinjam"
-                                                    <?= ($data['stok'] == 'Dipinjam') ? 'selected' : '' ?>>
-                                                    10</option>
-                                                <option value="Hilang"
-                                                    <?= ($data['stok'] == 'Hilang') ? 'selected' : '' ?>>15
-                                                </option>
-                                                <!-- Tambahkan opsi lain sesuai kebutuhan -->
-                                            </select>
+                                            <label for="stok">Stok:</label>
+                                            <input type="number" class="form-control" id="stok" name="stok"
+                                                value="<?= $data['stok'] ?>" required>
                                         </div>
+
 
                                         <div class="form-group">
                                             <label for="kategori">Kategori:</label>

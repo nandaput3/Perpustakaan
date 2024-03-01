@@ -176,6 +176,7 @@ if ($buku_id > 0) {
         border-radius: 30px;
         border: none;
         cursor: pointer;
+
     }
 
     .button-ulas {
@@ -203,6 +204,7 @@ if ($buku_id > 0) {
     .button-pinjam,
     .button-ulas {
         margin: 5px;
+
         /* Atur margin jika diperlukan */
     }
 

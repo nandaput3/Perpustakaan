@@ -317,7 +317,19 @@ $result = mysqli_query($koneksi, $sql);
                                         <p> <?= $data['penulis']?></p>
                                         <p>Kategori: <?= $data['nama_kategori']?></p>
 
+                                        <?php
+        // Lakukan pengecekan apakah buku sedang dipinjam
+        $bukuId = $data['buku_id'];
+        $queryPeminjaman = "SELECT * FROM peminjaman WHERE buku_id = $bukuId AND status_pinjam = 'dipinjam'";
+        $resultPeminjaman = mysqli_query($koneksi, $queryPeminjaman);
+        if (mysqli_num_rows($resultPeminjaman) > 0) {
+            // Jika buku sedang dipinjam, tampilkan keterangan
+// Jika buku sedang dipinjam, tampilkan keterangan dengan warna merah
+echo "<p style='color: red;'><strong>Status:</strong> Sedang Dipinjam</p>";
+        }
+        ?>
                                     </div>
+
                                     <div class="action-buttons">
                                         <a href="#" class="btn btn-info btn-bookmark"
                                             data-buku-id="<?= $data['buku_id'] ?>"

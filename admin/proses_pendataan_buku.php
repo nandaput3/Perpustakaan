@@ -50,12 +50,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "PDF file has been uploaded successfully.";
 
             // Query untuk menyimpan data ke dalam tabel
-            $sql = "INSERT INTO buku (perpus_id, judul,stok, sinopsis, penulis, penerbit, tahun_terbit, kategori_id, cover, pdf_path) 
+            $sql = "INSERT INTO buku (perpus_id, judul, stok, sinopsis, penulis, penerbit, tahun_terbit, kategori_id, cover, pdf_path) 
                     VALUES (1, '$judul', '$stok', '$sinopsis', '$penulis', '$penerbit', '$tahun_terbit', '$kategori_id', '$cover_path', '$pdf_path')";
 
             if ($koneksi->query($sql)) {
-                echo "Data buku berhasil ditambahkan!";
-                header("Location:../admin/data_buku.php");
+                // Update stok buku
+                $sql_update_stok = "UPDATE buku SET stok = stok + $stok WHERE judul = '$judul'";
+                if ($koneksi->query($sql_update_stok)) {
+                    echo "Data buku berhasil ditambahkan!";
+                    header("Location:../admin/data_buku.php");
+                } else {
+                    echo "Error updating book stock: " . $koneksi->error;
+                }
             } else {
                 echo "Error: " . $sql . "<br>" . $koneksi->error;
             }
