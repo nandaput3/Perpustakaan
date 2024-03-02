@@ -20,6 +20,14 @@
         padding: 20px 0;
     }
 
+    #home {
+        margin-bottom: 100px;
+        margin-top: 20px;
+        /* Menambahkan margin bawah di bagian Home */
+    }
+
+
+
     nav {
         display: flex;
         justify-content: space-between;
@@ -27,6 +35,7 @@
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 20px;
+
     }
 
     .logo {
@@ -80,6 +89,38 @@
         color: #fff;
         text-align: center;
         padding: 10px 0;
+    }
+
+    .footer-links {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 0;
+    }
+
+    .footer-column {
+        flex: 1;
+    }
+
+    .footer-column h3 {
+        margin-bottom: 10px;
+    }
+
+    .footer-column ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .footer-column ul li {
+        margin-bottom: 5px;
+    }
+
+    .footer-column ul li a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .footer-column ul li a:hover {
+        text-decoration: underline;
     }
 
     .slideshow-container {
@@ -154,6 +195,40 @@
         display: table;
         clear: both;
     }
+
+    .welcome-section {
+        display: flex;
+        align-items: center;
+    }
+
+    .image-column {
+        flex: 1;
+        margin-right: 20px;
+        /* Jarak antara gambar dan teks */
+    }
+
+    .image-column img {
+        width: 100%;
+        /* Agar gambar mengisi lebar kolom */
+        max-width: 400px;
+        /* Atur lebar maksimum gambar */
+        height: auto;
+    }
+
+    .text-column {
+        flex: 2;
+        /* Memberikan ruang yang lebih besar untuk teks */
+    }
+
+    .text-column h2 {
+        margin-top: 0;
+        /* Menghapus margin atas untuk judul */
+    }
+
+    .text-column p {
+        margin-left: 0;
+        /* Menghapus margin kiri untuk paragraf */
+    }
     </style>
 
 
@@ -165,20 +240,31 @@
                     <h1>Reading Me</h1>
                 </div>
                 <ul class="navbar">
-                    <li><a href="#">Home</a></li>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#buku">Buku Terpopuler</a></li>
                     <li><a href="registrasi.php" class="active">Signup</a></li>
                 </ul>
             </nav>
+
         </header>
         <main>
             <section id="home">
                 <div class="container">
-                    <h2>Selamat datang di Perpustakaan Online</h2>
-                    <p>Perpustakaan Online menyediakan koleksi buku terbaru dan terpopuler. Temukan dan baca buku
-                        favorit
-                        Anda secara online.</p>
+                    <div class="welcome-section">
+                        <div class="image-column">
+                            <img src="buku2.jpg" alt="Perpustakaan" class="library-image">
+                        </div>
+                        <div class="text-column">
+                            <h1>Selamat datang di Perpustakaan Online</h1>
+                            <p>Hai!! bacalah buku di Perpustakaan kami. Kamu bisa membaca tanpa menyentuh buku dan
+                                membuka lemabaran kertas tebal!!
+                                Perpustakaan menyediakan buku terpopuler yang banyak!!!
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </section>
+
             <section id="buku">
                 <div class="container">
                     <h2>Buku Terpopuler</h2>
@@ -227,9 +313,43 @@
         </main>
         <footer>
             <div class="container">
-                <p>&copy; 2024 Perpustakaan Online. All rights reserved.</p>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>Gramedia Affiliate</h3>
+                        <ul>
+                            <li><a href="#">Mitra Gramedia</a></li>
+                            <li><a href="#">Belanja</a></li>
+                            <li><a href="#">Berbelanja</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Pembayaran</h3>
+                        <ul>
+                            <li><a href="#">Pengiriman</a></li>
+                            <li><a href="#">Tentang Gramedia</a></li>
+                            <li><a href="#">Tentang Kami</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Toko Kami</h3>
+                        <ul>
+                            <li><a href="#">Kerjasama</a></li>
+                            <li><a href="#">Lainnya</a></li>
+                            <li><a href="#">Syarat & Ketentuan</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Bantuan</h3>
+                        <ul>
+                            <li><a href="#">Kebijakan & Privasi</a></li>
+                            <li><a href="#">Bantuan</a></li>
+                            <li><a href="#">Hubungi Kami</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </footer>
+
         <script src="script.js"></script>
 
         <script>

@@ -231,7 +231,7 @@ if(isset($_GET['pinjam_id'])) {
                         window.location.href = 'anggota.php'; 
                     }
                     </script>";
-                    echo "<a href='tampilkan_pdf.php?buku_id=$buku_id' class='btn btn-primary'>Baca</a>";
+                    echo "<a href='pdf.php?buku_id=$buku_id' class='btn btn-primary'>Baca</a>";
 
                 else:
                     echo "<a href='data_peminjaman_buku.php?buku_id=$buku_id' class='btn btn-primary'>Pinjam</a>";
@@ -336,6 +336,8 @@ if(isset($_GET['pinjam_id'])) {
     </script>
 
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 
     <!-- Bootstrap core JavaScript-->

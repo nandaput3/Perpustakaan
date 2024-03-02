@@ -156,15 +156,14 @@ if ($buku_id > 0) {
     }
 
     .button-container {
-        position: relative;
-        /* Make the container relative for absolute positioning */
-        justify-content: flex-end;
-        /* Move the buttons to the end (right side) of the container */
-        align-items: flex-end;
-        /* Align the buttons to the bottom of the container */
-        margin-bottom: 20px;
-        /* Add margin for spacing */
+        display: flex;
+        justify-content: space-between;
+        /* Letakkan tombol pinjam di kiri dan tombol ulasan di kanan */
+        align-items: center;
+        /* Pertahankan tombol-tombol di tengah secara vertikal */
     }
+
+
 
 
     .button-pinjam {
@@ -176,6 +175,9 @@ if ($buku_id > 0) {
         border-radius: 30px;
         border: none;
         cursor: pointer;
+        margin-right: 10px;
+        /* Berikan jarak antara tombol pinjam dan tombol ulasan */
+
 
     }
 
@@ -201,19 +203,18 @@ if ($buku_id > 0) {
         background-color: #f3f3f3;
     }
 
-    .button-pinjam,
-    .button-ulas {
-        margin: 5px;
-
-        /* Atur margin jika diperlukan */
-    }
-
     .icon {
         display: flex;
-        justify-content: center;
-        /* Posisikan secara horizontal di tengah */
+        justify-content: flex-end;
+        /* Letakkan tombol-tombol di ujung kanan */
         align-items: center;
-        /* Posisikan secara vertikal di tengah */
+        /* Pertahankan tombol-tombol di tengah secara vertikal */
+    }
+
+    .button-pinjam,
+    .button-ulas {
+        margin-left: 10px;
+        /* Berikan jarak antara tombol pinjam dan tombol ulasan */
     }
     </style>
 </head>
@@ -246,10 +247,10 @@ if ($buku_id > 0) {
                     <form id="pinjamForm" method="post" action="proses_pinjam_buku.php">
                         <input type="hidden" name="buku_id" value="<?= $buku_id ?>">
                         <button id="pinjamButton" type="submit" class="button-pinjam">Pinjam</button>
-                        <button class="button-ulas"
-                            onclick="window.location.href = 'ulasan.php?id=<?= $_GET['id'] ?>';">💭</button>
                     </form>
                 </div>
+                <button class="button-ulas"
+                    onclick="window.location.href = 'ulasan.php?id=<?= $_GET['id'] ?>';">💭</button>
                 <script>
                 document.getElementById("pinjamForm").addEventListener("submit", function() {
                     document.getElementById("pinjamButton").disabled = true;

@@ -329,10 +329,11 @@
                                                     style='max-width:100px; max-height:100px;'></td>
                                             <td><?= $data['judul']?></td>
                                             <td>
-                                                <!-- Tampilkan link atau tombol unduh untuk file PDF -->
-                                                <a href="../pdf/<?= $data['pdf_path']?>" target="_blank">Download
-                                                    PDF</a>
+                                                <!-- Menampilkan PDF menggunakan tag <embed> -->
+                                                <embed src="../pdf/<?= $data['pdf_path'] ?>" type="application/pdf"
+                                                    width="200" height="200">
                                             </td>
+
                                             <td><?= $data['penulis']?></td>
                                             <td><?= $data['penerbit']?></td>
                                             <td><?= $data['nama_kategori']?></td>

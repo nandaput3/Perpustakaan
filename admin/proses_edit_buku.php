@@ -13,16 +13,24 @@
         $stok = $_POST['stok']; // Ambil data stok dari formulir
         $kategori_id = $_POST['kategori'];
 
-        // Query untuk mengupdate data buku di database
+        // Query untuk mengupdate data buku di database tanpa file PDF
         $query = "UPDATE buku SET 
-                    judul = '$judul', 
-                    penulis = '$penulis', 
-                    penerbit = '$penerbit', 
-                    tahun_terbit = '$tahun_terbit', 
-                    stok = '$stok', 
-                    kategori_id = '$kategori_id' 
-                  WHERE buku_id = $id";
-        $result = mysqli_query($koneksi, $query);
+                    judul = ?, 
+                    penulis = ?, 
+                    penerbit = ?, 
+                    tahun_terbit = ?, 
+                    stok = ?, 
+                    kategori_id = ?
+                  WHERE buku_id = ?";
+        
+        // Prepare statement
+        $stmt = mysqli_prepare($koneksi, $query);
+        
+        // Bind parameters
+        mysqli_stmt_bind_param($stmt, "ssssiii", $judul, $penulis, $penerbit, $tahun_terbit, $stok, $kategori_id, $id);
+        
+        // Execute statement
+        $result = mysqli_stmt_execute($stmt);
 
         // Periksa apakah proses query berhasil
         if($result) {

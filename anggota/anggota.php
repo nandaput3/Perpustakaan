@@ -76,17 +76,27 @@ return strstr($email, '@', true); // Mengambil bagian sebelum '@'
 
                     <!-- Topbar Search -->
 
-                    <form class="form-inline mr-auto w-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
+                    <!-- Topbar Search -->
+                    <!-- Topbar Search -->
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <!-- Logo -->
+                        <img src="../smk1.png" alt="SMK1 Logo" style="height: 40px; margin-right: 10px;">
+
+                        <!-- Kotak Pencarian -->
+                        <form class="form-inline mr-auto navbar-search">
+                            <div class="input-group">
+                                <input type="text" class="form-control bg-light border-0 small"
+                                    placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button">
+                                        <i class="fas fa-search fa-sm"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
+
+
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -316,18 +326,9 @@ $result = mysqli_query($koneksi, $sql);
                                     <div class="book-details">
                                         <p> <?= $data['penulis']?></p>
                                         <p>Kategori: <?= $data['nama_kategori']?></p>
+                                        <p>Stok: <?= $data['stok'] ?></p>
 
-                                        <?php
-        // Lakukan pengecekan apakah buku sedang dipinjam
-        $bukuId = $data['buku_id'];
-        $queryPeminjaman = "SELECT * FROM peminjaman WHERE buku_id = $bukuId AND status_pinjam = 'dipinjam'";
-        $resultPeminjaman = mysqli_query($koneksi, $queryPeminjaman);
-        if (mysqli_num_rows($resultPeminjaman) > 0) {
-            // Jika buku sedang dipinjam, tampilkan keterangan
-// Jika buku sedang dipinjam, tampilkan keterangan dengan warna merah
-echo "<p style='color: red;'><strong>Status:</strong> Sedang Dipinjam</p>";
-        }
-        ?>
+
                                     </div>
 
                                     <div class="action-buttons">
@@ -475,12 +476,24 @@ echo "<p style='color: red;'><strong>Status:</strong> Sedang Dipinjam</p>";
     function bookmarkBuku(buku_id) {
         $.ajax({
             type: "POST",
-            url: "proses_koleksi.php", // Ubah ini sesuai dengan lokasi file bookmark.php di server Anda
+            url: "proses_koleksi.php",
             data: {
                 buku_id: buku_id
             },
             success: function(response) {
                 alert(response); // Tampilkan pesan dari server
+                // Setelah buku berhasil difavoritkan, perbarui daftar koleksi tanpa memuat ulang halaman
+                $.ajax({
+                    url: "data_koleksi.php",
+                    type: "GET",
+                    success: function(response) {
+                        // Ganti konten dengan daftar koleksi yang baru
+                        $('.book-container-wrapper').html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
             }
         });
     }

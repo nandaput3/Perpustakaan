@@ -70,7 +70,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'hapus_koleksi') {
                     <!-- Page Heading -->
                     <div class="row">
                         <div class="col">
-                            <a class="btn btn-secondary btn-sm float-left mb-3" href="javascript:history.go(-2)">
+                            <a class="btn btn-secondary btn-sm float-left mb-3" href="javascript:history.go(-1)">
                                 <i class="fas fa-arrow-left"></i>
                             </a>
                             <h4 class="float-left ml-3">Daftar Koleksi Buku</h4>
@@ -194,36 +194,36 @@ $result_koleksi = mysqli_query($koneksi, $sql_koleksi);
 
 // Tampilkan koleksi pribadi
 if(mysqli_num_rows($result_koleksi) > 0) {
-    while($data = mysqli_fetch_assoc($result_koleksi)) { ?>
+    while($data = mysqli_fetch_assoc($result_koleksi)) {
+        $buku_id = $data['buku_id'];
+?>
                         <!-- echo "<div class='koleksi-item'>";
-        echo "<img src='" . $row_koleksi['cover'] . "' alt='" . $row_koleksi['judul'] . "' />";
-        echo "<h3>" . $row_koleksi['judul'] . "</h3>";
-        // Tambahkan informasi lain yang ingin Anda tampilkan
-        echo "</div>"; -->
-                        <div class="book-container">
+echo "<img src='" . $row_koleksi['cover'] . "' alt='" . $row_koleksi['judul'] . "' />";
+echo "<h3>" . $row_koleksi['judul'] . "</h3>";
+// Tambahkan informasi lain yang ingin Anda tampilkan
+echo "</div>"; -->
+                        <div class="book-container" id="book_<?= $buku_id ?>">
                             <div class="book-cover" style="background-image: url('<?= $data['cover']?>')">
                             </div>
                             <div class="book-title"><?= $data['judul']?></div>
                             <div class="book-details">
                                 <p> <?= $data['penulis']?></p>
                                 <p>Kategori: <?= $data['nama_kategori']?></p>
-
                             </div>
                             <div class="action-buttons">
-
-                                <a href="#" class="btn btn-info btn-bookmark"
-                                    onclick="toggleKoleksi(<?= $data['buku_id'] ?>)">
+                                <a href="#" class="btn btn-info btn-bookmark" onclick="toggleKoleksi(<?= $buku_id ?>)">
                                     <i class="fas fa-heart"></i>
                                 </a>
-
-
                             </div>
                         </div>
-                        <?php }} else { ?>
+                        <?php 
+    }
+} else { 
+?>
                         Belum ada koleksi
-                        <?php } ?>
-
-
+                        <?php 
+} 
+?>
 
                         <hr>
                         <!-- Content Row -->
@@ -292,18 +292,18 @@ if(mysqli_num_rows($result_koleksi) > 0) {
         </div>
         <script>
         function toggleKoleksi(buku_id) {
-            // Kirim permintaan AJAX untuk menambah atau menghapus buku dari koleksi
+            // Kirim permintaan AJAX untuk menghapus buku dari koleksi
             $.ajax({
                 url: 'toggle_koleksi.php',
-                type: 'GET', // Mengubah menjadi GET karena Anda mengirim data melalui URL
+                type: 'GET',
                 data: {
                     action: 'hapus_koleksi',
                     buku_id: buku_id
                 },
                 success: function(response) {
                     alert(response); // Tampilkan pesan dari server
-                    // Jika berhasil, hapus buku dari tampilan halaman
-                    $('#book_' + buku_id).remove();
+                    // Jika berhasil, sembunyikan kartu buku dari tampilan
+                    $('#book_' + buku_id).hide();
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -313,76 +313,6 @@ if(mysqli_num_rows($result_koleksi) > 0) {
         }
         </script>
 
-
-        <script>
-        function kembalikanBuku(pinjam_id) {
-            if (confirm('Apakah Anda yakin ingin mengembalikan buku ini?')) {
-                // Mengatur tanggal pengembalian otomatis
-                var today = new Date();
-                var dd = String(today.getDate()).padStart(2, '0');
-                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-                var yyyy = today.getFullYear();
-                var tanggal_pengembalian = yyyy + '-' + mm + '-' + dd;
-
-                // Mengirim permintaan AJAX untuk memperbarui tanggal pengembalian di database
-                $.ajax({
-                    url: 'proses_pengembalian.php',
-                    type: 'POST',
-                    data: {
-                        pinjam_id: pinjam_id,
-                        tanggal_pengembalian: tanggal_pengembalian
-                    },
-                    success: function(response) {
-                        // Jika berhasil, lakukan sesuatu (misalnya, tampilkan pesan sukses)
-                        alert('Buku telah berhasil dikembalikan.');
-                        // Kemudian, reload halaman atau lakukan tindakan lain yang sesuai
-                    },
-                    error: function(xhr, status, error) {
-                        // Jika terjadi kesalahan, tampilkan pesan error
-                        console.error(error);
-                        alert('Terjadi kesalahan saat mengembalikan buku.');
-                    }
-                });
-            }
-        }
-        </script>
-        <script>
-        function kembalikanBuku(pinjam_id) {
-            if (confirm('Apakah Anda yakin ingin mengembalikan buku ini?')) {
-                var today = new Date();
-                var dd = String(today.getDate()).padStart(2, '0');
-                var mm = String(today.getMonth() + 1).padStart(2, '0');
-                var yyyy = today.getFullYear();
-                var tanggal_pengembalian = yyyy + '-' + mm + '-' + dd;
-
-                // Kirim permintaan AJAX
-                $.ajax({
-                    url: 'proses_pengembalian.php', // Sesuaikan dengan nama skrip PHP Anda
-                    type: 'POST',
-                    data: {
-                        pinjam_id: pinjam_id,
-                        tanggal_pengembalian: tanggal_pengembalian
-                    },
-                    success: function(response) {
-                        alert('Buku telah berhasil dikembalikan.');
-                        // Lakukan tindakan lain yang sesuai
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                        alert('Terjadi kesalahan saat mengembalikan buku.');
-                    }
-                });
-            }
-        }
-        </script>
-
-        <script>
-        function hapusPeminjaman(peminjamanId) {
-            if (confirm('Apakah Anda yakin ingin menghapus data peminjaman ini?')) {
-                window.location.href = 'hapus_peminjaman.php?peminjaman_id=' + peminjamanId;
-            }
-        }
-        </script>
 
 
         <!-- Bootstrap core JavaScript-->

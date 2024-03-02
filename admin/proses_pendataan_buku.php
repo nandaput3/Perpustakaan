@@ -44,33 +44,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // Pindahkan file PDF yang diunggah ke direktori upload
-    if (isset($_FILES["pdf"]["tmp_name"]) && !empty($_FILES["pdf"]["tmp_name"])) {
-        if (move_uploaded_file($_FILES["pdf"]["tmp_name"], $pdf_path)) {
-            echo "PDF file has been uploaded successfully.";
+   // Pindahkan file PDF yang diunggah ke direktori upload
+if (isset($_FILES["pdf"]["tmp_name"]) && !empty($_FILES["pdf"]["tmp_name"])) {
+    if (move_uploaded_file($_FILES["pdf"]["tmp_name"], $pdf_path)) {
+        echo "PDF file has been uploaded successfully.";
 
-            // Query untuk menyimpan data ke dalam tabel
-            $sql = "INSERT INTO buku (perpus_id, judul, stok, sinopsis, penulis, penerbit, tahun_terbit, kategori_id, cover, pdf_path) 
-                    VALUES (1, '$judul', '$stok', '$sinopsis', '$penulis', '$penerbit', '$tahun_terbit', '$kategori_id', '$cover_path', '$pdf_path')";
+        // Query untuk menyimpan data ke dalam tabel
+        $sql = "INSERT INTO buku (perpus_id, judul, stok, sinopsis, penulis, penerbit, tahun_terbit, kategori_id, cover, pdf_path) 
+                VALUES (1, '$judul', '$stok', '$sinopsis', '$penulis', '$penerbit', '$tahun_terbit', '$kategori_id', '$cover_path', '$pdf_path')";
 
-            if ($koneksi->query($sql)) {
-                // Update stok buku
-                $sql_update_stok = "UPDATE buku SET stok = stok + $stok WHERE judul = '$judul'";
-                if ($koneksi->query($sql_update_stok)) {
-                    echo "Data buku berhasil ditambahkan!";
-                    header("Location:../admin/data_buku.php");
-                } else {
-                    echo "Error updating book stock: " . $koneksi->error;
-                }
+        if ($koneksi->query($sql)) {
+            // Update stok buku
+            $sql_update_stok = "UPDATE buku SET stok = stok + $stok WHERE judul = '$judul'";
+            if ($koneksi->query($sql_update_stok)) {
+                echo "Data buku berhasil ditambahkan!";
+                header("Location:../admin/data_buku.php");
             } else {
-                echo "Error: " . $sql . "<br>" . $koneksi->error;
+                echo "Error updating book stock: " . $koneksi->error;
             }
         } else {
-            echo "Error uploading PDF file: " . $_FILES["pdf"]["error"];
+            echo "Error: " . $sql . "<br>" . $koneksi->error;
         }
     } else {
-        echo "Error: PDF file not uploaded.";
+        echo "Error uploading PDF file: " . $_FILES["pdf"]["error"];
     }
+} else {
+    echo "Error: PDF file not uploaded.";
+}
+
 
     // Tutup koneksi
     $koneksi->close();
