@@ -38,7 +38,7 @@ return strstr($email, '@', true); // Mengambil bagian sebelum '@'
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Reading Me</title>
+    <title>MACA</title>
 
     <!-- Custom fonts for this template-->
     <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -160,8 +160,12 @@ return strstr($email, '@', true); // Mengambil bagian sebelum '@'
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="anggota.php">
+                                    <i class="fas fa-home fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Home
+                                </a>
                                 <a class="dropdown-item" href="data_koleksi.php">
-                                    <i class="fas fa-bookmark fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    <i class="fas fa-heart fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Koleksi
                                 </a>
                                 <a class="dropdown-item" href="data_peminjaman_buku.php">

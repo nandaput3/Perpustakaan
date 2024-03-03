@@ -91,7 +91,6 @@ if ($buku_id > 0) {
         margin-top: 0;
         color: #333;
         text-align: center;
-        /* Mengatur judul ke tengah */
     }
 
     .card p {
@@ -100,7 +99,6 @@ if ($buku_id > 0) {
         margin: 5px 0;
         color: #666;
         text-align: center;
-        /* Mengatur teks deskripsi ke tengah */
     }
 
     .card p.author {
@@ -111,7 +109,6 @@ if ($buku_id > 0) {
     .username-bold {
         font-weight: bold;
         font-size: 25px;
-
     }
 
     .btn-back {
@@ -121,7 +118,6 @@ if ($buku_id > 0) {
         border-radius: 5px;
         text-decoration: none;
         color: #fff;
-        /* Ubah warna teks menjadi biru */
         font-weight: bold;
         display: inline-block;
         margin-right: 10px;
@@ -150,7 +146,6 @@ if ($buku_id > 0) {
         padding: 0;
     }
 
-    /* Warna bintang emas */
     .gold-star {
         color: #FFB000;
     }
@@ -158,13 +153,15 @@ if ($buku_id > 0) {
     .button-container {
         display: flex;
         justify-content: space-between;
-        /* Letakkan tombol pinjam di kiri dan tombol ulasan di kanan */
         align-items: center;
-        /* Pertahankan tombol-tombol di tengah secara vertikal */
+        margin-top: 20px;
+        /* Tambahkan jarak dari konten di atasnya */
     }
 
-
-
+    .icon {
+        display: flex;
+        align-items: center;
+    }
 
     .button-pinjam {
         background-color: #007bff;
@@ -176,9 +173,6 @@ if ($buku_id > 0) {
         border: none;
         cursor: pointer;
         margin-right: 10px;
-        /* Berikan jarak antara tombol pinjam dan tombol ulasan */
-
-
     }
 
     .button-ulas {
@@ -190,31 +184,16 @@ if ($buku_id > 0) {
         font-size: 20px;
         font-weight: bold;
         cursor: pointer;
-        position: absolute;
-        top: 20px;
-        /* Menggunakan posisi absolut */
-        /* Menempatkan tombol tepat di sisi kanan tombol "Mulai Membaca" */
-        /* Menyentralkan vertikal */
-        transform: translateY(-50%);
-        /* Menyentralkan vertikal */
+        position: relative;
+        /* Menggunakan posisi relatif */
+        top: 0;
+        right: 0;
+        /* Menggeser tombol ke pojok kanan */
+        margin-left: 10px;
     }
 
     .button-ulas:hover {
         background-color: #f3f3f3;
-    }
-
-    .icon {
-        display: flex;
-        justify-content: flex-end;
-        /* Letakkan tombol-tombol di ujung kanan */
-        align-items: center;
-        /* Pertahankan tombol-tombol di tengah secara vertikal */
-    }
-
-    .button-pinjam,
-    .button-ulas {
-        margin-left: 10px;
-        /* Berikan jarak antara tombol pinjam dan tombol ulasan */
     }
     </style>
 </head>
