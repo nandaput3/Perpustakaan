@@ -1,34 +1,39 @@
 <?php
-include "koneksi.php";
+// Sisipkan file koneksi.php
+include 'koneksi.php';
 
-// Mendapatkan tanggal sekarang
+// Ambil tanggal hari ini
 $currentDate = date("Y-m-d");
 
-// Query untuk mengambil data peminjaman yang masih berstatus "dipinjam" dan melebihi tanggal kembali
-$sql = "SELECT * FROM peminjaman WHERE status_pinjam = 'dipinjam' AND tgl_kembali < '$currentDate'";
-$result = mysqli_query($koneksi, $sql);
+// Perbarui status peminjaman yang melewati tenggat waktu
+$sql_expired = "SELECT * FROM peminjaman WHERE tgl_kembali < '$currentDate' AND status_pinjam = 'dipinjam'";
+$result_expired = mysqli_query($koneksi, $sql_expired);
 
-// Perbarui status peminjaman yang sudah lewat tanggal kembali menjadi "dikembalikan"
-while ($row = mysqli_fetch_assoc($result)) {
-    $peminjaman_id = $row['peminjaman_id'];
+// Loop melalui peminjaman yang melewati tenggat waktu dan perbarui statusnya
+while($row_expired = mysqli_fetch_assoc($result_expired)) {
+    $pinjam_id = $row_expired['peminjaman_id'];
     
-    // Perbarui status menjadi "dikembalikan" di database
-    $updateSql = "UPDATE peminjaman SET status_pinjam = 'dikembalikan' WHERE peminjaman_id = $peminjaman_id";
-    mysqli_query($koneksi, $updateSql);
+    // Perbarui status peminjaman menjadi 'telat'
+    $updateSql1 = "UPDATE peminjaman SET status_pinjam = 'telat' WHERE peminjaman_id = $pinjam_id";
+    $updateResult1 = mysqli_query($koneksi, $updateSql1);
     
+    // Jika gagal melakukan pembaruan, tangani kesalahan di sini
+
     // Mengembalikan stok buku yang terkait
-    $buku_id = $row['buku_id'];
+    $buku_id = $row_expired['buku_id'];
     $updateStokSql = "UPDATE buku SET stok = stok + 1 WHERE buku_id = $buku_id";
-    mysqli_query($koneksi, $updateStokSql);
+    $updateStokResult = mysqli_query($koneksi, $updateStokSql);
     
-    // Anda juga dapat melakukan pemberitahuan atau logging di sini sesuai kebutuhan
+    // Jika gagal melakukan pembaruan, tangani kesalahan di sini
     
-    // Contoh: Logging keterlambatan pengembalian
-    $keterangan = "Peminjaman terlambat dikembalikan otomatis";
-    $logSql = "INSERT INTO log_pengembalian (peminjaman_id, keterangan, tanggal) VALUES ($peminjaman_id, '$keterangan', '$currentDate')";
-    mysqli_query($koneksi, $logSql);
+    // Menambahkan informasi tentang keterlambatan pengembalian ke dalam log atau melaporkannya
+    $keterangan = "Pengembalian terlambat dari peminjaman ID: $pinjam_id";
+    $insertLogSql = "INSERT INTO log_pengembalian (peminjaman_id, keterangan, tanggal) VALUES ($pinjam_id, '$keterangan', '$currentDate')";
+    $insertLogResult = mysqli_query($koneksi, $insertLogSql);
+    
+    // Jika gagal melakukan penyisipan log, tangani kesalahan di sini
 }
 
-// Notifikasi pengembalian otomatis selesai
-echo "Pengembalian otomatis selesai.";
+// Tutup koneksi database
+mysqli_close($koneksi);
 ?>

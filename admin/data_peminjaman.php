@@ -227,32 +227,40 @@
                                         <th>Tanggal Pinjam</th>
                                         <th>Status Pinjam</th>
                                         <th>Tanggal Kembali</th>
+                                        <th>Aksi</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-// Query untuk mengambil data peminjaman dari database dengan nama lengkap pengguna
-$sql = "SELECT peminjaman.*, user.nama_lengkap AS nama_lengkap, buku.judul AS judul_buku
-        FROM peminjaman 
-        INNER JOIN buku ON peminjaman.buku_id = buku.buku_id 
-        INNER JOIN user ON peminjaman.user_id = user.user_id";
+            // Query untuk mengambil data peminjaman dari database dengan nama lengkap pengguna
+            $sql = "SELECT peminjaman.*, user.nama_lengkap AS nama_lengkap, buku.judul AS judul_buku
+                    FROM peminjaman 
+                    INNER JOIN buku ON peminjaman.buku_id = buku.buku_id 
+                    INNER JOIN user ON peminjaman.user_id = user.user_id";
 
-$result = mysqli_query($koneksi, $sql);
+            $result = mysqli_query($koneksi, $sql);
 
-// Tampilkan data peminjaman dalam tabel
-while ($row = mysqli_fetch_assoc($result)) {
-    echo "<tr>";
-    echo "<td>" . $row['nama_lengkap'] . "</td>"; // Menampilkan nama lengkap pengguna
-    echo "<td>" . $row['judul_buku'] . "</td>"; // Menampilkan judul buku
-    echo "<td>" . $row['tgl_pinjam'] . "</td>";
-    echo "<td>" . $row['status_pinjam'] . "</td>";
-    echo "<td>" . $row['tgl_kembali'] . "</td>";
-    echo "</tr>";
-}
-?>
-
-
+            // Tampilkan data peminjaman dalam tabel
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "<tr>";
+                echo "<td>" . $row['nama_lengkap'] . "</td>"; // Menampilkan nama lengkap pengguna
+                echo "<td>" . $row['judul_buku'] . "</td>"; // Menampilkan judul buku
+                echo "<td>" . $row['tgl_pinjam'] . "</td>";
+                echo "<td>" . $row['status_pinjam'] . "</td>";
+                echo "<td>" . $row['tgl_kembali'] . "</td>";
+                echo "<td>";
+                // Tambahkan tombol "Tarik" dengan link ke file PHP yang menangani operasi tarik buku
+                echo "<form action='tarik_buku.php' method='post'>";
+                echo "<input type='hidden' name='peminjaman_id' value='" . $row['peminjaman_id'] . "'>";
+                echo "<button type='submit' class='btn-tarik'>Tarik</button>";
+                echo "</form>";
+                echo "</td>";
+                echo "</tr>";
+            }
+            ?>
                                 </tbody>
+
                             </table>
                         </body>
 

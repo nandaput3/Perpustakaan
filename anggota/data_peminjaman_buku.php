@@ -214,7 +214,7 @@ $result = mysqli_query($koneksi, $sql_kategori);
                 <!-- Page Heading -->
                 <div class="row">
                     <div class="col">
-                        <a class="btn btn-secondary btn-sm float-left mb-3" href="javascript:history.go(-1)">
+                        <a class="btn btn-secondary btn-sm float-left mb-3" href="javascript:history.go(-2)">
                             <i class="fas fa-arrow-left"></i>
                         </a>
                         <h4 class="float-left ml-3">Daftar Buku yang Dipinjam</h4>

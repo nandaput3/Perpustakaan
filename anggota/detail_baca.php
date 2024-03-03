@@ -155,8 +155,10 @@ if ($buku_id > 0) {
         justify-content: space-between;
         align-items: center;
         margin-top: 20px;
-        /* Tambahkan jarak dari konten di atasnya */
+        min-width: 280px;
+        /* Tambahkan lebar minimum yang tetap */
     }
+
 
     .icon {
         display: flex;
@@ -224,13 +226,28 @@ if ($buku_id > 0) {
                 <?php else : ?>
                 <!-- Show button to borrow book if available -->
                 <div class="icon">
+                    <?php if ($data['stok'] == 0) : ?>
+                    <div style="color: red;">Buku sudah habis</div>
+                    <?php else : ?>
+                    <!-- Tampilkan tombol Pinjam -->
                     <form id="pinjamForm" method="post" action="proses_pinjam_buku.php">
                         <input type="hidden" name="buku_id" value="<?= $buku_id ?>">
                         <button id="pinjamButton" type="submit" class="button-pinjam">Pinjam</button>
                     </form>
+
                 </div>
+                <script>
+                // Mengaktifkan tombol pinjam saat form di-submit
+                document.getElementById("pinjamForm").addEventListener("submit", function() {
+                    document.getElementById("pinjamButton").disabled = true;
+                });
+                </script>
+                <?php endif; ?>
+
+                <!-- Tampilkan button-ulas di luar dari div.icon -->
                 <button class="button-ulas"
                     onclick="window.location.href = 'ulasan.php?id=<?= $_GET['id'] ?>';">💭</button>
+
                 <script>
                 document.getElementById("pinjamForm").addEventListener("submit", function() {
                     document.getElementById("pinjamButton").disabled = true;
