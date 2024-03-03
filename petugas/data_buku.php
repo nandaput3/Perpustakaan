@@ -1,12 +1,16 @@
 <?php 
     include "koneksi.php";
 
-    $sql = "SELECT buku.*, buku_kategori.nama_kategori FROM buku INNER JOIN buku_kategori ON buku.kategori_id = buku_kategori.kategori_id";
+    $sql = "SELECT buku.*, buku_kategori.nama_kategori 
+            FROM buku 
+            INNER JOIN buku_kategori ON buku.kategori_id = buku_kategori.kategori_id";
     $result = mysqli_query($koneksi, $sql);
 
-    
+    // Check for errors
+    if (!$result) {
+        die('Error fetching data: ' . mysqli_error($koneksi));
+    }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -217,14 +221,30 @@
                                 width: 100%;
                                 border-collapse: collapse;
                                 margin-top: 20px;
-                                margin-right: 20px;
                             }
 
-                            tr,
-                            th {
-                                border: 1px solid;
-                                padding: 8px;
+                            th,
+                            td {
+                                padding: 10px;
+                                border: 1px solid #ddd;
                                 text-align: center;
+                            }
+
+                            th {
+                                background-color: grey;
+                                color: white;
+                            }
+
+                            tr:nth-child(even) {
+                                background-color: #f2f2f2;
+                            }
+
+                            tr:hover {
+                                background-color: #ddd;
+                            }
+
+                            .btn-container button {
+                                margin-right: 5px;
                             }
 
                             .slide-navigation {
@@ -257,64 +277,73 @@
                                 /* Atur lebar sesuai kebutuhan */
                                 text-align: center;
                             }
-                            </style>
 
+                            /* Tambahkan margin antara tombol */
+                            .btn-container button {
+                                margin-right: 5px;
+                            }
+
+                            /* Tambahkan style untuk posisi tombol Tambah */
+                            .add-button {
+                                margin-top: 20px;
+                            }
                             </style>
                         </head>
 
                         <body>
                             <form class="form" action="proses/proses_pendataan_buku.php" method="post">
                                 <h1>Data Buku</h1>
-                                <a href="create_data_buku.php"><button type="button"
-                                        class="btn btn-dark">Tambah</button>
-                                </a>
+
                                 <form action="pendataan.php" method="post">
-                                    <table border='1'>
-                                        <thead class="table-dark">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>cover</th>
+                                                <th>Cover</th>
                                                 <th>Judul</th>
+                                                <th>PDF</th>
                                                 <th>Penulis</th>
                                                 <th>Penerbit</th>
-                                                <th>Tahun Terbit</th>
                                                 <th>Kategori</th>
                                                 <th>Stok</th>
-
                                                 <th>Aksi</th>
-
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <!-- Isi tabel dengan data dari database -->
+                                            <!-- Table body -->
                                             <?php while($data = mysqli_fetch_assoc($result)): ?>
                                             <tr>
-                                                <th><?= $data['buku_id']?></th>
-                                                <th><img src='../asset/<?= $data['cover']?>' alt='Cover Buku'
-                                                        style='max-width:100px; max-height:100px;'> </th>
-                                                <th><?= $data['judul']?></th>
-                                                <th><?= $data['penulis']?></th>
-                                                <th><?= $data['penerbit']?></th>
-                                                <th><?= $data['tahun_terbit']?></th>
-                                                <th><?= $data['nama_kategori']?></th>
-                                                <th><?= $data['stok']?></th>
-
-                                                <th>
-                                                    <a href="edit_buku.php?id=<?= $data['buku_id'] ?>"
-                                                        onclick=""><button type="button"
-                                                            class="btn btn-primary">Edit</button></a>
-                                                    <!-- Edit link -->
+                                                <td><?= $data['buku_id'] ?></td>
+                                                <td><img src="../asset/<?= $data['cover'] ?>" alt="Cover Buku"
+                                                        style="max-width:100px; max-height:100px;"></td>
+                                                <td><?= $data['judul'] ?></td>
+                                                <td>
+                                                    <!-- Menampilkan PDF menggunakan tag <embed> -->
+                                                    <embed src="../pdf/<?= $data['pdf_path'] ?>" type="application/pdf"
+                                                        width="200" height="200">
+                                                </td>
+                                                <td><?= $data['penulis'] ?></td>
+                                                <td><?= $data['penerbit'] ?></td>
+                                                <td><?= $data['nama_kategori'] ?></td>
+                                                <td><?= $data['stok'] ?></td>
+                                                <td>
+                                                    <a href="edit_buku.php?id=<?= $data['buku_id'] ?>"><button
+                                                            class="btn btn-primary"><i
+                                                                class='fas fa-pen to-square'></i></button></a>
                                                     <a href="hapus_buku.php?id=<?= $data['buku_id'] ?>"
-                                                        onclick="return confirm(' Yakin ingin menhapus buku ini?')"><button
-                                                            type="button" class="btn btn-danger">Hapus</button></a>
-                                                    <!-- Delete link with confirmation -->
-                                                </th>
+                                                        onclick="return confirm('Yakin ingin menghapus buku ini?')"><button
+                                                            class="btn btn-danger"><i
+                                                                class='fas fa-trash'></i></button></a>
+                                                </td>
                                             </tr>
                                             <?php endwhile; ?>
                                         </tbody>
-                                        <?php if ($currentSlide > 1): ?>
 
-                                        <?php endif; ?>
+                                    </table>
+
+                                    <?php if ($currentSlide > 1): ?>
+
+                                    <?php endif; ?>
                                     </table>
                                     <!-- Tambahkan di bagian setelah tabel -->
                                     <div class="slide-navigation">
