@@ -229,6 +229,8 @@
                                 margin-top: 20px;
                             }
 
+
+
                             th,
                             td {
                                 padding: 10px;
@@ -293,6 +295,15 @@
                             .add-button {
                                 margin-top: 20px;
                             }
+
+                            /* Tambahkan CSS berikut ke dalam tag <style> atau file CSS Anda */
+
+
+                            .aksi div {
+                                display: flex;
+                                gap: 5px;
+                                /* Tambahkan jarak antara tombol */
+                            }
                             </style>
                         </head>
 
@@ -323,30 +334,30 @@
                                     <tbody>
                                         <!-- Isi tabel dengan data dari database -->
                                         <?php while($data = mysqli_fetch_assoc($result)): ?>
+                                        <!-- Di dalam loop while untuk menampilkan data buku -->
                                         <tr>
                                             <td><?= $data['buku_id']?></td>
                                             <td><img src='../asset/<?= $data['cover']?>' alt='Cover Buku'
                                                     style='max-width:100px; max-height:100px;'></td>
                                             <td><?= $data['judul']?></td>
-                                            <td>
-                                                <!-- Menampilkan PDF menggunakan tag <embed> -->
-                                                <embed src="../pdf/<?= $data['pdf_path'] ?>" type="application/pdf"
-                                                    width="200" height="200">
-                                            </td>
-
+                                            <td><?= basename($data['pdf_path']) ?></td>
                                             <td><?= $data['penulis']?></td>
                                             <td><?= $data['penerbit']?></td>
                                             <td><?= $data['nama_kategori']?></td>
                                             <td><?= $data['stok']?></td>
-                                            <td>
-                                                <a href="edit_buku.php?id=<?= $data['buku_id'] ?>"><button
-                                                        class="btn btn-primary"><i
-                                                            class='fas fa-pen to-square'></i></button></a>
-                                                <a href="hapus_buku.php?id=<?= $data['buku_id'] ?>"
-                                                    onclick="return confirm('Yakin ingin menghapus buku ini?')"><button
-                                                        class="btn btn-danger"><i class='fas fa-trash'></i></button></a>
+                                            <td class="aksi">
+                                                <div>
+                                                    <a href="edit_buku.php?id=<?= $data['buku_id'] ?>"><button
+                                                            class="btn btn-primary"><i
+                                                                class='fas fa-pen to-square'></i></button></a>
+                                                    <a href="hapus_buku.php?id=<?= $data['buku_id'] ?>"
+                                                        onclick="return confirm('Yakin ingin menghapus buku ini?')"><button
+                                                            class="btn btn-danger"><i
+                                                                class='fas fa-trash'></i></button></a>
+                                                </div>
                                             </td>
                                         </tr>
+
                                         <?php endwhile; ?>
                                     </tbody>
                                 </table>

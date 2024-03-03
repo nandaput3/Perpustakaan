@@ -294,8 +294,8 @@ echo "</div>"; -->
         function toggleKoleksi(buku_id) {
             // Kirim permintaan AJAX untuk menghapus buku dari koleksi
             $.ajax({
-                url: 'toggle_koleksi.php',
-                type: 'GET',
+                url: 'hapus_koleksi.php',
+                type: 'POST',
                 data: {
                     action: 'hapus_koleksi',
                     buku_id: buku_id

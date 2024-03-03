@@ -161,7 +161,7 @@ if(isset($_GET['pinjam_id'])) {
     $sql_pinjam = "SELECT peminjaman.*, buku.* 
     FROM peminjaman 
     INNER JOIN buku ON peminjaman.buku_id = buku.buku_id 
-    WHERE peminjaman_id = $pinjam_id";
+    WHERE peminjaman_id = $pinjam_id  AND peminjaman.user_id = {$_SESSION['user_id']}"  ;
 
     $result_pinjam = mysqli_query($koneksi, $sql_pinjam);
 
@@ -194,7 +194,7 @@ if(isset($_GET['pinjam_id'])) {
     FROM peminjaman 
     INNER JOIN buku ON peminjaman.buku_id = buku.buku_id 
     INNER JOIN buku_kategori ON buku.kategori_id = buku_kategori.kategori_id 
-    WHERE peminjaman.status_pinjam = 'dipinjam'"; // Hanya menampilkan buku yang masih dipinjam
+    WHERE peminjaman.status_pinjam = 'dipinjam' AND peminjaman.user_id = {$_SESSION['user_id']}"; // Hanya menampilkan buku yang masih dipinjam
 
 
         $result_pinjam = mysqli_query($koneksi, $sql_pinjam);
@@ -219,12 +219,13 @@ if(isset($_GET['pinjam_id'])) {
                                 <?php 
                 // Check if the book is already borrowed or not
                 $buku_id = $data_pinjam['buku_id'];
+                $peminjaman_id = $data_pinjam['peminjaman_id'];
                 $query_pinjam = "SELECT * FROM peminjaman WHERE buku_id = $buku_id AND status_pinjam = 'dipinjam'";
                 $result_borrowed = mysqli_query($koneksi, $query_pinjam);
                 
                 if(mysqli_num_rows($result_borrowed) > 0):
                     echo "<p>Status: Sedang Dipinjam</p>";
-                    echo "<button onclick='kembalikanBuku($buku_id); redirectToBeranda();' class='btn btn-danger'>Kembalikan</button>";
+                    echo "<button onclick='kembalikanBuku($peminjaman_id); redirectToBeranda();' class='btn btn-danger'>Kembalikan</button>";
 
                     echo "<script>
                     function redirectToBeranda() {
@@ -313,16 +314,17 @@ if(isset($_GET['pinjam_id'])) {
                 success: function(response) {
                     // Jika berhasil, lakukan sesuatu (misalnya, tampilkan pesan sukses)
                     alert('Buku telah berhasil dikembalikan.');
+                    console.log(pinjam_id)
 
                     // Temukan tombol kembalikan buku yang sesuai
-                    var button = $('div[data-pinjam_id="' + pinjam_id + '"] button.btn-danger');
+                    var button = $('div data-pinjam_id=["' + pinjam_id + '"] button.btn-danger');
 
                     // Ubah warna atau gaya tombol menjadi tidak aktif
                     button.removeClass('btn-danger').addClass('btn-secondary').text('Telah Dikembalikan')
                         .prop('disabled', true);
 
                     // Kemudian, redirect ke halaman tampilkan tanggal pengembalian
-                    window.location.href = 'anggota.php?pinjam_id=' + pinjam_id;
+                    //window.location.href = 'anggota.php?pinjam_id=' + pinjam_id;
                 },
 
                 error: function(xhr, status, error) {

@@ -11,6 +11,9 @@ $result = mysqli_query($koneksi, $sql);
 if (!$result) {
     die("Error: " . mysqli_error($koneksi)); // Tambahkan penanganan kesalahan
 }
+$pinjamid = $_POST['pinjam_id'];
+$updateSql1 = "UPDATE peminjaman SET status_pinjam = 'dikembalikan', tgl_kembali = '$currentDate' WHERE peminjaman_id = $pinjamid";
+$updateResult1 = mysqli_query($koneksi, $updateSql1);
 
 // Perbarui status peminjaman yang sudah lewat tanggal kembali menjadi "dikembalikan"
 while ($row = mysqli_fetch_assoc($result)) {
@@ -45,8 +48,8 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 // Setelah semua proses selesai, hapus entri peminjaman yang sudah dikembalikan dari tampilan peminjaman
-$deleteSql = "DELETE FROM peminjaman WHERE status_pinjam = 'dikembalikan'";
-$deleteResult = mysqli_query($koneksi, $deleteSql);
+// $deleteSql = "DELETE FROM peminjaman WHERE status_pinjam = 'dikembalikan'";
+// $deleteResult = mysqli_query($koneksi, $deleteSql);
 
 if (!$deleteResult) {
     die("Error: " . mysqli_error($koneksi)); // Tambahkan penanganan kesalahan

@@ -55,7 +55,7 @@ if (isset($_FILES["pdf"]["tmp_name"]) && !empty($_FILES["pdf"]["tmp_name"])) {
 
         if ($koneksi->query($sql)) {
             // Update stok buku
-            $sql_update_stok = "UPDATE buku SET stok = stok + $stok WHERE judul = '$judul'";
+            $sql_update_stok = "UPDATE buku SET stok =  $stok WHERE judul = '$judul'";
             if ($koneksi->query($sql_update_stok)) {
                 echo "Data buku berhasil ditambahkan!";
                 header("Location:../admin/data_buku.php");

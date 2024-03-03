@@ -139,7 +139,7 @@ return strstr($email, '@', true); // Mengambil bagian sebelum '@'
                 $kategori_id = $row['kategori_id'];
                 $nama_kategori = $row['nama_kategori'];
                 // Link pointing to the page or action corresponding to the selected category
-                echo "<li><a class='dropdown-item' href='kategori.php?kategori_id=$kategori_id'>$nama_kategori</a></li>";
+                echo "<li><a class='dropdown-item' id='dropdown-item' href='kategori.php?kategori_id=$kategori_id'>$nama_kategori</a></li>";
             }
             // Reset the result pointer back to the first row
             mysqli_data_seek($result, 0);
@@ -454,7 +454,7 @@ $result = mysqli_query($koneksi, $sql);
     <script>
     $(document).ready(function() {
         // Tangani klik pada tautan kategori
-        $('.dropdown-item').click(function(e) {
+        $('#dropdown-item').click(function(e) {
             e.preventDefault(); // Mencegah tindakan default dari tautan
 
             // Ambil URL kategori dari tautan yang diklik
