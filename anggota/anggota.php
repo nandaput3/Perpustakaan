@@ -134,16 +134,16 @@ return strstr($email, '@', true); // Mengambil bagian sebelum '@'
                             <div class="dropdown">
                                 <ul class="dropdown-menu" aria-labelledby="kategoriDropdown">
                                     <?php
-            // Loop through each category
-            while ($row = mysqli_fetch_assoc($result)) {
-                $kategori_id = $row['kategori_id'];
-                $nama_kategori = $row['nama_kategori'];
-                // Link pointing to the page or action corresponding to the selected category
-                echo "<li><a class='dropdown-item' id='dropdown-item' href='kategori.php?kategori_id=$kategori_id'>$nama_kategori</a></li>";
-            }
-            // Reset the result pointer back to the first row
-            mysqli_data_seek($result, 0);
-            ?>
+                                // Loop through each category
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    $kategori_id = $row['kategori_id'];
+                                    $nama_kategori = $row['nama_kategori'];
+                                    // Link pointing to the page or action corresponding to the selected category
+                                    echo "<li><a class='dropdown-item' id='dropdown-item' href='kategori.php?kategori_id=$kategori_id'>$nama_kategori</a></li>";
+                                }
+                                // Reset the result pointer back to the first row
+                                mysqli_data_seek($result, 0);
+                                ?>
                                 </ul>
                             </div>
                         </li>
@@ -427,26 +427,7 @@ $result = mysqli_query($koneksi, $sql);
         </div>
     </div>
     <!-- Modal -->
-    <!-- Modal -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmModalLabel"> Yakin ingin meminjam buku ini?
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
-                    <button type="button" class="btn btn-primary" id="confirmPinjam">Ya</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Tambahkan script jQuery untuk menangani permintaan AJAX -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

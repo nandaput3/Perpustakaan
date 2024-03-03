@@ -1,9 +1,13 @@
 <?php
     include "koneksi.php";
     session_start();
+    // Query untuk mendapatkan data kategori buku
+$sql_kategori = "SELECT * FROM buku_kategori";
+$result = mysqli_query($koneksi, $sql_kategori);
     function getUsernameFromEmail($email) {
         return strstr($email, '@', true); // Mengambil bagian sebelum '@'
         }
+        
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -119,76 +123,140 @@
 <body id="page-top">
 
     <!-- Page Wrapper -->
-    <div id="wrapper">
 
-        <!-- Sidebar -->
 
-        <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
 
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
 
-            <!-- Main Content -->
-            <div id="content">
-
-                <!-- Topbar -->
-                <!-- Topbar -->
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <div class="row">
-                        <div class="col">
-                            <a class="btn btn-secondary btn-sm float-left mb-3" href="javascript:history.go(-1)">
-                                <i class="fas fa-arrow-left"></i>
-                            </a>
-                            <h4 class="float-left ml-3">Daftar Buku yang Dipinjam</h4>
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <div style="display: flex; align-items: center; justify-content: center;">
+                    <!-- Logo -->
+                    <img src="../smk1.png" alt="SMK1 Logo" style="height: 40px; margin-right: 10px;">
+                    <!-- Kotak Pencarian -->
+                    <form class="form-inline mr-auto navbar-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                                aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
                         </div>
+                    </form>
+                </div>
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+                    <!-- Dropdown untuk kategori buku -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="kategoriDropdown" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Kategori</span>
+                        </a>
+                        <div class="dropdown">
+                            <ul class="dropdown-menu" aria-labelledby="kategoriDropdown">
+                                <?php
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        $kategori_id = $row['kategori_id'];
+                                        $nama_kategori = $row['nama_kategori'];
+                                        echo "<li><a class='dropdown-item' id='dropdown-item' href='kategori.php?kategori_id=$kategori_id'>$nama_kategori</a></li>";
+                                    }
+                                    mysqli_data_seek($result, 0);
+                                    ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <div class="topbar-divider d-none d-sm-block"></div>
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                <?php echo getUsernameFromEmail($_SESSION["email"]); ?>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                            aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="anggota.php">
+                                <i class="fas fa-home fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Home
+                            </a>
+                            <a class="dropdown-item" href="data_koleksi.php">
+                                <i class="fas fa-heart fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Koleksi
+                            </a>
+                            <a class="dropdown-item" href="data_peminjaman_buku.php">
+                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Peminjaman
+                            </a>
+                            <a class="dropdown-item" href="../logout.php" data-toggle="modal"
+                                data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <!-- Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col">
+                        <a class="btn btn-secondary btn-sm float-left mb-3" href="javascript:history.go(-1)">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <h4 class="float-left ml-3">Daftar Buku yang Dipinjam</h4>
                     </div>
+                </div>
 
 
 
 
 
 
-                    <?php
-include 'koneksi.php';
+                <?php
+                        include 'koneksi.php';
 
-if(isset($_GET['pinjam_id'])) {
-    $pinjam_id = $_GET['pinjam_id'];
+                        if(isset($_GET['pinjam_id'])) {
+                            $pinjam_id = $_GET['pinjam_id'];
 
-    $sql_pinjam = "SELECT peminjaman.*, buku.* 
-    FROM peminjaman 
-    INNER JOIN buku ON peminjaman.buku_id = buku.buku_id 
-    WHERE peminjaman_id = $pinjam_id  AND peminjaman.user_id = {$_SESSION['user_id']}"  ;
+                            $sql_pinjam = "SELECT peminjaman.*, buku.* 
+                            FROM peminjaman 
+                            INNER JOIN buku ON peminjaman.buku_id = buku.buku_id 
+                            WHERE peminjaman_id = $pinjam_id  AND peminjaman.user_id = {$_SESSION['user_id']}"  ;
 
-    $result_pinjam = mysqli_query($koneksi, $sql_pinjam);
+                            $result_pinjam = mysqli_query($koneksi, $sql_pinjam);
 
-    if(mysqli_num_rows($result_pinjam) == 0) {
-        echo "Data tidak ditemukan.";
-    } else {
-        $row_pinjam = mysqli_fetch_assoc($result_pinjam);
+                            if(mysqli_num_rows($result_pinjam) == 0) {
+                                echo "Data tidak ditemukan.";
+                            } else {
+                                $row_pinjam = mysqli_fetch_assoc($result_pinjam);
 
-        echo "<p>Tanggal Peminjaman: " . $row_pinjam['tgl_pinjam'] . "</p>";
-        echo "<p>Tanggal Pengembalian: " . $row_pinjam['tgl_kembali'] . "</p>";
+                                echo "<p>Tanggal Peminjaman: " . $row_pinjam['tgl_pinjam'] . "</p>";
+                                echo "<p>Tanggal Pengembalian: " . $row_pinjam['tgl_kembali'] . "</p>";
 
-        if($row_pinjam['status_pinjam'] == 'dipinjam') {
-            echo "<a href='proses_pengembalian.php?pinjam_id=$pinjam_id' class='btn btn-success'>Kembalikan Buku</a>";
-        } else {
-            echo "<p>Buku telah dikembalikan pada tanggal: " . $row_pinjam['tanggal_pengembalian'] . "</p>";
-        }
-    }
-}
+                                if($row_pinjam['status_pinjam'] == 'dipinjam') {
+                                    echo "<a href='proses_pengembalian.php?pinjam_id=$pinjam_id' class='btn btn-success'>Kembalikan Buku</a>";
+                                } else {
+                                    echo "<p>Buku telah dikembalikan pada tanggal: " . $row_pinjam['tanggal_pengembalian'] . "</p>";
+                                }
+                            }
+                        }
 
-?>
-
-
-
-                    <div class="book-container-wrapper">
-                        <?php
-    $result_pinjam = []; // Initialize $result_pinjam as an empty array
-
+                        ?>
+                <?php
     // Fetch data only if $_GET['pinjam_id'] is set
     $sql_pinjam = "SELECT peminjaman.*, buku.* 
     FROM peminjaman 
@@ -196,74 +264,65 @@ if(isset($_GET['pinjam_id'])) {
     INNER JOIN buku_kategori ON buku.kategori_id = buku_kategori.kategori_id 
     WHERE peminjaman.status_pinjam = 'dipinjam' AND peminjaman.user_id = {$_SESSION['user_id']}"; // Hanya menampilkan buku yang masih dipinjam
 
+    $result_pinjam = mysqli_query($koneksi, $sql_pinjam);
 
-        $result_pinjam = mysqli_query($koneksi, $sql_pinjam);
+    // Check if there are borrowed books
+    if(mysqli_num_rows($result_pinjam) > 0) {
+?>
 
-    
-    ?>
-
+                <div class="row">
+                    <div class="book-container-wrapper">
                         <?php 
-                           
-                            while($data_pinjam = mysqli_fetch_assoc($result_pinjam)){
-                            
-                            ?>
+            while($data_pinjam = mysqli_fetch_assoc($result_pinjam)) {
+        ?>
                         <div class="book-container">
-                            <div class="book-cover" style="background-image: url('<?= $data_pinjam['cover']?>')">
-                            </div>
+                            <div class="book-cover" style="background-image: url('<?= $data_pinjam['cover']?>')"></div>
                             <div class="book-title"><?= $data_pinjam['judul']?></div>
                             <div class="book-details">
                                 <p>Tanggal Pinjam: <?= $data_pinjam['tgl_pinjam']?></p>
                                 <p>Tanggal Kembali: <?= $data_pinjam['tgl_kembali']?></p>
-
-
                                 <?php 
-                // Check if the book is already borrowed or not
-                $buku_id = $data_pinjam['buku_id'];
-                $peminjaman_id = $data_pinjam['peminjaman_id'];
-                $query_pinjam = "SELECT * FROM peminjaman WHERE buku_id = $buku_id AND status_pinjam = 'dipinjam'";
-                $result_borrowed = mysqli_query($koneksi, $query_pinjam);
-                
-                if(mysqli_num_rows($result_borrowed) > 0):
-                    echo "<p>Status: Sedang Dipinjam</p>";
-                    echo "<button onclick='kembalikanBuku($peminjaman_id); redirectToBeranda();' class='btn btn-danger'>Kembalikan</button>";
-
-                    echo "<script>
-                    function redirectToBeranda() {
-                        window.location.href = 'anggota.php'; 
-                    }
-                    </script>";
-                    echo "<a href='pdf.php?buku_id=$buku_id' class='btn btn-primary'>Baca</a>";
-
-                else:
-                    echo "<a href='data_peminjaman_buku.php?buku_id=$buku_id' class='btn btn-primary'>Pinjam</a>";
-
-                endif;
+                    // Check if the book is already borrowed or not
+                    $buku_id = $data_pinjam['buku_id'];
+                    $peminjaman_id = $data_pinjam['peminjaman_id'];
+                    $query_pinjam = "SELECT * FROM peminjaman WHERE buku_id = $buku_id AND status_pinjam = 'dipinjam'";
+                    $result_borrowed = mysqli_query($koneksi, $query_pinjam);
+                    
+                    if(mysqli_num_rows($result_borrowed) > 0):
+                        echo "<p>Status: Sedang Dipinjam</p>";
+                        echo "<button onclick='kembalikanBuku($peminjaman_id); redirectToBeranda();' class='btn btn-danger'>Kembalikan</button>";
+                        echo "<script>
+                                function redirectToBeranda() {
+                                    window.location.href = 'anggota.php'; 
+                                }
+                              </script>";
+                        echo "<a href='pdf.php?buku_id=$buku_id' class='btn btn-primary'>Baca</a>";
+                    else:
+                        echo "<a href='data_peminjaman_buku.php?buku_id=$buku_id' class='btn btn-primary'>Pinjam</a>";
+                    endif;
                 ?>
                             </div>
                         </div>
                         <?php } ?>
                     </div>
-
-                    <!-- Content Row -->
-
-
-
-                    <!-- Content Row -->
-
-
                 </div>
-                <!-- /.container-fluid -->
+
+                <?php
+    } else {
+        // Jika tidak ada buku yang dipinjam, maka tampilkan pesan
+        echo "<div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                <strong>Belum ada buku yang dipinjam!</strong>
+                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                    <span aria-hidden='true'>&times;</span>
+                </button>
+            </div>";
+    }
+?>
 
             </div>
-            <!-- End of Main Content -->
 
-            <!-- Footer -->
-
-            <!-- End of Footer -->
 
         </div>
-        <!-- End of Content Wrapper -->
-
     </div>
     <!-- End of Page Wrapper -->
 
@@ -320,7 +379,8 @@ if(isset($_GET['pinjam_id'])) {
                     var button = $('div data-pinjam_id=["' + pinjam_id + '"] button.btn-danger');
 
                     // Ubah warna atau gaya tombol menjadi tidak aktif
-                    button.removeClass('btn-danger').addClass('btn-secondary').text('Telah Dikembalikan')
+                    button.removeClass('btn-danger').addClass('btn-secondary').text(
+                            'Telah Dikembalikan')
                         .prop('disabled', true);
 
                     // Kemudian, redirect ke halaman tampilkan tanggal pengembalian

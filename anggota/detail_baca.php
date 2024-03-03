@@ -219,9 +219,10 @@ if ($buku_id > 0) {
             <p><strong></strong> <?= isset($data['sinopsis']) ? htmlspecialchars($data['sinopsis']) : '' ?></p>
             <div class="button-container">
                 <?php if ($data['stok'] === 'dipinjam') : ?>
-                <button class="button-pinjam" disabled style="background-color: gray; pointer-events: none;">Sudah
-                    Dipinjam</button>
+                <!-- Show notification if book is already borrowed -->
+                <div style="color: red;">Buku sudah dipinjam</div>
                 <?php else : ?>
+                <!-- Show button to borrow book if available -->
                 <div class="icon">
                     <form id="pinjamForm" method="post" action="proses_pinjam_buku.php">
                         <input type="hidden" name="buku_id" value="<?= $buku_id ?>">

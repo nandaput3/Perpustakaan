@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard Admin</title>
+    <title>Laporan</title>
 
     <!-- Custom fonts for this template-->
     <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -33,9 +33,9 @@
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                    <i class="fas fa-book"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                <div class="sidebar-brand-text mx-3">MACA <sup></sup></div>
             </a>
 
             <!-- Divider -->
@@ -44,8 +44,7 @@
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
                 <a class="nav-link" href="index.html">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard Admin</span></a>
+                    <span>Dashboard Petugas</span></a>
             </li>
 
             <!-- Divider -->
@@ -59,25 +58,13 @@
                 <a class="nav-link" href="data_buku.php"> <i class="fas fa-fw fa-book"></i> <span>Data
                         Buku</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="data_user.php">
-                    <i class="fas fa-fw fa-users"></i> <span>Data Pengguna</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="data_peminjaman.php">
-                    <i class="fas fa-fw fa-file"></i> <span>Data Peminjam </span></a>
-            </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="laporan.php">
                     <i class="fas fa-fw fa-download"></i>
                     <span>Laporan </span></a>
             </li>
-            <hr class="sidebar-divider d-none d-md-block">
-            <li class="nav-item">
-                <a class="nav-link" href="create_regis.php">
-                    <i class="fas fa-fw fa-user"></i>
-                    <span>Regis Anggota </span></a>
-            </li>
+
             <hr class="sidebar-divider d-none d-md-block">
             <li class="nav-item">
                 <a class="nav-link" href="../logout.php">

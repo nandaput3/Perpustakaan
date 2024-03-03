@@ -237,11 +237,12 @@
             <nav>
                 <div class="logo">
                     <img src="smk1.png" alt="Library Logo">
-                    <h1>Reading Me</h1>
+                    <h1>MACA</h1>
                 </div>
                 <ul class="navbar">
                     <li><a href="#home">Home</a></li>
-                    <li><a href="#buku">Buku Terpopuler</a></li>
+                    <li><a href="login.php">Login</a></li>
+
                     <li><a href="registrasi.php" class="active">Signup</a></li>
                 </ul>
             </nav>

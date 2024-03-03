@@ -38,6 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error: " . mysqli_error($koneksi);
     }
 
+
     mysqli_stmt_close($stmt);
     mysqli_close($koneksi);
 }

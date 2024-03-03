@@ -23,7 +23,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard</title>
+    <title>Data Buku</title>
 
     <!-- Custom fonts for this template-->
     <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -53,7 +53,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-fw fa-book"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">READING <sup>ME</sup></div>
+                <div class="sidebar-brand-text mx-3">MACA<sup></sup></div>
             </a>
 
             <!-- Divider -->
@@ -83,7 +83,7 @@
                         Buku</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="data_buku.php"> <i class="fas fa-fw fa-download"></i> <span>Laporan</span></a>
+                <a class="nav-link" href="laporan.php"> <i class="fas fa-fw fa-download"></i> <span>Laporan</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
@@ -223,6 +223,8 @@
                                 margin-top: 20px;
                             }
 
+
+
                             th,
                             td {
                                 padding: 10px;
@@ -287,6 +289,15 @@
                             .add-button {
                                 margin-top: 20px;
                             }
+
+                            /* Tambahkan CSS berikut ke dalam tag <style> atau file CSS Anda */
+
+
+                            .aksi div {
+                                display: flex;
+                                gap: 5px;
+                                /* Tambahkan jarak antara tombol */
+                            }
                             </style>
                         </head>
 
@@ -317,11 +328,8 @@
                                                 <td><img src="../asset/<?= $data['cover'] ?>" alt="Cover Buku"
                                                         style="max-width:100px; max-height:100px;"></td>
                                                 <td><?= $data['judul'] ?></td>
-                                                <td>
-                                                    <!-- Menampilkan PDF menggunakan tag <embed> -->
-                                                    <embed src="../pdf/<?= $data['pdf_path'] ?>" type="application/pdf"
-                                                        width="200" height="200">
-                                                </td>
+                                                <td><?= basename($data['pdf_path']) ?></td>
+
                                                 <td><?= $data['penulis'] ?></td>
                                                 <td><?= $data['penerbit'] ?></td>
                                                 <td><?= $data['nama_kategori'] ?></td>

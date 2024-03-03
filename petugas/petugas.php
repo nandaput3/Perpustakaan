@@ -46,7 +46,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-book"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">reading <sup>me</sup></div>
+                <div class="sidebar-brand-text mx-3">MACA <sup></sup></div>
             </a>
 
             <!-- Divider -->
