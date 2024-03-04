@@ -11,10 +11,10 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : "";
 
 function getJumlahPeminjam($bulan)
 {
-    global $conn;
+    global $koneksi;
     // Query SQL dengan filter berdasarkan bulan
-    $query = "SELECT COUNT(*) AS jumlah_peminjam FROM peminjaman WHERE DATE_FORMAT(tanggal_pinjam, '%Y-%m') = '$bulan'";
-    $result = $conn->query($query) or die($conn->error); // Use $conn instead of $koneksi
+    $query = "SELECT COUNT(*) AS jumlah_peminjam FROM peminjaman WHERE DATE_FORMAT(tgl_pinjam, '%Y-%m') = '$bulan'";
+    $result = $koneksi->query($query) or die($koneksi->error); // Use $conn instead of $koneksi
     $row = $result->fetch_assoc();
     return $row['jumlah_peminjam'];
 }
@@ -320,15 +320,20 @@ $bulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('Y-m');
 
                     <!-- Page Heading -->
 
-
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                        <a href="generate_laporan.php"
+                            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                    </div>
                     <!-- Content Row -->
                     <div class="row">
                         <div class="container-fluid">
-                            <div class="input-group mb-3">
+                            <form class="input-group mb-3" method="GET" action="generate_laporan.php">
                                 <div class="input-group-prepend">
                                     <label class="input-group-text" for="bulan">Bulan</label>
                                 </div>
-                                <select class="custom-select" id="bulan" name="bulan" onchange="filterBulan()">
+                                <select class="custom-select" id="bulan" name="bulan">
                                     <?php
                             $selected = '';
                             for ($i = 1; $i <= 12; $i++) {
@@ -342,26 +347,13 @@ $bulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('Y-m');
                             }
                             ?>
                                 </select>
-                            </div>
+                                <!-- Tombol Generate Report -->
+
+                            </form>
+
                             <!-- Page Heading -->
                             <!-- Tabel laporan peminjam -->
-                            <div class="container mt-4">
-                                <h2 class="text-center">Laporan Peminjam</h2>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Bulan</th>
-                                            <th>Jumlah Peminjam</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><?php echo date('F Y', strtotime($bulan)); ?></td>
-                                            <td><?php echo getJumlahPeminjam($bulan); ?></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+
                         </div>
 
 
