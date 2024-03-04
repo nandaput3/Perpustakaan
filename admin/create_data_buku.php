@@ -283,7 +283,7 @@
 
                                         <label for="kategori_id">Kategori:</label>
                                         <select name="kategori_id" required>
-                                            <option value="1">Fiksi</option>
+                                            <option value="1">Komedi</option>
                                             <option value="2">Sastra</option>
                                             <option value="3">Romance</option>
                                             <option value="4">Horor</option>

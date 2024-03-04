@@ -30,8 +30,40 @@
 
 </head>
 <style>
+.pagination button {
+    background-color: #4CAF50;
+    /* Warna latar belakang */
+    border: none;
+    /* Tanpa border */
+    color: white;
+    /* Warna teks */
+    padding: 8px 16px;
+    /* Padding tombol */
+    text-align: center;
+    /* Posisi teks di tengah tombol */
+    text-decoration: none;
+    /* Tanpa dekorasi teks */
+    display: inline-block;
+    /* Menjadikan tombol sebagai blok inline */
+    margin: 4px 2px;
+    /* Margin antara tombol */
+    cursor: pointer;
+    /* Ubah kursor saat mengarah ke tombol */
+    border-radius: 4px;
+    /* Bulatan sudut tombol */
+}
 
+.pagination button:hover {
+    background-color: #45a049;
+    /* Warna latar belakang saat tombol dihover */
+}
+
+.pagination button.active {
+    background-color: #007bff;
+    /* Warna latar belakang untuk halaman aktif */
+}
 </style>
+
 
 
 <body id="page-top">
@@ -253,7 +285,7 @@
                 // Tambahkan tombol "Tarik" dengan link ke file PHP yang menangani operasi tarik buku
                 echo "<form action='tarik_buku.php' method='post'>";
                 echo "<input type='hidden' name='peminjaman_id' value='" . $row['peminjaman_id'] . "'>";
-                echo "<button type='submit' class='btn-tarik'>Tarik</button>";
+                echo "<button type='submit' class='btn-tarik'>Kembalikan</button>";
                 echo "</form>";
                 echo "</td>";
                 echo "</tr>";
@@ -343,7 +375,34 @@
             </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    <script>
+    $(document).ready(function() {
+        $('form').submit(function(e) {
+            e.preventDefault(); // Menghentikan pengiriman formulir default
+
+            // Kirim data formulir menggunakan AJAX
+            $.ajax({
+                type: 'POST',
+                url: 'tarik_buku.php', // Ganti dengan URL ke file pemrosesan Anda
+                data: $(this).serialize(),
+                success: function(response) {
+                    // Tampilkan notifikasi menggunakan alert atau elemen HTML lainnya
+                    alert(response); // Tampilkan notifikasi sebagai alert
+
+                    // Atau Anda juga bisa menampilkan notifikasi di elemen HTML tertentu
+                    // Misalnya, jika Anda memiliki elemen dengan id "notification":
+                    // $('#notification').html(response); // Menampilkan notifikasi di elemen dengan id "notification"
+                },
+                error: function(xhr, status, error) {
+                    // Tangani kesalahan jika ada
+                    console.error(error); // Tampilkan pesan kesalahan dalam konsol browser
+                }
+            });
+        });
+    });
+    </script>
     <!-- Bootstrap core JavaScript-->
     <script src="assets/vendor/jquery/jquery.min.js"></script>
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -360,6 +419,91 @@
     <!-- Page level custom scripts -->
     <script src="assets/vendor/js/demo/chart-area-demo.js"></script>
     <script src="assets/vendor/js/demo/chart-pie-demo.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const tables = document.querySelectorAll("table"); // Pilih semua tabel
+
+        tables.forEach(function(table) {
+            const rows = table.querySelectorAll("tbody tr"); // Pilih semua baris dalam tabel
+            const rowsPerPage = 10; // Tentukan jumlah baris per halaman
+            const numPages = Math.ceil(rows.length / rowsPerPage); // Hitung jumlah halaman
+
+            let currentPage = 1; // Halaman saat ini
+
+            // Fungsi untuk menampilkan baris sesuai dengan halaman yang dipilih
+            function showPage(page) {
+                // Sembunyikan semua baris
+                rows.forEach(function(row) {
+                    row.style.display = "none";
+                });
+
+                // Tampilkan baris yang sesuai dengan halaman yang dipilih
+                const startIndex = (page - 1) * rowsPerPage;
+                const endIndex = startIndex + rowsPerPage;
+                for (let i = startIndex; i < endIndex && i < rows.length; i++) {
+                    rows[i].style.display = "table-row";
+                }
+            }
+
+            // Inisialisasi tampilan untuk halaman pertama
+            showPage(currentPage);
+
+            // Fungsi untuk menampilkan navigasi current slide
+            function renderPagination() {
+                const paginationContainer = document.createElement("div");
+                paginationContainer.classList.add("pagination");
+
+                // Tambahkan tombol prev
+                const prevButton = document.createElement("button");
+                prevButton.textContent = "Prev";
+                prevButton.addEventListener("click", function() {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        showPage(currentPage);
+                        renderPagination();
+                    }
+                });
+                paginationContainer.appendChild(prevButton);
+
+                // Tambahkan nomor halaman
+                for (let i = 1; i <= numPages; i++) {
+                    const pageButton = document.createElement("button");
+                    pageButton.textContent = i;
+                    pageButton.addEventListener("click", function() {
+                        currentPage = i;
+                        showPage(currentPage);
+                        renderPagination();
+                    });
+                    paginationContainer.appendChild(pageButton);
+                    if (i !== currentPage) {
+                        pageButton.style.display = "none"; // Sembunyikan nomor halaman yang tidak aktif
+                    }
+                }
+
+                // Tambahkan tombol next
+                const nextButton = document.createElement("button");
+                nextButton.textContent = "Next";
+                nextButton.addEventListener("click", function() {
+                    if (currentPage < numPages) {
+                        currentPage++;
+                        showPage(currentPage);
+                        renderPagination();
+                    }
+                });
+                paginationContainer.appendChild(nextButton);
+
+                // Sisipkan navigasi ke dalam dokumen
+                const parent = table.parentNode;
+                parent.insertBefore(paginationContainer, table.nextSibling);
+                paginationContainer.style.textAlign = "center"; // Posisikan di tengah tabel
+                paginationContainer.style.marginTop = "10px"; // Beri margin atas
+            }
+
+            // Render navigasi current slide
+            renderPagination();
+        });
+    });
+    </script>
 
 </body>
 

@@ -45,6 +45,8 @@ return strstr($email, '@', true); // Mengambil bagian sebelum '@'
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-abc123==" crossorigin="anonymous" />
 
     <!-- Custom styles for this template-->
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
@@ -172,6 +174,12 @@ return strstr($email, '@', true); // Mengambil bagian sebelum '@'
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Peminjaman
                                 </a>
+                                <a class="dropdown-item" href="riwayat_peminjaman.php">
+                                    <i class="fas fa-clock fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Riwayat Buku
+                                </a>
+
+
 
                                 <a class="dropdown-item" href="../logout.php" data-toggle="modal"
                                     data-target="#logoutModal">
@@ -312,7 +320,7 @@ include 'koneksi.php';
 $sql = "SELECT buku.*, buku_kategori.nama_kategori 
         FROM buku 
         INNER JOIN buku_kategori ON buku.kategori_id = buku_kategori.kategori_id
-        WHERE buku.buku_id NOT IN (SELECT buku_id FROM koleksi_pribadi WHERE user_id = ".$_SESSION["user_id"].")";
+        ";
 $result = mysqli_query($koneksi, $sql);
 ?>
 
@@ -335,6 +343,10 @@ $result = mysqli_query($koneksi, $sql);
 
                                     </div>
 
+                                    <?php 
+                                        $queryselectedbookmark = mysqli_query($koneksi,"SELECT * FROM koleksi_pribadi WHERE buku_id ='{$data['buku_id']}'");
+                                        if(mysqli_num_rows($queryselectedbookmark) === 0):
+                                    ?>
                                     <div class="action-buttons">
                                         <a href="#" class="btn btn-info btn-bookmark"
                                             data-buku-id="<?= $data['buku_id'] ?>"
@@ -344,6 +356,7 @@ $result = mysqli_query($koneksi, $sql);
                                         </a>
 
                                     </div>
+                                    <?php endif ?>
                                 </div>
                                 <?php endwhile; ?>
                             </div>

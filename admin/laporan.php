@@ -1,3 +1,28 @@
+<?php
+session_start();
+include 'koneksi.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location:../login.php");
+}
+
+// Assuming $role is set in your session or obtained from the database
+$role = isset($_SESSION['role']) ? $_SESSION['role'] : "";
+
+function getJumlahPeminjam($bulan)
+{
+    global $conn;
+    // Query SQL dengan filter berdasarkan bulan
+    $query = "SELECT COUNT(*) AS jumlah_peminjam FROM peminjaman WHERE DATE_FORMAT(tanggal_pinjam, '%Y-%m') = '$bulan'";
+    $result = $conn->query($query) or die($conn->error); // Use $conn instead of $koneksi
+    $row = $result->fetch_assoc();
+    return $row['jumlah_peminjam'];
+}
+
+// Mengambil bulan dari parameter GET
+$bulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('Y-m');
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,8 +44,151 @@
 
     <!-- Custom styles for this template-->
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+    .bg-gradient-primary {
+        background-color: #164863;
+        background-image: linear-gradient(180deg, #164863 10%, #164863 100%);
+        background-size: cover;
+    }
 
+    .sidebar {
+        background-color: #164863;
+    }
+
+    .btn-primary1:hover {
+        background-color: #427D9D;
+        border-color: #427D9D;
+        color: #000000;
+    }
+
+    .btn-primary1 {
+        background-color: #164863;
+        border-color: #164863;
+        transition: background-color 0.3s ease;
+        color: #ffffff;
+    }
+
+    .btn-primary:hover {
+        background-color: #427D9D;
+        border-color: #427D9D;
+    }
+
+    .btn-primary {
+        background-color: #164863;
+        border-color: #164863;
+        transition: background-color 0.3s ease;
+        color: #ffffff;
+    }
+
+    .btn-primary2:hover {
+        background-color: #0174BE;
+        border-color: #0174BE;
+        color: #ffffff;
+    }
+
+    .btn-primary2 {
+        background-color: #3559E0;
+        border-color: #3559E0;
+        transition: background-color 0.3s ease;
+        color: #ffffff;
+        font-size: 14px;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-link i {
+        margin-right: 10px;
+    }
+
+
+    /* css tambahan */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+    }
+
+    h2 {
+        color: #164863;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 80%;
+        margin: 10px auto;
+        background-color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    th,
+    td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #164863;
+        color: #fff;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+
+    .container {
+        text-align: center;
+    }
+
+    .dropdown-menu a.dropdown-item {
+        color: #164863;
+
+    }
+
+    .dropdown-menu a.dropdown-item:hover {
+        background-color: #427D9D;
+        color: #ffffff;
+    }
+
+    .table {
+        width: 80%;
+        margin-bottom: 1rem;
+        color: #212529;
+        border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .table thead th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table tbody+tbody {
+        border-top: 2px solid #dee2e6;
+    }
+
+    .detail-link {
+        color: #007bff;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .detail-link:hover {
+        color: #0056b3;
+    }
+    </style>
 </head>
+
 
 <body id="page-top">
 
@@ -31,29 +199,44 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="anggota.php">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-book"></i>
+                    <i class="fas fa-fw fa-book"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">MACA <sup></sup></div>
+                <div class="sidebar-brand-text mx-3">MACA <sup>
+                    </sup>
+                </div>
             </a>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">
+            <li class="nav-item active">
+                <a class="nav-link" href="admin.php">
                     <span>Dashboard Admin</span></a>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
 
+
+
+
+
+
+
+
+
             <!-- Heading -->
 
 
-            <!-- Nav Item - Pages Collapse Menu -->
+
+
+
+
+
+            <!-- Nav Item - Tables -->
             <li class="nav-item">
                 <a class="nav-link" href="data_buku.php"> <i class="fas fa-fw fa-book"></i> <span>Data
                         Buku</span></a>
@@ -85,6 +268,13 @@
             </li>
 
 
+            <!-- Divider -->
+
+            <!-- Sidebar Toggler (Sidebar) -->
+
+
+
+
         </ul>
         <!-- End of Sidebar -->
 
@@ -103,20 +293,7 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
 
-                    <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
@@ -126,168 +303,12 @@
                                 <i class="fas fa-search fa-fw"></i>
                             </a>
                             <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+
                         </li>
 
                         <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-                                <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
-                            </a>
-                            <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">
-                                    Alerts Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                            </div>
-                        </li>
 
-                        <!-- Nav Item - Messages -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter">7</span>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header">
-                                    Message Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_1.svg" alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                                            problem I've been having.</div>
-                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_2.svg" alt="...">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">I have the photos that you ordered last month, how
-                                            would you like them sent to you?</div>
-                                        <div class="small text-gray-500">Jae Chun · 1d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_3.svg" alt="...">
-                                        <div class="status-indicator bg-warning"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Last month's report looks great, I am very happy with
-                                            the progress so far, keep up the good work!</div>
-                                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                            alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                                            told me that people say this to all dogs, even if they aren't good...</div>
-                                        <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                            </div>
-                        </li>
 
-                        <div class="topbar-divider d-none d-sm-block"></div>
-
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
 
                     </ul>
 
@@ -298,67 +319,80 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Charts</h1>
-                    <p class="mb-4">Chart.js is a third party plugin that is used to generate the charts in this theme.
-                        The charts below have been customized - for further customization options, please visit the <a
-                            target="_blank" href="https://www.chartjs.org/docs/latest/">official Chart.js
-                            documentation</a>.</p>
+
+
+                    <!-- Content Row -->
+                    <div class="row">
+                        <div class="container-fluid">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="bulan">Bulan</label>
+                                </div>
+                                <select class="custom-select" id="bulan" name="bulan" onchange="filterBulan()">
+                                    <?php
+                            $selected = '';
+                            for ($i = 1; $i <= 12; $i++) {
+                                $value = date('Y-m', mktime(0, 0, 0, $i, 1));
+                                if ($value == $bulan) {
+                                    $selected = 'selected';
+                                } else {
+                                    $selected = '';
+                                }
+                                echo "<option value='$value' $selected>" . date('F Y', mktime(0, 0, 0, $i, 1)) . "</option>";
+                            }
+                            ?>
+                                </select>
+                            </div>
+                            <!-- Page Heading -->
+                            <!-- Tabel laporan peminjam -->
+                            <div class="container mt-4">
+                                <h2 class="text-center">Laporan Peminjam</h2>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Bulan</th>
+                                            <th>Jumlah Peminjam</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><?php echo date('F Y', strtotime($bulan)); ?></td>
+                                            <td><?php echo getJumlahPeminjam($bulan); ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <!-- Content Row -->
+
+                    <div class="row">
+
+                        <!-- Area Chart -->
+
+
+                        <!-- Pie Chart -->
+
+                    </div>
 
                     <!-- Content Row -->
                     <div class="row">
 
-                        <div class="col-xl-8 col-lg-7">
+                        <!-- Content Column -->
+                        <div class="col-lg-6 mb-4">
 
-                            <!-- Area Chart -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Area Chart</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="myAreaChart"></canvas>
-                                    </div>
-                                    <hr>
-                                    Styling for the area chart can be found in the
-                                    <code>/js/demo/chart-area-demo.js</code> file.
-                                </div>
-                            </div>
+                            <!-- Project Card Example -->
 
-                            <!-- Bar Chart -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="chart-bar">
-                                        <canvas id="myBarChart"></canvas>
-                                    </div>
-                                    <hr>
-                                    Styling for the bar chart can be found in the
-                                    <code>/js/demo/chart-bar-demo.js</code> file.
-                                </div>
-                            </div>
+
+                            <!-- Color System -->
+
 
                         </div>
 
-                        <!-- Donut Chart -->
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-pie pt-4">
-                                        <canvas id="myPieChart"></canvas>
-                                    </div>
-                                    <hr>
-                                    Styling for the donut chart can be found in the
-                                    <code>/js/demo/chart-pie-demo.js</code> file.
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
 
                 </div>
@@ -371,7 +405,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
+                        <span>Copyright &copy; Your Website 2024</span>
                     </div>
                 </div>
             </footer>
@@ -407,24 +441,28 @@
             </div>
         </div>
     </div>
-
+    <script>
+    function filterBulan() {
+        var bulan = document.getElementById("bulan").value;
+        window.location.href = "index_laporan.php?bulan=" + bulan;
+    }
+    </script>
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/assets/jquery/jquery.min.js"></script>
-    <script src="vendor/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/assets/jquery-easing/jquery.easing.min.js"></script>
+    <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="vendor/assets/js/sb-admin-2.min.js"></script>
+    <script src="assets/vendor/js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/assets/chart.js/Chart.min.js"></script>
+    <script src="assets/vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="vendor/assets/js/demo/chart-area-demo.js"></script>
-    <script src="vendor/assets/js/demo/chart-pie-demo.js"></script>
-    <script src="vendor/assets/js/demo/chart-bar-demo.js"></script>
+    <script src="assets/vendor/js/demo/chart-area-demo.js"></script>
+    <script src="assets/vendor/js/demo/chart-pie-demo.js"></script>
 
 </body>
 
