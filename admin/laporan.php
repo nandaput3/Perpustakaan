@@ -320,12 +320,7 @@ $bulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('Y-m');
 
                     <!-- Page Heading -->
 
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="generate_laporan.php"
-                            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-                    </div>
+
                     <!-- Content Row -->
                     <div class="row">
                         <div class="container-fluid">
@@ -348,7 +343,9 @@ $bulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('Y-m');
                             ?>
                                 </select>
                                 <!-- Tombol Generate Report -->
-
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit">Generate Report</button>
+                                </div>
                             </form>
 
                             <!-- Page Heading -->

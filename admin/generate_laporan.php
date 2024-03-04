@@ -53,7 +53,7 @@ if (mysqli_num_rows($result) > 0) {
         $sheet->setCellValue('C' . $row, $row_data['username']);
         $sheet->setCellValue('D' . $row, $row_data['tgl_pinjam']);
         $sheet->setCellValue('E' . $row, $row_data['tgl_kembali']);
-        $sheet->setCellValue('F' . $row, $row_data['status_peminjam']);
+        $sheet->setCellValue('F' . $row, $row_data['status_pinjam']);
         $row++;
     }
 } else {
