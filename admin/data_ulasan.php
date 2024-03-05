@@ -27,11 +27,59 @@
 
     <!-- Custom styles for this template-->
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
 
+    th,
+    td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    th {
+        background-color: grey;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #fff;
+    }
+
+    tr:hover {
+        background-color: #ddd;
+    }
+
+    /* Style for delete button */
+    .hapus-btn {
+        background-color: #dc3545;
+        /* Warna latar merah */
+        color: white;
+        /* Warna teks putih */
+        border: none;
+        /* Tanpa border */
+        padding: 8px 16px;
+        /* Padding untuk memperbesar tombol */
+        cursor: pointer;
+        /* Pointer saat dihover */
+        border-radius: 4px;
+        /* Border radius untuk sudut tombol */
+        transition: background-color 0.3s;
+        /* Transisi efek hover */
+    }
+
+    /* Style for delete button on hover */
+    .hapus-btn:hover {
+        background-color: #c82333;
+        /* Warna latar merah yang lebih gelap saat dihover */
+    }
+    </style>
 </head>
-<style>
 
-</style>
 
 
 <body id="page-top">
@@ -154,88 +202,51 @@
 
 
                     <!-- Content Row -->
+
                     <div class="row">
+                        <h1>Data Ulasan</h1>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Judul Buku</th>
+                                    <th>Ulasan</th>
+                                    <th>Rating</th>
+                                    <th>Tanggal Ulasan</th>
+                                    <th>Aksi</th> <!-- Tambahkan kolom untuk tombol hapus -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    include "koneksi.php";
 
-                        <!DOCTYPE html>
-                        <html lang="en">
-
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <title>Data Ulasan</title>
-
-                            <style>
-                            table {
-                                width: 100%;
-                                border-collapse: collapse;
-                                margin-top: 20px;
-                            }
-
-                            th,
-                            td {
-                                padding: 10px;
-                                border: 1px solid #ddd;
-                                text-align: center;
-                            }
-
-                            th {
-                                background-color: grey;
-                                color: white;
-                            }
-
-                            tr:nth-child(even) {
-                                background-color: #fff;
-                            }
-
-                            tr:hover {
-                                background-color: #ddd;
-                            }
-                            </style>
-                        </head>
-
-                        <body>
-                            <h1>Data Ulasan</h1>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Username</th>
-
-                                        <th>Judul Buku</th>
-                                        <th>Ulasan</th>
-                                        <th>Rating</th>
-                                        <th>Tanggal Ulasan</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-            include "koneksi.php";
-
-            // Query untuk mengambil data ulasan buku dari database dengan judul buku
-            $sql = "SELECT buku.judul AS judul_buku, buku_ulasan.ulasan, buku_ulasan.rating, buku_ulasan.created_at, user.username
-        FROM buku_ulasan
-        INNER JOIN buku ON buku_ulasan.buku_id = buku.buku_id
-        INNER JOIN user ON buku_ulasan.user_id = user.user_id";
+                                    // Query untuk mengambil data ulasan buku dari database dengan judul buku
+                                    $sql = "SELECT buku_ulasan.ulasan_id, buku.judul AS judul_buku, buku_ulasan.ulasan, buku_ulasan.rating, buku_ulasan.created_at, user.username
+                                    FROM buku_ulasan
+                                    INNER JOIN buku ON buku_ulasan.buku_id = buku.buku_id
+                                    INNER JOIN user ON buku_ulasan.user_id = user.user_id";
 
 
-            $result = mysqli_query($koneksi, $sql);
+                                    $result = mysqli_query($koneksi, $sql);
 
-            // Tampilkan data ulasan dalam tabel
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>";
-                echo "<td>" . $row['username'] . "</td>"; // Menampilkan judul buku
+                                    // Tampilkan data ulasan dalam tabel
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo "<tr>";
+                                        echo "<td>" . $row['username'] . "</td>"; // Menampilkan judul buku
 
-                echo "<td>" . $row['judul_buku'] . "</td>"; // Menampilkan judul buku
-                echo "<td>" . $row['ulasan'] . "</td>"; // Menampilkan ulasan
-                echo "<td>" . $row['rating'] . "</td>"; // Menampilkan rating
-                echo "<td>" . $row['created_at'] . "</td>"; // Menampilkan tanggal ulasan
-                echo "</tr>";
-            }
-            ?>
-                                </tbody>
-                            </table>
-                        </body>
+                                        echo "<td>" . $row['judul_buku'] . "</td>"; // Menampilkan judul buku
+                                        echo "<td>" . $row['ulasan'] . "</td>"; // Menampilkan ulasan
+                                        echo "<td>" . $row['rating'] . "</td>"; // Menampilkan rating
+                                        echo "<td>" . $row['created_at'] . "</td>"; // Menampilkan tanggal ulasan
+                                        echo "<td><button class='hapus-btn' data-id='" . $row['ulasan_id'] . "' onclick='konfirmasiHapus()'>Hapus</button></td>";
 
-                        </html>
+                                        echo "</tr>";
+                                                 }
+                                    ?>
+
+                            </tbody>
+                        </table>
+
 
 
                     </div>
@@ -314,6 +325,7 @@
             </div>
         </div>
     </div>
+    <!-- JavaScript untuk menghapus data saat tombol diklik -->
 
     <!-- Bootstrap core JavaScript-->
     <script src="assets/vendor/jquery/jquery.min.js"></script>
@@ -331,6 +343,25 @@
     <!-- Page level custom scripts -->
     <script src="assets/vendor/js/demo/chart-area-demo.js"></script>
     <script src="assets/vendor/js/demo/chart-pie-demo.js"></script>
+    <script>
+    // Function to handle delete confirmation and action
+    function konfirmasiHapus(elem) {
+        if (confirm('Apakah Anda yakin ingin menghapus ulasan ini?')) {
+            var ulasan_id = $(elem).data('id');
+            $.ajax({
+                url: 'hapus_ulasan.php',
+                type: 'post',
+                data: {
+                    id: ulasan_id
+                },
+                success: function(response) {
+                    location.reload();
+                }
+            });
+        }
+    }
+    </script>
+
 
 </body>
 

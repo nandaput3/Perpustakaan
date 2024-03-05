@@ -1,14 +1,22 @@
-<?php
+<?php 
+    include "koneksi.php";
 
-session_start();
+    // Query untuk mengambil data peminjaman dari database dengan nama lengkap pengguna
+    $sqlPeminjaman = "SELECT peminjaman.*, user.nama_lengkap AS nama_lengkap, buku.judul AS judul_buku
+                    FROM peminjaman 
+                    INNER JOIN buku ON peminjaman.buku_id = buku.buku_id 
+                    INNER JOIN user ON peminjaman.user_id = user.user_id";
 
-// Periksa apakah pengguna sudah login atau belum
-if (!isset($_SESSION["user_id"])) {
-    // Jika belum, arahkan ke halaman login
-    header("Location: login.php");
-    exit();
-}
+    $resultPeminjaman = mysqli_query($koneksi, $sqlPeminjaman);
 
+    // Query untuk menghitung jumlah buku yang sudah melewati batas tanggal pengembalian
+    $sqlBukuTerlambat = "SELECT COUNT(*) AS total_buku FROM peminjaman WHERE status_pinjam = 'Terlambat'";
+
+    $resultBukuTerlambat = mysqli_query($koneksi, $sqlBukuTerlambat);
+
+    // Ekstrak jumlah buku yang sudah melewati batas tanggal pengembalian dari hasil query
+    $rowBukuTerlambat = mysqli_fetch_assoc($resultBukuTerlambat);
+    $total_buku = $rowBukuTerlambat['total_buku'];
 ?>
 
 <!DOCTYPE html>
@@ -32,11 +40,127 @@ if (!isset($_SESSION["user_id"])) {
 
     <!-- Custom styles for this template-->
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        /* Anda dapat menyesuaikan margin sesuai kebutuhan */
+    }
+
+
+    .pagination button {
+        background-color: #4CAF50;
+        /* Warna latar belakang */
+        border: none;
+        /* Tanpa border */
+        color: white;
+        /* Warna teks */
+        padding: 8px 16px;
+        /* Padding tombol */
+        text-align: center;
+        /* Posisi teks di tengah tombol */
+        text-decoration: none;
+        /* Tanpa dekorasi teks */
+        display: inline-block;
+        /* Menjadikan tombol sebagai blok inline */
+        margin: 4px 2px;
+        /* Margin antara tombol */
+        cursor: pointer;
+        /* Ubah kursor saat mengarah ke tombol */
+        border-radius: 4px;
+        /* Bulatan sudut tombol */
+    }
+
+    .pagination button:hover {
+        background-color: #45a049;
+        /* Warna latar belakang saat tombol dihover */
+    }
+
+    .pagination button.active {
+        background-color: #007bff;
+        /* Warna latar belakang untuk halaman aktif */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    th {
+        background-color: grey;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #fff;
+    }
+
+    tr:hover {
+        background-color: #ddd;
+    }
+
+    .table-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px auto;
+        width: 100%;
+    }
+
+
+    /* Perubahan pada tombol "Kembalikan" */
+    .btn-kembalikan {
+        background-color: #007bff;
+        /* Warna latar belakang menggunakan warna primary */
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .btn-kembalikan:hover {
+        background-color: #0056b3;
+        /* Warna latar belakang saat tombol dihover */
+    }
+
+    /* Gaya untuk tombol "Kembalikan" jika buku melewati batas tanggal */
+    .btn-kembalikan-terlambat {
+        background-color: #dc3545;
+        /* Warna merah untuk buku yang melewati batas tanggal */
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .btn-kembalikan-terlambat:hover {
+        background-color: #c82333;
+        /* Warna merah yang sedikit lebih gelap saat tombol dihover */
+    }
+    </style>
+
 
 </head>
-<style>
-
-</style>
 
 
 <body id="page-top">
@@ -52,9 +176,7 @@ if (!isset($_SESSION["user_id"])) {
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-fw fa-book"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">MACA <sup>
-                    </sup>
-                </div>
+                <div class="sidebar-brand-text mx-3">MACA<sup></sup></div>
             </a>
 
             <!-- Divider -->
@@ -62,43 +184,60 @@ if (!isset($_SESSION["user_id"])) {
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="admin.php">
+                <a class="nav-link" href="petugas.php">
                     <span>Dashboard Petugas</span></a>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
 
+
+
+
+
+
+
+
+
+            <!-- Heading -->
+
+
+
+
+
+
+
             <!-- Nav Item - Tables -->
             <li class="nav-item">
                 <a class="nav-link" href="data_buku.php"> <i class="fas fa-fw fa-book"></i> <span>Data
                         Buku</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="data_user.php">
-                    <i class="fas fa-fw fa-users"></i> <span>Data Pengguna</span></a>
-            </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="data_peminjaman.php">
                     <i class="fas fa-fw fa-file"></i> <span>Data Peminjam </span></a>
             </li>
+
             <li class="nav-item">
-                <a class="nav-link" href="create_regis.php">
+                <a class="nav-link" href="laporan.php">
                     <i class="fas fa-fw fa-download"></i>
                     <span>Laporan </span></a>
             </li>
-            <hr class="sidebar-divider d-none d-md-block">
-            <li class="nav-item">
-                <a class="nav-link" href="create_regis.php">
-                    <i class="fas fa-fw fa-user"></i>
-                    <span>Regis Anggota </span></a>
-            </li>
+
             <hr class="sidebar-divider d-none d-md-block">
             <li class="nav-item">
                 <a class="nav-link" href="../logout.php">
                     <i class="fas fa-fw fa-sign-out-alt"></i>
                     <span>Logout</span></a>
             </li>
+
+
+            <!-- Divider -->
+
+            <!-- Sidebar Toggler (Sidebar) -->
+
+
+
 
         </ul>
         <!-- End of Sidebar -->
@@ -119,50 +258,7 @@ if (!isset($_SESSION["user_id"])) {
 
                     <!-- Topbar Search -->
 
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
 
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-
-                        <!-- Nav Item - Alerts -->
-
-
-
-                    </ul>
 
                 </nav>
                 <!-- End of Topbar -->
@@ -172,88 +268,68 @@ if (!isset($_SESSION["user_id"])) {
 
                     <!-- Page Heading -->
 
+                    <h1 class="h3 mb-4 text-gray-800">Data Peminjaman</h1>
 
                     <!-- Content Row -->
                     <div class="row">
 
-                        <!DOCTYPE html>
-                        <html lang="en">
 
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <title>Document</title>
 
-                            <style>
-                            table {
-                                width: 100%;
-                                border-collapse: collapse;
-                                margin-top: 20px;
-                                margin-right: 20px;
-                            }
 
-                            tr,
-                            th {
-                                border: 1px solid;
-                                padding: 8px;
-                                text-align: center;
-                            }
-                            </style>
-                        </head>
 
-                        <body>
-                            <form class="form" action=".php" method="post">
-                                <h2>Data Peminjaman</h2>
 
-                                <table border='1'>
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <th>ID Peminjaman</th>
-                                            <th>ID Buku</th>
-                                            <th>Tanggal Pinjam</th>
-                                            <th>UserID</th> <!-- Ubah dari User ID menjadi Username -->
-                                            <th>Tanggal Kembali</th>
-                                            <th>Status Pinjam</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-            // Query untuk mengambil data peminjaman dari database
-            $sql = "SELECT peminjaman.*, user.username FROM peminjaman INNER JOIN user ON peminjaman.user_id = user.user_id";
-            $result = mysqli_query($koneksi, $sql);
+                        <div class="container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Lengkap</th>
+                                        <th>Buku</th>
+                                        <th>Tanggal Pinjam</th>
+                                        <th>Status Pinjam</th>
+                                        <th>Tanggal Kembali</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                                // Query untuk mengambil data peminjaman dari database dengan nama lengkap pengguna
+                                                $sql = "SELECT peminjaman.*, user.nama_lengkap AS nama_lengkap, buku.judul AS judul_buku
+                                                        FROM peminjaman 
+                                                        INNER JOIN buku ON peminjaman.buku_id = buku.buku_id 
+                                                        INNER JOIN user ON peminjaman.user_id = user.user_id";
 
-            // Tampilkan data peminjaman dalam tabel
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>";
-                echo "<td>" . $row['peminjaman_id'] . "</td>";
-                echo "<td>" . $row['buku_id'] . "</td>";
-                echo "<td>" . $row['tgl_pinjam'] . "</td>";
-                echo "<td>" . $row['user_id'] . "</td>"; // Mengganti user_id dengan username
-                echo "<td>" . $row['tgl_kembali'] . "</td>";
-                echo "<td>" . $row['status_pinjam'] . "</td>";
-                echo "</tr>";
-            }
-            ?>
-                                    </tbody>
-                                </table>
-                            </form>
+                                                $result = mysqli_query($koneksi, $sql);
 
-                        </body>
+                                            // Tampilkan data peminjaman dalam tabel
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                echo "<tr>";
+                                                echo "<td>" . $row['nama_lengkap'] . "</td>"; // Menampilkan nama lengkap pengguna
+                                                echo "<td>" . $row['judul_buku'] . "</td>"; // Menampilkan judul buku
+                                                echo "<td>" . $row['tgl_pinjam'] . "</td>";
+                                                echo "<td>" . $row['status_pinjam'] . "</td>";
+                                                echo "<td>" . $row['tgl_kembali'] . "</td>";
+                                                echo "<td>";
+                                                // Tambahkan kelas CSS khusus jika status pinjam adalah 'Terlambat'
+                                                $buttonClass = $row['status_pinjam'] == 'Terlambat' ? 'btn-kembalikan-terlambat' : 'btn-kembalikan';
+                                                // Tambahkan tombol "Kembalikan" dengan kelas CSS yang sesuai
+                                                echo "<form action='tarik_buku.php' method='post'>";
+                                                echo "<input type='hidden' name='peminjaman_id' value='" . $row['peminjaman_id'] . "'>";
+                                                echo "<button type='submit' class='$buttonClass'>Kembalikan</button>";
+                                                echo "</form>";
+                                                echo "</td>";
+                                                echo "</tr>";
+                                            }
+                                     ?>
+                                </tbody>
+                            </table>
+                        </div>
 
-                        </html>
 
                     </div>
 
                     <!-- Content Row -->
 
-                    <div class="row">
 
-                        <!-- Area Chart -->
-
-
-                        <!-- Pie Chart -->
-
-                    </div>
 
                     <!-- Content Row -->
                     <div class="row">
@@ -282,11 +358,12 @@ if (!isset($_SESSION["user_id"])) {
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <span>Copyright &copy; Your Website 2024</span>
                     </div>
                 </div>
             </footer>
             <!-- End of Footer -->
+
         </div>
         <!-- End of Content Wrapper -->
 
@@ -317,6 +394,120 @@ if (!isset($_SESSION["user_id"])) {
             </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        $('form').submit(function(e) {
+            e.preventDefault(); // Menghentikan pengiriman formulir default
+
+            // Kirim data formulir menggunakan AJAX
+            $.ajax({
+                type: 'POST',
+                url: 'tarik_buku.php', // Ganti dengan URL ke file pemrosesan Anda
+                data: $(this).serialize(),
+                success: function(response) {
+                    // Tampilkan notifikasi menggunakan alert atau elemen HTML lainnya
+                    alert(response); // Tampilkan notifikasi sebagai alert
+
+                    // Atau Anda juga bisa menampilkan notifikasi di elemen HTML tertentu
+                    // Misalnya, jika Anda memiliki elemen dengan id "notification":
+                    // $('#notification').html(response); // Menampilkan notifikasi di elemen dengan id "notification"
+                },
+                error: function(xhr, status, error) {
+                    // Tangani kesalahan jika ada
+                    console.error(
+                        error); // Tampilkan pesan kesalahan dalam konsol browser
+                }
+            });
+        });
+    });
+    </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const tables = document.querySelectorAll("table");
+
+        // Inisialisasi paginasi di luar perulangan
+        const paginationContainers = [];
+
+        tables.forEach(function(table) {
+            const rows = table.querySelectorAll("tbody tr");
+            const rowsPerPage = 10;
+            let numPages = Math.ceil(rows.length / rowsPerPage);
+            let currentPage = 1;
+
+            function showPage(page) {
+                rows.forEach(function(row) {
+                    row.style.display = "none";
+                });
+
+                const startIndex = (page - 1) * rowsPerPage;
+                const endIndex = Math.min(startIndex + rowsPerPage, rows.length);
+                for (let i = startIndex; i < endIndex; i++) {
+                    rows[i].style.display = "table-row";
+                }
+            }
+
+            function renderPagination() {
+                const paginationContainer = paginationContainers[table.dataset.paginationIndex];
+
+                // Bersihkan paginasi sebelum menambahkan tombol-tombol baru
+                paginationContainer.innerHTML = '';
+
+                const prevButton = document.createElement("button");
+                prevButton.textContent = "Prev";
+                prevButton.addEventListener("click", function() {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        showPage(currentPage);
+                        renderPagination();
+                    }
+                });
+                paginationContainer.appendChild(prevButton);
+
+                for (let i = 1; i <= numPages; i++) {
+                    const pageButton = document.createElement("button");
+                    pageButton.textContent = i;
+                    pageButton.addEventListener("click", function() {
+                        currentPage = i;
+                        showPage(currentPage);
+                        renderPagination();
+                    });
+                    paginationContainer.appendChild(pageButton);
+                    if (i !== currentPage) {
+                        pageButton.style.display = "none";
+                    }
+                }
+
+                const nextButton = document.createElement("button");
+                nextButton.textContent = "Next";
+                nextButton.addEventListener("click", function() {
+                    if (currentPage < numPages) {
+                        currentPage++;
+                        showPage(currentPage);
+                        renderPagination();
+                    }
+                });
+                paginationContainer.appendChild(nextButton);
+            }
+
+            showPage(currentPage);
+
+            // Tambahkan elemen paginasi ke dalam array paginationContainers
+            const newPaginationContainer = document.createElement("div");
+            newPaginationContainer.classList.add("pagination");
+            paginationContainers.push(newPaginationContainer);
+
+            // Tambahkan nomor indeks paginasi sebagai atribut data
+            table.dataset.paginationIndex = paginationContainers.length - 1;
+
+            // Tempatkan elemen paginasi setelah tabel
+            table.parentNode.insertBefore(newPaginationContainer, table.nextSibling);
+
+            renderPagination();
+        });
+    });
+    </script>
 
     <!-- Bootstrap core JavaScript-->
     <script src="assets/vendor/jquery/jquery.min.js"></script>
@@ -334,6 +525,7 @@ if (!isset($_SESSION["user_id"])) {
     <!-- Page level custom scripts -->
     <script src="assets/vendor/js/demo/chart-area-demo.js"></script>
     <script src="assets/vendor/js/demo/chart-pie-demo.js"></script>
+
 
 </body>
 

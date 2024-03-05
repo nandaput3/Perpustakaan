@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha384-5YaiFvEd5TDkVgdazs6Xuzr3n3Qggn+RZBYFr0TSE7F+nVW6ZO0DIbZBqc2dk/jV" crossorigin="anonymous">
     <title>Perpustakaan Online</title>
     <style>
     /* CSS Anda di sini */
@@ -316,40 +318,12 @@
             <div class="container">
                 <div class="footer-links">
                     <div class="footer-column">
-                        <h3>Gramedia Affiliate</h3>
-                        <ul>
-                            <li><a href="#">Mitra Gramedia</a></li>
-                            <li><a href="#">Belanja</a></li>
-                            <li><a href="#">Berbelanja</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h3>Pembayaran</h3>
-                        <ul>
-                            <li><a href="#">Pengiriman</a></li>
-                            <li><a href="#">Tentang Gramedia</a></li>
-                            <li><a href="#">Tentang Kami</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h3>Toko Kami</h3>
-                        <ul>
-                            <li><a href="#">Kerjasama</a></li>
-                            <li><a href="#">Lainnya</a></li>
-                            <li><a href="#">Syarat & Ketentuan</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h3>Bantuan</h3>
-                        <ul>
-                            <li><a href="#">Kebijakan & Privasi</a></li>
-                            <li><a href="#">Bantuan</a></li>
-                            <li><a href="#">Hubungi Kami</a></li>
-                        </ul>
+                        <p>&copy; 2024 Perpustakaan Online. All rights reserved.</p>
                     </div>
                 </div>
             </div>
         </footer>
+
 
         <script src="script.js"></script>
 

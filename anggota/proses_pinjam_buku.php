@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Masukkan ke dalam tabel peminjaman
     $tgl_pinjam = date("Y-m-d");
-    $tgl_kembali = date("Y-m-d", strtotime("+3 days")); // Contoh: 7 hari dari sekarang
+    $tgl_kembali = date("Y-m-d", strtotime("+1 days")); // Contoh: 7 hari dari sekarang
     $status_pinjam = 'dipinjam';
 
     // Perbarui stok buku

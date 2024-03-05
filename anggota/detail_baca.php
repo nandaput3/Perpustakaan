@@ -12,6 +12,12 @@ $query_ulasan = "SELECT buku_ulasan.*, user.username
                  WHERE buku_ulasan.buku_id = $buku_id";
 $result_ulasan = mysqli_query($koneksi, $query_ulasan);
 
+// Query untuk memeriksa apakah buku sudah dipinjam
+// Query untuk memeriksa apakah buku sudah dipinjam
+$query_check_pinjam = "SELECT COUNT(*) AS jumlah_pinjam FROM peminjaman WHERE buku_id = $buku_id AND status_pinjam = 'dipinjam'";
+$result_check_pinjam = mysqli_query($koneksi, $query_check_pinjam);
+$row_check_pinjam = mysqli_fetch_assoc($result_check_pinjam);
+$jumlah_pinjam = $row_check_pinjam['jumlah_pinjam'];
 
 // Pastikan ID buku valid
 if ($buku_id > 0) {
@@ -39,10 +45,6 @@ if ($buku_id > 0) {
     exit;
 }
 ?>
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -208,70 +210,47 @@ if ($buku_id > 0) {
             <div style="position: absolute; top: 10px; right: 10px;">
                 <a href="anggota.php" style="text-decoration: none; color: red;">X</a>
             </div>
-
             <img src="<?= isset($data['cover']) ? htmlspecialchars($data['cover']) : '' ?>"
                 alt="<?= isset($data['judul']) ? htmlspecialchars($data['judul']) : '' ?>">
             <h1><?= isset($data['judul']) ? htmlspecialchars($data['judul']) : '' ?></h1>
-            <p class="author"><strong></strong>
-                <?= isset($data['penulis']) ? htmlspecialchars($data['penulis']) : '' ?></p>
-            <p><strong>Kategori:</strong>
-                <?= isset($data['nama_kategori']) ? htmlspecialchars($data['nama_kategori']) : '' ?></p>
-            <p><strong>Tahun Terbit:</strong>
-                <?= isset($data['tahun_terbit']) ? htmlspecialchars($data['tahun_terbit']) : '' ?></p>
-            <p><strong></strong> <?= isset($data['sinopsis']) ? htmlspecialchars($data['sinopsis']) : '' ?></p>
+            <p class="author"><strong></strong><?= isset($data['penulis']) ? htmlspecialchars($data['penulis']) : '' ?>
+            </p>
+            <p><strong>Kategori:</strong><?= isset($data['nama_kategori']) ? htmlspecialchars($data['nama_kategori']) : '' ?>
+            </p>
+            <p><strong>Tahun
+                    Terbit:</strong><?= isset($data['tahun_terbit']) ? htmlspecialchars($data['tahun_terbit']) : '' ?>
+            </p>
+            <p><strong>Sinopsis:</strong><?= isset($data['sinopsis']) ? htmlspecialchars($data['sinopsis']) : '' ?></p>
             <div class="button-container">
-                <?php if ($data['stok'] === 'dipinjam') : ?>
+                <!-- Show button to borrow book if available -->
+                <?php if ($jumlah_pinjam > 0) : ?>
                 <!-- Show notification if book is already borrowed -->
                 <div style="color: red;">Buku sudah dipinjam</div>
+                <?php elseif ($data['stok'] == 0) : ?>
+                <!-- Show notification if book is out of stock -->
+                <div style="color: red;">Buku sudah habis</div>
                 <?php else : ?>
-                <!-- Show button to borrow book if available -->
-                <div class="icon">
-                    <?php if ($data['stok'] == 0) : ?>
-                    <div style="color: red;">Buku sudah habis</div>
-                    <?php else : ?>
-                    <!-- Tampilkan tombol Pinjam -->
-                    <form id="pinjamForm" method="post" action="proses_pinjam_buku.php">
-                        <input type="hidden" name="buku_id" value="<?= $buku_id ?>">
-                        <button id="pinjamButton" type="submit" class="button-pinjam">Pinjam</button>
-                    </form>
-
-                </div>
+                <form id="pinjamForm" method="post" action="proses_pinjam_buku.php">
+                    <input type="hidden" name="buku_id" value="<?= $buku_id ?>">
+                    <button id="pinjamButton" type="submit" class="button-pinjam">Pinjam</button>
+                </form>
                 <script>
-                // Mengaktifkan tombol pinjam saat form di-submit
+                // Disable the pinjamButton after form submission
                 document.getElementById("pinjamForm").addEventListener("submit", function() {
                     document.getElementById("pinjamButton").disabled = true;
                 });
                 </script>
                 <?php endif; ?>
-
-                <!-- Tampilkan button-ulas di luar dari div.icon -->
+                <!-- Button for comments -->
                 <button class="button-ulas"
                     onclick="window.location.href = 'ulasan.php?id=<?= $_GET['id'] ?>';">💭</button>
-
-                <script>
-                document.getElementById("pinjamForm").addEventListener("submit", function() {
-                    document.getElementById("pinjamButton").disabled = true;
-                });
-                </script>
-                <?php endif; ?>
-
-
-
             </div>
-
         </div>
         <?php else : ?>
-
-
-
+        <!-- Show error message if book data is not found -->
+        <p>Data buku tidak ditemukan.</p>
+        <?php endif; ?>
     </div>
-    <!-- Tampilkan pesan jika data buku tidak ditemukan -->
-    <p>Data buku tidak ditemukan.</p>
-    <?php endif; ?>
-    </div>
-
-
-
     <div class=" container">
         <h2>Ulasan</h2>
         <?php if ( mysqli_num_rows($result_ulasan) > 0) : ?>

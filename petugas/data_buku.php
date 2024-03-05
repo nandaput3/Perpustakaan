@@ -10,6 +10,12 @@
     if (!$result) {
         die('Error fetching data: ' . mysqli_error($koneksi));
     }
+
+    // Hitung jumlah total slide
+    $totalSlides = mysqli_num_rows($result);
+
+    // Tentukan slide saat ini berdasarkan parameter URL
+    $currentSlide = isset($_GET['slide']) ? intval($_GET['slide']) : 1;
 ?>
 
 <!DOCTYPE html>
@@ -34,11 +40,79 @@
     <!-- Custom styles for this template-->
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
 
+    <style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th,
+    td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    th {
+        background-color: grey;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #ddd;
+    }
+
+    .aksi {
+        text-align: right;
+    }
+
+    .aksi div {
+        display: flex;
+        gap: 5px;
+    }
+
+    .slide-navigation {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .slide-number-box {
+        display: flex;
+        align-items: center;
+        margin: 0 10px;
+    }
+
+    .number-box {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 5px 10px;
+        margin: 0 5px;
+    }
+
+    /* Style untuk memastikan hanya ada 3 kotak nomor slide per baris */
+    .number-box {
+        width: 30px;
+        text-align: center;
+    }
+
+    /* Tambahkan margin antara tombol */
+    .btn-container button {
+        margin-right: 5px;
+    }
+
+    /* Tambahkan style untuk posisi tombol Tambah */
+    .add-button {
+        margin-top: 20px;
+    }
+    </style>
 </head>
-<style>
-
-</style>
-
 
 <body id="page-top">
 
@@ -59,14 +133,9 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-
-
-
-            <!-- Nav Item - Tables -->
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
                 <a class="nav-link" href="petugas.php">
@@ -77,13 +146,20 @@
             <hr class="sidebar-divider">
 
             <!-- Nav Item - Pages Collapse Menu -->
-
             <li class="nav-item">
-                <a class="nav-link" href="data_buku.php"> <i class="fas fa-fw fa-book"></i> <span>Data
-                        Buku</span></a>
+                <a class="nav-link" href="data_buku.php">
+                    <i class="fas fa-fw fa-book"></i> <span>Data Buku</span>
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="laporan.php"> <i class="fas fa-fw fa-download"></i> <span>Laporan</span></a>
+                <a class="nav-link" href="data_peminjaman.php">
+                    <i class="fas fa-fw fa-file"></i> <span>Data Peminjam </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="laporan.php">
+                    <i class="fas fa-fw fa-download"></i> <span>Laporan</span>
+                </a>
             </li>
 
             <!-- Nav Item - Tables -->
@@ -91,15 +167,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="../logout.php">
                     <i class="fas fa-fw fa-sign-out-alt"></i>
-                    <span>Logout</span></a>
+                    <span>Logout</span>
+                </a>
             </li>
-
-            <!-- Divider -->
-
-            <!-- Sidebar Toggler (Sidebar) -->
-
-
-
 
         </ul>
         <!-- End of Sidebar -->
@@ -111,63 +181,7 @@
             <div id="content">
 
                 <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <!-- Topbar Search -->
-
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-
-                        <!-- Nav Item - Alerts -->
-
-                        <!-- Nav Item - Messages -->
-
-
-
-                        <!-- Nav Item - User Information -->
-
-                </nav>
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"></nav>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -175,234 +189,66 @@
 
                     <!-- Page Heading -->
 
-
                     <!-- Content Row -->
                     <div class="row">
-                        <?php
-    include "koneksi.php";
+                        <div class="col-lg-12 mb-4">
 
-    // Mendapatkan total baris data dari query
-    $result = mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM buku");
-    $row = mysqli_fetch_assoc($result);
-    $totalRows = $row['total'];
+                            <h1 class="h3 mb-4 text-gray-800">Data Buku</h1>
 
-    // Jumlah baris per slide
-    $rowsPerSlide = 5;
-
-    // Mendapatkan total slide yang diperlukan
-    $totalSlides = ceil($totalRows / $rowsPerSlide);
-
-    // Mendapatkan nomor slide dari parameter GET
-    $currentSlide = isset($_GET['slide']) ? $_GET['slide'] : 1;
-    if ($currentSlide < 1) $currentSlide = 1;
-    if ($currentSlide > $totalSlides) $currentSlide = $totalSlides;
-
-    // Mendapatkan indeks baris untuk slide saat ini
-    $start = ($currentSlide - 1) * $rowsPerSlide;
-
-    // Query untuk mendapatkan data untuk slide saat ini
-    $sql = "SELECT buku.*, buku_kategori.nama_kategori 
-            FROM buku 
-            INNER JOIN buku_kategori ON buku.kategori_id = buku_kategori.kategori_id 
-            LIMIT $start, $rowsPerSlide";
-    $result = mysqli_query($koneksi, $sql);
-?>
-
-                        <!DOCTYPE html>
-                        <html lang="en">
-
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <title>Document</title>
-
-                            <style>
-                            table {
-                                width: 100%;
-                                border-collapse: collapse;
-                                margin-top: 20px;
-                            }
-
-
-
-                            th,
-                            td {
-                                padding: 10px;
-                                border: 1px solid #ddd;
-                                text-align: center;
-                            }
-
-                            th {
-                                background-color: grey;
-                                color: white;
-                            }
-
-                            tr:nth-child(even) {
-                                background-color: #f2f2f2;
-                            }
-
-                            tr:hover {
-                                background-color: #ddd;
-                            }
-
-                            .btn-container button {
-                                margin-right: 5px;
-                            }
-
-                            .slide-navigation {
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                                margin-top: 10px;
-                            }
-
-                            .slide-number-box {
-                                display: flex;
-                                align-items: center;
-                                margin: 0 10px;
-                            }
-
-                            .number-box {
-                                border: 1px solid #ccc;
-                                border-radius: 5px;
-                                padding: 5px 10px;
-                                margin: 0 5px;
-                            }
-
-                            .separator {
-                                margin: 0 5px;
-                            }
-
-                            /* Style untuk memastikan hanya ada 3 kotak nomor slide per baris */
-                            .number-box {
-                                width: 30px;
-                                /* Atur lebar sesuai kebutuhan */
-                                text-align: center;
-                            }
-
-                            /* Tambahkan margin antara tombol */
-                            .btn-container button {
-                                margin-right: 5px;
-                            }
-
-                            /* Tambahkan style untuk posisi tombol Tambah */
-                            .add-button {
-                                margin-top: 20px;
-                            }
-
-                            /* Tambahkan CSS berikut ke dalam tag <style> atau file CSS Anda */
-
-
-                            .aksi div {
-                                display: flex;
-                                gap: 5px;
-                                /* Tambahkan jarak antara tombol */
-                            }
-                            </style>
-                        </head>
-
-                        <body>
-                            <form class="form" action="proses/proses_pendataan_buku.php" method="post">
-                                <h1>Data Buku</h1>
-
-                                <form action="pendataan.php" method="post">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Cover</th>
-                                                <th>Judul</th>
-                                                <th>PDF</th>
-                                                <th>Penulis</th>
-                                                <th>Penerbit</th>
-                                                <th>Kategori</th>
-                                                <th>Stok</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <!-- Table body -->
-                                            <?php while($data = mysqli_fetch_assoc($result)): ?>
-                                            <tr>
-                                                <td><?= $data['buku_id'] ?></td>
-                                                <td><img src="../asset/<?= $data['cover'] ?>" alt="Cover Buku"
-                                                        style="max-width:100px; max-height:100px;"></td>
-                                                <td><?= $data['judul'] ?></td>
-                                                <td><?= basename($data['pdf_path']) ?></td>
-
-                                                <td><?= $data['penulis'] ?></td>
-                                                <td><?= $data['penerbit'] ?></td>
-                                                <td><?= $data['nama_kategori'] ?></td>
-                                                <td><?= $data['stok'] ?></td>
-                                                <td>
-                                                    <a href="edit_buku.php?id=<?= $data['buku_id'] ?>"><button
-                                                            class="btn btn-primary"><i
-                                                                class='fas fa-pen to-square'></i></button></a>
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Cover</th>
+                                            <th>Judul</th>
+                                            <th>PDF</th>
+                                            <th>Penulis</th>
+                                            <th>Penerbit</th>
+                                            <th>Kategori</th>
+                                            <th>Stok</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php while($data = mysqli_fetch_assoc($result)): ?>
+                                        <tr>
+                                            <td><?= $data['buku_id'] ?></td>
+                                            <td><img src="../asset/<?= $data['cover'] ?>" alt="Cover Buku"
+                                                    style="max-width:100px; max-height:100px;"></td>
+                                            <td><?= $data['judul'] ?></td>
+                                            <td><?= basename($data['pdf_path']) ?></td>
+                                            <td><?= $data['penulis'] ?></td>
+                                            <td><?= $data['penerbit'] ?></td>
+                                            <td><?= $data['nama_kategori'] ?></td>
+                                            <td><?= $data['stok'] ?></td>
+                                            <td class="aksi">
+                                                <div>
+                                                    <a href="edit_buku.php?id=<?= $data['buku_id'] ?>"
+                                                        class="btn btn-primary"><i class='fas fa-pen to-square'></i></a>
                                                     <a href="hapus_buku.php?id=<?= $data['buku_id'] ?>"
-                                                        onclick="return confirm('Yakin ingin menghapus buku ini?')"><button
-                                                            class="btn btn-danger"><i
-                                                                class='fas fa-trash'></i></button></a>
-                                                </td>
-                                            </tr>
-                                            <?php endwhile; ?>
-                                        </tbody>
+                                                        onclick="return confirm('Yakin ingin menghapus buku ini?')"
+                                                        class="btn btn-danger"><i class='fas fa-trash'></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <?php endwhile; ?>
+                                    </tbody>
+                                </table>
+                            </div>
 
-                                    </table>
-
-                                    <?php if ($currentSlide > 1): ?>
-
-                                    <?php endif; ?>
-                                    </table>
-                                    <!-- Tambahkan di bagian setelah tabel -->
-                                    <div class="slide-navigation">
-                                        <a href="?slide=<?= max(1, $currentSlide - 1) ?>" class="btn btn-primary"><i
-                                                class="fas fa-arrow-left"></i></a>
-                                        <div class="slide-number-box">
-                                            <div class="number-box"><?= $currentSlide ?></div>
-                                        </div>
-                                        <a href="?slide=<?= min($totalSlides, $currentSlide + 1) ?>"
-                                            class="btn btn-primary"> <i class="fas fa-arrow-right"></i></a>
-                                    </div>
-
-
-
-
-
-                                </form>
-                            </form>
-
-                        </body>
-
-                        </html>
-
-                    </div>
-
-                    <!-- Content Row -->
-
-                    <div class="row">
-
-                        <!-- Area Chart -->
-
-
-                        <!-- Pie Chart -->
-
-                    </div>
-
-                    <!-- Content Row -->
-                    <div class="row">
-
-                        <!-- Content Column -->
-                        <div class="col-lg-6 mb-4">
-
-                            <!-- Project Card Example -->
-
-
-                            <!-- Color System -->
-
+                            <!-- Slide Navigation -->
+                            <div class="slide-navigation">
+                                <a href="?slide=<?= max(1, $currentSlide - 1) ?>" class="btn btn-primary"><i
+                                        class="fas fa-arrow-left"></i></a>
+                                <div class="slide-number-box">
+                                    <div class="number-box"><?= $currentSlide ?></div>
+                                </div>
+                                <a href="?slide=<?= min($totalSlides, $currentSlide + 1) ?>" class="btn btn-primary"><i
+                                        class="fas fa-arrow-right"></i></a>
+                            </div>
 
                         </div>
-
-
                     </div>
 
                 </div>
@@ -461,34 +307,14 @@
     // Fungsi untuk menangani navigasi slide menggunakan tombol panah
     $(document).ready(function() {
         $(document).keydown(function(e) {
-            // Periksa jika tombol panah kiri ditekan dan tidak dalam slide pertama
             if (e.keyCode == 37 && <?= $currentSlide ?> > 1) {
                 window.location.href = "?slide=<?= $currentSlide - 1 ?>";
-            }
-            // Periksa jika tombol panah kanan ditekan dan tidak dalam slide terakhir
-            else if (e.keyCode == 39 && <?= $currentSlide ?> < <?= $totalSlides ?>) {
+            } else if (e.keyCode == 39 && <?= $currentSlide ?> < <?= $totalSlides ?>) {
                 window.location.href = "?slide=<?= $currentSlide + 1 ?>";
             }
         });
     });
     </script>
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="assets/vendor/jquery/jquery.min.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="assets/vendor/js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="assets/vendor/chart.js/Chart.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="assets/vendor/js/demo/chart-area-demo.js"></script>
-    <script src="assets/vendor/js/demo/chart-pie-demo.js"></script>
 
 </body>
 

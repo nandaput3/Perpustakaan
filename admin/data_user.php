@@ -30,11 +30,47 @@
 
     <!-- Custom styles for this template-->
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
 
+    th,
+    td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    th {
+        background-color: grey;
+        color: white;
+        /* Warna teks putih */
+
+    }
+
+    tr:nth-child(even) {
+        background-color: #fff;
+    }
+
+    tr:hover {
+        background-color: #ddd;
+    }
+
+    /* Tambahkan margin antara tombol */
+    .btn-container button {
+        margin-right: 5px;
+    }
+
+    /* Berikan padding kanan pada tombol Edit */
+    .btn-container .btn-edit {
+        padding-right: 5px;
+    }
+    </style>
 </head>
-<style>
 
-</style>
 
 
 <body id="page-top">
@@ -143,96 +179,31 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    <!-- Topbar Search -->
 
-
-                    <!-- Topbar Navbar -->
-
-
-
-
-                    <!-- Nav Item - Alerts -->
-
-                    <!-- Nav Item - Messages -->
-
-
-
-                    <!-- Nav Item - User Information -->
 
                 </nav>
-                <!-- End of Topbar -->
 
-                <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-
-
-                    <!-- Content Row -->
                     <div class="row">
 
-                        <!DOCTYPE html>
-                        <html lang="en">
+                        <h1>Data Pengguna</h1>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>Nomor HP</th>
+                                    <th>Alamat</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
 
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <title>Data Pengguna</title>
-
-                            <style>
-                            table {
-                                width: 100%;
-                                border-collapse: collapse;
-                                margin-top: 20px;
-                            }
-
-                            th,
-                            td {
-                                padding: 10px;
-                                border: 1px solid #ddd;
-                                text-align: left;
-                            }
-
-                            th {
-                                background-color: grey;
-                                color: white;
-                                /* Warna teks putih */
-
-                            }
-
-                            tr:nth-child(even) {
-                                background-color: #fff;
-                            }
-
-                            tr:hover {
-                                background-color: #ddd;
-                            }
-
-                            /* Tambahkan margin antara tombol */
-                            .btn-container button {
-                                margin-right: 5px;
-                            }
-                            </style>
-                        </head>
-
-                        <body>
-                            <h1>Data Pengguna</h1>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Username</th>
-                                        <th>Email</th>
-                                        <th>Nama Lengkap</th>
-                                        <th>Nomor HP</th>
-                                        <th>Alamat</th>
-                                        <th>Status</th>
-                                        <th>Aksi</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
     if(isset($_GET['delete_user_id'])) {
         $delete_id = $_GET['delete_user_id'];
         // Lakukan kueri SQL untuk menghapus data pengguna dengan ID tertentu
@@ -248,7 +219,7 @@
     }
 ?>
 
-                                    <?php
+                                <?php
             // Mengambil data pengguna dari database dan menampilkannya dalam tabel
             $sql = "SELECT * FROM user";
             $result = mysqli_query($koneksi, $sql);
@@ -264,11 +235,11 @@
                     echo "<td>" . $row['alamat'] . "</td>";
                     echo "<td>" . $row['role'] . "</td>";
                     echo "<td>";
-                    // Tombol Edit dengan hyperlink menuju halaman edit_user.php dengan mengirimkan parameter ID pengguna
-                    echo "<a href='edit_user.php?id=" . $row['user_id'] . "' class='btn btn-primary'><i class='fas fa-pen to-square'></i> </a>";
-                    // Tombol Hapus dengan memanggil fungsi JavaScript deleteUser() dan mengirimkan ID pengguna sebagai parameter
-                    echo "<button class='btn btn-danger' onclick='deleteUser(" . $row['user_id'] . ")'><i class='fas fa-trash'></i></button>";
+                    echo "<a href='edit_user.php?id=" . $row['user_id'] . "' class='btn btn-primary'><i class='fas fa-pen to-square'></i></a>";
+                    // Tambahkan atribut style dengan margin-left pada tombol Hapus
+                    echo "<button class='btn btn-danger' style='margin-left: 5px;' onclick='deleteUser(" . $row['user_id'] . ")'><i class='fas fa-trash'></i></button>";
                     echo "</td>";
+                    
                     echo "</tr>";
                 }
             } else {
@@ -276,13 +247,9 @@
             }
             ?>
 
-                                </tbody>
-                            </table>
+                            </tbody>
+                        </table>
 
-
-                        </body>
-
-                        </html>
 
 
                     </div>

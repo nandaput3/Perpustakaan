@@ -1,11 +1,24 @@
 <?php 
     include "koneksi.php";
 
-    $sql = "SELECT buku.*, buku_kategori.nama_kategori FROM buku INNER JOIN buku_kategori ON buku.kategori_id = buku_kategori.kategori_id";
-    $result = mysqli_query($koneksi, $sql);
+    // Query untuk mengambil data peminjaman dari database dengan nama lengkap pengguna
+    $sqlPeminjaman = "SELECT peminjaman.*, user.nama_lengkap AS nama_lengkap, buku.judul AS judul_buku
+                    FROM peminjaman 
+                    INNER JOIN buku ON peminjaman.buku_id = buku.buku_id 
+                    INNER JOIN user ON peminjaman.user_id = user.user_id";
 
-    
+    $resultPeminjaman = mysqli_query($koneksi, $sqlPeminjaman);
+
+    // Query untuk menghitung jumlah buku yang sudah melewati batas tanggal pengembalian
+    $sqlBukuTerlambat = "SELECT COUNT(*) AS total_buku FROM peminjaman WHERE status_pinjam = 'Terlambat'";
+
+    $resultBukuTerlambat = mysqli_query($koneksi, $sqlBukuTerlambat);
+
+    // Ekstrak jumlah buku yang sudah melewati batas tanggal pengembalian dari hasil query
+    $rowBukuTerlambat = mysqli_fetch_assoc($resultBukuTerlambat);
+    $total_buku = $rowBukuTerlambat['total_buku'];
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -120,6 +133,26 @@
     .btn-kembalikan:hover {
         background-color: #0056b3;
         /* Warna latar belakang saat tombol dihover */
+    }
+
+    /* Gaya untuk tombol "Kembalikan" jika buku melewati batas tanggal */
+    .btn-kembalikan-terlambat {
+        background-color: #dc3545;
+        /* Warna merah untuk buku yang melewati batas tanggal */
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .btn-kembalikan-terlambat:hover {
+        background-color: #c82333;
+        /* Warna merah yang sedikit lebih gelap saat tombol dihover */
     }
     </style>
 
@@ -243,6 +276,7 @@
 
                     <!-- Page Heading -->
 
+                    <h1 class="h3 mb-4 text-gray-800">Data Peminjaman</h1>
 
                     <!-- Content Row -->
                     <div class="row">
@@ -250,7 +284,8 @@
 
 
 
-                        <h1>Data Peminjaman</h1>
+
+
                         <div class="container">
                             <table class="table">
                                 <thead>
@@ -265,32 +300,34 @@
                                 </thead>
                                 <tbody>
                                     <?php
-            // Query untuk mengambil data peminjaman dari database dengan nama lengkap pengguna
-            $sql = "SELECT peminjaman.*, user.nama_lengkap AS nama_lengkap, buku.judul AS judul_buku
-                    FROM peminjaman 
-                    INNER JOIN buku ON peminjaman.buku_id = buku.buku_id 
-                    INNER JOIN user ON peminjaman.user_id = user.user_id";
+                                                // Query untuk mengambil data peminjaman dari database dengan nama lengkap pengguna
+                                                $sql = "SELECT peminjaman.*, user.nama_lengkap AS nama_lengkap, buku.judul AS judul_buku
+                                                        FROM peminjaman 
+                                                        INNER JOIN buku ON peminjaman.buku_id = buku.buku_id 
+                                                        INNER JOIN user ON peminjaman.user_id = user.user_id";
 
-            $result = mysqli_query($koneksi, $sql);
+                                                $result = mysqli_query($koneksi, $sql);
 
-            // Tampilkan data peminjaman dalam tabel
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>";
-                echo "<td>" . $row['nama_lengkap'] . "</td>"; // Menampilkan nama lengkap pengguna
-                echo "<td>" . $row['judul_buku'] . "</td>"; // Menampilkan judul buku
-                echo "<td>" . $row['tgl_pinjam'] . "</td>";
-                echo "<td>" . $row['status_pinjam'] . "</td>";
-                echo "<td>" . $row['tgl_kembali'] . "</td>";
-                echo "<td>";
-                // Tambahkan tombol "Tarik" dengan link ke file PHP yang menangani operasi tarik buku
-                echo "<form action='tarik_buku.php' method='post'>";
-                echo "<input type='hidden' name='peminjaman_id' value='" . $row['peminjaman_id'] . "'>";
-                echo "<button type='submit' class='btn-kembalikan'>Kembalikan</button>";
-                echo "</form>";
-                echo "</td>";
-                echo "</tr>";
-            }
-            ?>
+                                            // Tampilkan data peminjaman dalam tabel
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                echo "<tr>";
+                                                echo "<td>" . $row['nama_lengkap'] . "</td>"; // Menampilkan nama lengkap pengguna
+                                                echo "<td>" . $row['judul_buku'] . "</td>"; // Menampilkan judul buku
+                                                echo "<td>" . $row['tgl_pinjam'] . "</td>";
+                                                echo "<td>" . $row['status_pinjam'] . "</td>";
+                                                echo "<td>" . $row['tgl_kembali'] . "</td>";
+                                                echo "<td>";
+                                                // Tambahkan kelas CSS khusus jika status pinjam adalah 'Terlambat'
+                                                $buttonClass = $row['status_pinjam'] == 'Terlambat' ? 'btn-kembalikan-terlambat' : 'btn-kembalikan';
+                                                // Tambahkan tombol "Kembalikan" dengan kelas CSS yang sesuai
+                                                echo "<form action='tarik_buku.php' method='post'>";
+                                                echo "<input type='hidden' name='peminjaman_id' value='" . $row['peminjaman_id'] . "'>";
+                                                echo "<button type='submit' class='$buttonClass'>Kembalikan</button>";
+                                                echo "</form>";
+                                                echo "</td>";
+                                                echo "</tr>";
+                                            }
+                                     ?>
                                 </tbody>
                             </table>
                         </div>

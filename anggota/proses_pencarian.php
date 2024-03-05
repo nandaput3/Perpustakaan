@@ -20,7 +20,7 @@ if(isset($_POST['search'])) {
         $output .= '<p>Kategori: ' . $data['nama_kategori'] . '</p>';
         $output .= '</div>';
         $output .= '<div class="action-buttons">';
-        $output .= '<a href="proses_koleksi.php?buku_id=' . $data['buku_id'] . '" id="tambahKoleksi"><button type="button" class="btn btn-info"><i class="fas fa-bookmark"></i></button></a>';
+        $output .= '<a href="proses_koleksi.php?buku_id=' . $data['buku_id'] . '" id="tambahKoleksi"><button type="button" class="btn btn-info"><i class="fas fa-heart"></i></button></a>';
         $output .= '</div>';
         $output .= '</div>';
     }

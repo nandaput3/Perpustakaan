@@ -240,7 +240,7 @@ function getUsernameFromEmail($email) {
                             } else { 
                             ?>
                         <div class="alert alert-warning" role="alert">
-                            Belum ada koleksi
+                            Belum ada buku favorit
                         </div>
                         <?php 
                             } 

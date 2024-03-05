@@ -51,7 +51,124 @@ return strstr($email, '@', true); // Mengambil bagian sebelum '@'
     <!-- Custom styles for this template-->
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
 
+    <style>
+    .floating-notification {
+        position: fixed;
+        top: 20px;
+        /* Sesuaikan dengan posisi yang diinginkan */
+        right: 20px;
+        /* Sesuaikan dengan posisi yang diinginkan */
+        background-color: #ffffff;
+        border: 1px solid #cccccc;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 9999;
+    }
+
+    /* Placeholder ketika cover buku tidak tersedia */
+    .book-cover-placeholder {
+        width: 100%;
+        height: 200px;
+        background-color: #ccc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        font-size: 16px;
+        color: #666;
+    }
+
+
+    /* Container untuk buku */
+    .book-container-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        /* Untuk menjajar ke pinggir */
+        gap: 2em;
+        /* Untuk membuatnya berada di tengah */
+        max-width: 1200px;
+        /* Maksimum lebar container */
+    }
+
+    .book-container {
+        width: 200px;
+        margin-bottom: 20px;
+        /* Spasi antar kotak buku */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Cover buku */
+    .book-cover {
+        width: 100%;
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    /* Judul buku */
+    .book-title {
+        font-weight: bold;
+        font-size: 20px;
+        margin-bottom: 5px;
+        color: black;
+    }
+
+    /* Detail buku */
+    .book-details {
+        font-size: 14px;
+        color: #666;
+    }
+
+    /* Tombol aksi */
+    /* Tombol aksi */
+    .action-buttons {
+        display: flex;
+        /* Menyelaraskan tombol-tombol secara horizontal */
+        align-items: center;
+        /* Menyelaraskan tombol-tombol secara vertikal */
+        margin-top: 5px;
+    }
+
+    .action-buttons button {
+        padding: 5px 10px;
+        margin-right: 5px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        display: flex;
+        /* Membuat tombol menggunakan flexbox */
+        justify-content: center;
+        /* Menyelaraskan isi tombol di tengah secara horizontal */
+        align-items: center;
+        /* Menyelaraskan isi tombol di tengah secara vertikal */
+    }
+
+    /* Tombol Baca */
+    .action-buttons button.read {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .action-buttons button.read:hover {
+        background-color: #0056b3;
+    }
+
+
+
+    /* Tombol Pinjam */
+    </style>
 </head>
+
+
 
 <body id="page-top">
 
@@ -202,115 +319,6 @@ return strstr($email, '@', true); // Mengambil bagian sebelum '@'
                     <!-- Content Row -->
                     <div class="row">
 
-                        <!DOCTYPE html>
-                        <html lang="en">
-
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <title>Dashboard Pengguna</title>
-                            <style>
-                            .floating-notification {
-                                position: fixed;
-                                top: 20px;
-                                /* Sesuaikan dengan posisi yang diinginkan */
-                                right: 20px;
-                                /* Sesuaikan dengan posisi yang diinginkan */
-                                background-color: #ffffff;
-                                border: 1px solid #cccccc;
-                                padding: 10px;
-                                border-radius: 5px;
-                                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                                z-index: 9999;
-                            }
-
-                            /* Container untuk buku */
-                            .book-container-wrapper {
-                                display: flex;
-                                flex-wrap: wrap;
-                                justify-content: space-between;
-                                /* Untuk menjajar ke pinggir */
-                                gap: 2em;
-                                /* Untuk membuatnya berada di tengah */
-                                max-width: 1200px;
-                                /* Maksimum lebar container */
-                            }
-
-                            .book-container {
-                                width: 200px;
-                                margin-bottom: 20px;
-                                /* Spasi antar kotak buku */
-                                padding: 10px;
-                                border: 1px solid #ccc;
-                                border-radius: 8px;
-                                background-color: #f9f9f9;
-                                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                            }
-
-                            /* Cover buku */
-                            .book-cover {
-                                width: 100%;
-                                height: 200px;
-                                background-size: cover;
-                                background-position: center;
-                                border-radius: 5px;
-                                margin-bottom: 10px;
-                            }
-
-                            /* Judul buku */
-                            .book-title {
-                                font-weight: bold;
-                                font-size: 20px;
-                                margin-bottom: 5px;
-                                color: black;
-                            }
-
-                            /* Detail buku */
-                            .book-details {
-                                font-size: 14px;
-                                color: #666;
-                            }
-
-                            /* Tombol aksi */
-                            /* Tombol aksi */
-                            .action-buttons {
-                                display: flex;
-                                /* Menyelaraskan tombol-tombol secara horizontal */
-                                align-items: center;
-                                /* Menyelaraskan tombol-tombol secara vertikal */
-                                margin-top: 5px;
-                            }
-
-                            .action-buttons button {
-                                padding: 5px 10px;
-                                margin-right: 5px;
-                                border: none;
-                                border-radius: 3px;
-                                cursor: pointer;
-                                display: flex;
-                                /* Membuat tombol menggunakan flexbox */
-                                justify-content: center;
-                                /* Menyelaraskan isi tombol di tengah secara horizontal */
-                                align-items: center;
-                                /* Menyelaraskan isi tombol di tengah secara vertikal */
-                            }
-
-                            /* Tombol Baca */
-                            .action-buttons button.read {
-                                background-color: #007bff;
-                                color: #fff;
-                            }
-
-                            .action-buttons button.read:hover {
-                                background-color: #0056b3;
-                            }
-
-
-
-                            /* Tombol Pinjam */
-                            </style>
-                        </head>
-
                         <body>
 
                             <?php
@@ -360,12 +368,6 @@ $result = mysqli_query($koneksi, $sql);
                                 </div>
                                 <?php endwhile; ?>
                             </div>
-
-
-                        </body>
-
-                        </html>
-
 
 
 
@@ -447,8 +449,8 @@ $result = mysqli_query($koneksi, $sql);
 
     <script>
     $(document).ready(function() {
-        // Tangani klik pada tautan kategori
-        $('#dropdown-item').click(function(e) {
+        // Tangani klik pada semua tautan kategori
+        $('dropdown-item').click(function(e) {
             e.preventDefault(); // Mencegah tindakan default dari tautan
 
             // Ambil URL kategori dari tautan yang diklik
@@ -456,7 +458,7 @@ $result = mysqli_query($koneksi, $sql);
 
             // Lakukan permintaan AJAX untuk mendapatkan konten kategori
             $.ajax({
-                url: url,
+                url: "kategori.php",
                 type: 'GET',
                 success: function(response) {
                     // Ganti konten buku dengan konten kategori yang baru
@@ -469,7 +471,6 @@ $result = mysqli_query($koneksi, $sql);
         });
     });
     </script>
-
     <script>
     function bookmarkBuku(buku_id) {
         $.ajax({

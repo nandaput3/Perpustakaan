@@ -68,6 +68,10 @@
                         Buku</span></a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="data_peminjaman.php">
+                    <i class="fas fa-fw fa-file"></i> <span>Data Peminjam </span></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="laporan.php">
                     <i class="fas fa-fw fa-download"></i>
                     <span>Laporan </span></a>

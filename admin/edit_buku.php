@@ -1,3 +1,29 @@
+<?php
+include "koneksi.php";
+
+// Periksa apakah ID buku sudah disediakan melalui parameter URL
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+
+    // Query untuk mendapatkan data buku berdasarkan ID
+    $sql = "SELECT * FROM buku WHERE buku_id = $id";
+    $result = mysqli_query($koneksi, $sql);
+
+    // Periksa apakah data buku ditemukan
+    if (mysqli_num_rows($result) > 0) {
+        $data = mysqli_fetch_assoc($result);
+?>
+<!-- Konten HTML disini -->
+
+<?php
+    } else {
+        echo "<p>Data buku tidak ditemukan.</p>";
+    }
+} else {
+    echo "<p>ID buku tidak disediakan.</p>";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -75,9 +101,6 @@
                                     <form action="proses_edit_buku.php" method="POST">
                                         <input type="hidden" name="id" value="<?= $data['buku_id'] ?>">
 
-                                        <label for="cover">Cover:</label>
-                                        <input type="file" class="form-control" id="foto" name="image"
-                                            value="<?= $data['cover'] ?>">
 
                                         <div class="form-group">
                                             <label for="judul">Judul:</label>
