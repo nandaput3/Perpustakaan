@@ -96,6 +96,10 @@
                     <i class="fas fa-fw fa-file"></i> <span>Data Peminjam </span></a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="data_ulasan.php">
+                    <i class="fas fa-fw fa-comments"></i> <span>Ulasan</span></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="laporan.php">
                     <i class="fas fa-fw fa-download"></i>
                     <span>Laporan </span></a>

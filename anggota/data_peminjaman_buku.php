@@ -217,13 +217,12 @@ $result = mysqli_query($koneksi, $sql_kategori);
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <div class="row">
-                    <div class="col">
+                <div class="row justify-content-center mb-4">
+                    <div class="col-md-3 text-center">
 
                         <h4 class="float-left ml-3">Daftar Buku yang Dipinjam</h4>
                     </div>
                 </div>
-
 
 
 

@@ -199,11 +199,9 @@ function getUsernameFromEmail($email) {
             <!-- End of Topbar -->
             <!-- Begin Page Content -->
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col">
-                        <a class="btn btn-secondary btn-sm float-left mb-3" href="javascript:history.go(-1)">
-                            <i class="fas fa-arrow-left"></i>
-                        </a>
+                <div class=" row justify-content-center mb-4">
+                    <div class=" col-md-3 text-center">
+
                         <h4 class="float-left ml-3">Daftar Buku yang difavoritkan</h4>
                     </div>
                 </div>
