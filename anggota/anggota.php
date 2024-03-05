@@ -348,7 +348,7 @@ $result = mysqli_query($koneksi, $sql);
                                         if(mysqli_num_rows($queryselectedbookmark) === 0):
                                     ?>
                                     <div class="action-buttons">
-                                        <a href="#" class="btn btn-info btn-bookmark"
+                                        <a href="data_koleksi.php" class="btn btn-info btn-bookmark"
                                             data-buku-id="<?= $data['buku_id'] ?>"
                                             onclick="bookmarkBuku(<?= $data['buku_id'] ?>)"
                                             id="bookmark_button_<?= $data['buku_id'] ?>">
@@ -482,7 +482,7 @@ $result = mysqli_query($koneksi, $sql);
                 alert(response); // Tampilkan pesan dari server
                 // Setelah buku berhasil difavoritkan, perbarui daftar koleksi tanpa memuat ulang halaman
                 $.ajax({
-                    url: "data_koleksi.php",
+                    url: "anggota.php",
                     type: "GET",
                     success: function(response) {
                         // Ganti konten dengan daftar koleksi yang baru
@@ -526,55 +526,9 @@ $result = mysqli_query($koneksi, $sql);
 
 
 
-    <script>
-    function disableButton(button) {
-        // Mendapatkan data ID buku dari atribut data
-        var bukuId = button.getAttribute('data-id');
-
-        // Kirim AJAX request untuk memeriksa apakah buku sudah dipinjam
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'check_peminjaman.php?buku_id=' + bukuId, true);
-
-        // Ketika respons dari server diterima
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                // Jika buku sudah dipinjam, nonaktifkan tombol
-                if (xhr.responseText === 'dipinjam') {
-                    button.disabled = true;
-                    alert('Buku ini sudah dipinjam.');
-                }
-            }
-        };
-
-        // Mengirim request
-        xhr.send();
-    }
-    </script>
 
 
-    <script>
-    $(document).ready(function() {
-        var buku_id;
 
-        // Event listener for clicking pinjam button
-        $('.pinjam-btn').click(function() {
-            buku_id = $(this).data('id'); // Get book ID
-
-            // Lakukan permintaan AJAX untuk mendapatkan data peminjaman
-            $.ajax({
-                url: 'data_peminjaman.php?buku_id=' + buku_id,
-                type: 'GET',
-                success: function(response) {
-                    // Ganti konten dengan data peminjaman yang diperoleh dari server
-                    $('#content').html(response);
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
-            });
-        });
-    });
-    </script>
 
     <!-- Bootstrap core JavaScript-->
     <script src="assets/vendor/jquery/jquery.min.js"></script>

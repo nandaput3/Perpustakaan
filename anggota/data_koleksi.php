@@ -177,12 +177,16 @@ function getUsernameFromEmail($email) {
                             </a>
                             <a class="dropdown-item" href="data_koleksi.php">
                                 <i class="fas fa-heart fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Koleksi
-                            </a>
+                                Favorit </a>
                             <a class="dropdown-item" href="data_peminjaman_buku.php">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Peminjaman
                             </a>
+                            <a class="dropdown-item" href="riwayat_peminjaman.php">
+                                <i class="fas fa-clock fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Riwayat Buku
+                            </a>
+
                             <a class="dropdown-item" href="../logout.php" data-toggle="modal"
                                 data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -200,7 +204,7 @@ function getUsernameFromEmail($email) {
                         <a class="btn btn-secondary btn-sm float-left mb-3" href="javascript:history.go(-1)">
                             <i class="fas fa-arrow-left"></i>
                         </a>
-                        <h4 class="float-left ml-3">Daftar Buku yang Dipinjam</h4>
+                        <h4 class="float-left ml-3">Daftar Buku yang difavoritkan</h4>
                     </div>
                 </div>
                 <!-- Content Row -->

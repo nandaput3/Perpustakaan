@@ -45,53 +45,9 @@ $bulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('Y-m');
     <!-- Custom styles for this template-->
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
     <style>
-    .bg-gradient-primary {
-        background-color: #164863;
-        background-image: linear-gradient(180deg, #164863 10%, #164863 100%);
-        background-size: cover;
-    }
-
-    .sidebar {
-        background-color: #164863;
-    }
-
-    .btn-primary1:hover {
-        background-color: #427D9D;
-        border-color: #427D9D;
-        color: #000000;
-    }
-
-    .btn-primary1 {
-        background-color: #164863;
-        border-color: #164863;
-        transition: background-color 0.3s ease;
-        color: #ffffff;
-    }
-
     .btn-primary:hover {
         background-color: #427D9D;
         border-color: #427D9D;
-    }
-
-    .btn-primary {
-        background-color: #164863;
-        border-color: #164863;
-        transition: background-color 0.3s ease;
-        color: #ffffff;
-    }
-
-    .btn-primary2:hover {
-        background-color: #0174BE;
-        border-color: #0174BE;
-        color: #ffffff;
-    }
-
-    .btn-primary2 {
-        background-color: #3559E0;
-        border-color: #3559E0;
-        transition: background-color 0.3s ease;
-        color: #ffffff;
-        font-size: 14px;
     }
 
     .nav-link {
@@ -103,8 +59,6 @@ $bulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('Y-m');
         margin-right: 10px;
     }
 
-
-    /* css tambahan */
     body {
         font-family: Arial, sans-serif;
         background-color: #f8f9fa;

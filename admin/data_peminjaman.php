@@ -27,43 +27,104 @@
 
     <!-- Custom styles for this template-->
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        /* Anda dapat menyesuaikan margin sesuai kebutuhan */
+    }
+
+
+    .pagination button {
+        background-color: #4CAF50;
+        /* Warna latar belakang */
+        border: none;
+        /* Tanpa border */
+        color: white;
+        /* Warna teks */
+        padding: 8px 16px;
+        /* Padding tombol */
+        text-align: center;
+        /* Posisi teks di tengah tombol */
+        text-decoration: none;
+        /* Tanpa dekorasi teks */
+        display: inline-block;
+        /* Menjadikan tombol sebagai blok inline */
+        margin: 4px 2px;
+        /* Margin antara tombol */
+        cursor: pointer;
+        /* Ubah kursor saat mengarah ke tombol */
+        border-radius: 4px;
+        /* Bulatan sudut tombol */
+    }
+
+    .pagination button:hover {
+        background-color: #45a049;
+        /* Warna latar belakang saat tombol dihover */
+    }
+
+    .pagination button.active {
+        background-color: #007bff;
+        /* Warna latar belakang untuk halaman aktif */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    th {
+        background-color: grey;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #fff;
+    }
+
+    tr:hover {
+        background-color: #ddd;
+    }
+
+    .table-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px auto;
+        width: 100%;
+    }
+
+
+    /* Perubahan pada tombol "Kembalikan" */
+    .btn-kembalikan {
+        background-color: #007bff;
+        /* Warna latar belakang menggunakan warna primary */
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .btn-kembalikan:hover {
+        background-color: #0056b3;
+        /* Warna latar belakang saat tombol dihover */
+    }
+    </style>
+
 
 </head>
-<style>
-.pagination button {
-    background-color: #4CAF50;
-    /* Warna latar belakang */
-    border: none;
-    /* Tanpa border */
-    color: white;
-    /* Warna teks */
-    padding: 8px 16px;
-    /* Padding tombol */
-    text-align: center;
-    /* Posisi teks di tengah tombol */
-    text-decoration: none;
-    /* Tanpa dekorasi teks */
-    display: inline-block;
-    /* Menjadikan tombol sebagai blok inline */
-    margin: 4px 2px;
-    /* Margin antara tombol */
-    cursor: pointer;
-    /* Ubah kursor saat mengarah ke tombol */
-    border-radius: 4px;
-    /* Bulatan sudut tombol */
-}
-
-.pagination button:hover {
-    background-color: #45a049;
-    /* Warna latar belakang saat tombol dihover */
-}
-
-.pagination button.active {
-    background-color: #007bff;
-    /* Warna latar belakang untuk halaman aktif */
-}
-</style>
-
 
 
 <body id="page-top">
@@ -168,37 +229,7 @@
 
                     <!-- Topbar Search -->
 
-                    <ul class="navbar-nav ml-auto">
 
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-
-                        <!-- Nav Item - Alerts -->
-
-
-
-                    </ul>
 
                 </nav>
                 <!-- End of Topbar -->
@@ -212,55 +243,20 @@
                     <!-- Content Row -->
                     <div class="row">
 
-                        <!DOCTYPE html>
-                        <html lang="en">
 
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <title>Data Peminjaman</title>
 
-                            <style>
-                            table {
-                                width: 100%;
-                                border-collapse: collapse;
-                                margin-top: 20px;
-                            }
 
-                            th,
-                            td {
-                                padding: 10px;
-                                border: 1px solid #ddd;
-                                text-align: center;
-                            }
-
-                            th {
-                                background-color: grey;
-                                color: white;
-                            }
-
-                            tr:nth-child(even) {
-                                background-color: #fff;
-                            }
-
-                            tr:hover {
-                                background-color: #ddd;
-                            }
-                            </style>
-                        </head>
-
-                        <body>
-                            <h1>Data Peminjaman</h1>
-                            <table>
+                        <h1>Data Peminjaman</h1>
+                        <div class="container">
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th>Nama Lengkap</th>
-                                        <th> Buku</th>
+                                        <th>Buku</th>
                                         <th>Tanggal Pinjam</th>
                                         <th>Status Pinjam</th>
                                         <th>Tanggal Kembali</th>
                                         <th>Aksi</th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -285,32 +281,22 @@
                 // Tambahkan tombol "Tarik" dengan link ke file PHP yang menangani operasi tarik buku
                 echo "<form action='tarik_buku.php' method='post'>";
                 echo "<input type='hidden' name='peminjaman_id' value='" . $row['peminjaman_id'] . "'>";
-                echo "<button type='submit' class='btn-tarik'>Kembalikan</button>";
+                echo "<button type='submit' class='btn-kembalikan'>Kembalikan</button>";
                 echo "</form>";
                 echo "</td>";
                 echo "</tr>";
             }
             ?>
                                 </tbody>
-
                             </table>
-                        </body>
-
-                        </html>
+                        </div>
 
 
                     </div>
 
                     <!-- Content Row -->
 
-                    <div class="row">
 
-                        <!-- Area Chart -->
-
-
-                        <!-- Pie Chart -->
-
-                    </div>
 
                     <!-- Content Row -->
                     <div class="row">
@@ -397,12 +383,99 @@
                 },
                 error: function(xhr, status, error) {
                     // Tangani kesalahan jika ada
-                    console.error(error); // Tampilkan pesan kesalahan dalam konsol browser
+                    console.error(
+                        error); // Tampilkan pesan kesalahan dalam konsol browser
                 }
             });
         });
     });
     </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const tables = document.querySelectorAll("table");
+
+        // Inisialisasi paginasi di luar perulangan
+        const paginationContainers = [];
+
+        tables.forEach(function(table) {
+            const rows = table.querySelectorAll("tbody tr");
+            const rowsPerPage = 10;
+            let numPages = Math.ceil(rows.length / rowsPerPage);
+            let currentPage = 1;
+
+            function showPage(page) {
+                rows.forEach(function(row) {
+                    row.style.display = "none";
+                });
+
+                const startIndex = (page - 1) * rowsPerPage;
+                const endIndex = Math.min(startIndex + rowsPerPage, rows.length);
+                for (let i = startIndex; i < endIndex; i++) {
+                    rows[i].style.display = "table-row";
+                }
+            }
+
+            function renderPagination() {
+                const paginationContainer = paginationContainers[table.dataset.paginationIndex];
+
+                // Bersihkan paginasi sebelum menambahkan tombol-tombol baru
+                paginationContainer.innerHTML = '';
+
+                const prevButton = document.createElement("button");
+                prevButton.textContent = "Prev";
+                prevButton.addEventListener("click", function() {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        showPage(currentPage);
+                        renderPagination();
+                    }
+                });
+                paginationContainer.appendChild(prevButton);
+
+                for (let i = 1; i <= numPages; i++) {
+                    const pageButton = document.createElement("button");
+                    pageButton.textContent = i;
+                    pageButton.addEventListener("click", function() {
+                        currentPage = i;
+                        showPage(currentPage);
+                        renderPagination();
+                    });
+                    paginationContainer.appendChild(pageButton);
+                    if (i !== currentPage) {
+                        pageButton.style.display = "none";
+                    }
+                }
+
+                const nextButton = document.createElement("button");
+                nextButton.textContent = "Next";
+                nextButton.addEventListener("click", function() {
+                    if (currentPage < numPages) {
+                        currentPage++;
+                        showPage(currentPage);
+                        renderPagination();
+                    }
+                });
+                paginationContainer.appendChild(nextButton);
+            }
+
+            showPage(currentPage);
+
+            // Tambahkan elemen paginasi ke dalam array paginationContainers
+            const newPaginationContainer = document.createElement("div");
+            newPaginationContainer.classList.add("pagination");
+            paginationContainers.push(newPaginationContainer);
+
+            // Tambahkan nomor indeks paginasi sebagai atribut data
+            table.dataset.paginationIndex = paginationContainers.length - 1;
+
+            // Tempatkan elemen paginasi setelah tabel
+            table.parentNode.insertBefore(newPaginationContainer, table.nextSibling);
+
+            renderPagination();
+        });
+    });
+    </script>
+
     <!-- Bootstrap core JavaScript-->
     <script src="assets/vendor/jquery/jquery.min.js"></script>
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -419,91 +492,7 @@
     <!-- Page level custom scripts -->
     <script src="assets/vendor/js/demo/chart-area-demo.js"></script>
     <script src="assets/vendor/js/demo/chart-pie-demo.js"></script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const tables = document.querySelectorAll("table"); // Pilih semua tabel
 
-        tables.forEach(function(table) {
-            const rows = table.querySelectorAll("tbody tr"); // Pilih semua baris dalam tabel
-            const rowsPerPage = 10; // Tentukan jumlah baris per halaman
-            const numPages = Math.ceil(rows.length / rowsPerPage); // Hitung jumlah halaman
-
-            let currentPage = 1; // Halaman saat ini
-
-            // Fungsi untuk menampilkan baris sesuai dengan halaman yang dipilih
-            function showPage(page) {
-                // Sembunyikan semua baris
-                rows.forEach(function(row) {
-                    row.style.display = "none";
-                });
-
-                // Tampilkan baris yang sesuai dengan halaman yang dipilih
-                const startIndex = (page - 1) * rowsPerPage;
-                const endIndex = startIndex + rowsPerPage;
-                for (let i = startIndex; i < endIndex && i < rows.length; i++) {
-                    rows[i].style.display = "table-row";
-                }
-            }
-
-            // Inisialisasi tampilan untuk halaman pertama
-            showPage(currentPage);
-
-            // Fungsi untuk menampilkan navigasi current slide
-            function renderPagination() {
-                const paginationContainer = document.createElement("div");
-                paginationContainer.classList.add("pagination");
-
-                // Tambahkan tombol prev
-                const prevButton = document.createElement("button");
-                prevButton.textContent = "Prev";
-                prevButton.addEventListener("click", function() {
-                    if (currentPage > 1) {
-                        currentPage--;
-                        showPage(currentPage);
-                        renderPagination();
-                    }
-                });
-                paginationContainer.appendChild(prevButton);
-
-                // Tambahkan nomor halaman
-                for (let i = 1; i <= numPages; i++) {
-                    const pageButton = document.createElement("button");
-                    pageButton.textContent = i;
-                    pageButton.addEventListener("click", function() {
-                        currentPage = i;
-                        showPage(currentPage);
-                        renderPagination();
-                    });
-                    paginationContainer.appendChild(pageButton);
-                    if (i !== currentPage) {
-                        pageButton.style.display = "none"; // Sembunyikan nomor halaman yang tidak aktif
-                    }
-                }
-
-                // Tambahkan tombol next
-                const nextButton = document.createElement("button");
-                nextButton.textContent = "Next";
-                nextButton.addEventListener("click", function() {
-                    if (currentPage < numPages) {
-                        currentPage++;
-                        showPage(currentPage);
-                        renderPagination();
-                    }
-                });
-                paginationContainer.appendChild(nextButton);
-
-                // Sisipkan navigasi ke dalam dokumen
-                const parent = table.parentNode;
-                parent.insertBefore(paginationContainer, table.nextSibling);
-                paginationContainer.style.textAlign = "center"; // Posisikan di tengah tabel
-                paginationContainer.style.marginTop = "10px"; // Beri margin atas
-            }
-
-            // Render navigasi current slide
-            renderPagination();
-        });
-    });
-    </script>
 
 </body>
 

@@ -197,6 +197,11 @@ $result = mysqli_query($koneksi, $sql_kategori);
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Peminjaman
                             </a>
+                            <a class="dropdown-item" href="riwayat_peminjaman.php">
+                                <i class="fas fa-clock fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Riwayat Buku
+                            </a>
+
                             <a class="dropdown-item" href="../logout.php" data-toggle="modal"
                                 data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -214,9 +219,7 @@ $result = mysqli_query($koneksi, $sql_kategori);
                 <!-- Page Heading -->
                 <div class="row">
                     <div class="col">
-                        <a class="btn btn-secondary btn-sm float-left mb-3" href="javascript:history.go(-2)">
-                            <i class="fas fa-arrow-left"></i>
-                        </a>
+
                         <h4 class="float-left ml-3">Daftar Buku yang Dipinjam</h4>
                     </div>
                 </div>
@@ -289,7 +292,6 @@ $result = mysqli_query($koneksi, $sql_kategori);
                     $result_borrowed = mysqli_query($koneksi, $query_pinjam);
                     
                     if(mysqli_num_rows($result_borrowed) > 0):
-                        echo "<p>Status: Sedang Dipinjam</p>";
                         echo "<button onclick='kembalikanBuku($peminjaman_id); redirectToBeranda();' class='btn btn-danger'>Kembalikan</button>";
                         echo "<script>
                                 function redirectToBeranda() {
