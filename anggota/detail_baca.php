@@ -207,7 +207,7 @@ if ($buku_id > 0) {
         <?php if (!empty($data)) : ?>
         <div class="card">
             <!-- X button -->
-            <div style="position: absolute; top: 10px; right: 10px;">
+            <div style=" top: 10px; ">
                 <a href="anggota.php" style="text-decoration: none; color: red;">X</a>
             </div>
             <img src="<?= isset($data['cover']) ? htmlspecialchars($data['cover']) : '' ?>"

@@ -2,21 +2,19 @@
     include "koneksi.php";
 
     // Query untuk mengambil data peminjaman dari database dengan nama lengkap pengguna
-    $sqlPeminjaman = "SELECT peminjaman.*, user.nama_lengkap AS nama_lengkap, buku.judul AS judul_buku
-                    FROM peminjaman 
-                    INNER JOIN buku ON peminjaman.buku_id = buku.buku_id 
-                    INNER JOIN user ON peminjaman.user_id = user.user_id";
+    $sql = "SELECT peminjaman.*, user.nama_lengkap AS nama_lengkap, buku.judul AS judul_buku
+            FROM peminjaman 
+            INNER JOIN buku ON peminjaman.buku_id = buku.buku_id 
+            INNER JOIN user ON peminjaman.user_id = user.user_id";
 
-    $resultPeminjaman = mysqli_query($koneksi, $sqlPeminjaman);
+    // Filter berdasarkan tanggal jika ada
+    if(isset($_GET['tgl_pinjam']) && isset($_GET['tgl_kembali'])) {
+        $tgl_pinjam = $_GET['tgl_pinjam'];
+        $tgl_kembali = $_GET['tgl_kembali'];
+        $sql .= " WHERE tgl_pinjam BETWEEN '$tgl_pinjam' AND '$tgl_kembali'";
+    }
 
-    // Query untuk menghitung jumlah buku yang sudah melewati batas tanggal pengembalian
-    $sqlBukuTerlambat = "SELECT COUNT(*) AS total_buku FROM peminjaman WHERE status_pinjam = 'Terlambat'";
-
-    $resultBukuTerlambat = mysqli_query($koneksi, $sqlBukuTerlambat);
-
-    // Ekstrak jumlah buku yang sudah melewati batas tanggal pengembalian dari hasil query
-    $rowBukuTerlambat = mysqli_fetch_assoc($resultBukuTerlambat);
-    $total_buku = $rowBukuTerlambat['total_buku'];
+    $result = mysqli_query($koneksi, $sql);
 ?>
 
 <!DOCTYPE html>
@@ -41,13 +39,14 @@
     <!-- Custom styles for this template-->
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
     <style>
+    /* Tempelkan CSS yang disediakan di atas di sini */
+
     .pagination {
         display: flex;
         justify-content: center;
         margin-top: 20px;
         /* Anda dapat menyesuaikan margin sesuai kebutuhan */
     }
-
 
     .pagination button {
         background-color: #4CAF50;
@@ -114,7 +113,6 @@
         width: 100%;
     }
 
-
     /* Perubahan pada tombol "Kembalikan" */
     .btn-kembalikan {
         background-color: #007bff;
@@ -153,6 +151,57 @@
     .btn-kembalikan-terlambat:hover {
         background-color: #c82333;
         /* Warna merah yang sedikit lebih gelap saat tombol dihover */
+    }
+
+    /* Gaya untuk formulir */
+    .form-container {
+        margin: 20px auto;
+        max-width: 400px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    /* Gaya untuk label */
+    .form-container label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    /* Gaya untuk input dan textarea */
+    .form-container input[type="text"],
+    .form-container input[type="email"],
+    .form-container input[type="date"],
+    .form-container textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        /* Pastikan padding tidak mempengaruhi lebar input */
+    }
+
+    /* Gaya untuk tombol */
+    .form-container button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .form-container button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Gaya untuk pesan kesalahan */
+    .error-message {
+        color: #dc3545;
+        margin-top: 5px;
+        font-size: 14px;
     }
     </style>
 
@@ -215,7 +264,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="data_peminjaman.php">
-                    <i class="fas fa-fw fa-file"></i> <span>Data Peminjam </span></a>
+                    <i class="fas fa-fw fa-file"></i> <span>Data Peminjaman </span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="data_ulasan.php">
@@ -277,6 +326,13 @@
                     <!-- Page Heading -->
 
                     <h1 class="h3 mb-4 text-gray-800">Data Peminjaman</h1>
+                    <form-filter method="GET" action="filter_peminjaman.php">
+                        <label for="tgl_pinjam">Tanggal Mulai:</label>
+                        <input type="date" id="tgl_pinjam" name="tgl_pinjam">
+                        <label for="tgl_kembali">Tanggal Selesai:</label>
+                        <input type="date" id="tgl_kembali" name="tgl_kembali">
+                        <button type="submit">Filter</button>
+                    </form-filter>
 
                     <!-- Content Row -->
                     <div class="row">
@@ -300,34 +356,26 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                                // Query untuk mengambil data peminjaman dari database dengan nama lengkap pengguna
-                                                $sql = "SELECT peminjaman.*, user.nama_lengkap AS nama_lengkap, buku.judul AS judul_buku
-                                                        FROM peminjaman 
-                                                        INNER JOIN buku ON peminjaman.buku_id = buku.buku_id 
-                                                        INNER JOIN user ON peminjaman.user_id = user.user_id";
-
-                                                $result = mysqli_query($koneksi, $sql);
-
-                                            // Tampilkan data peminjaman dalam tabel
-                                            while ($row = mysqli_fetch_assoc($result)) {
-                                                echo "<tr>";
-                                                echo "<td>" . $row['nama_lengkap'] . "</td>"; // Menampilkan nama lengkap pengguna
-                                                echo "<td>" . $row['judul_buku'] . "</td>"; // Menampilkan judul buku
-                                                echo "<td>" . $row['tgl_pinjam'] . "</td>";
-                                                echo "<td>" . $row['status_pinjam'] . "</td>";
-                                                echo "<td>" . $row['tgl_kembali'] . "</td>";
-                                                echo "<td>";
-                                                // Tambahkan kelas CSS khusus jika status pinjam adalah 'Terlambat'
-                                                $buttonClass = $row['status_pinjam'] == 'Terlambat' ? 'btn-kembalikan-terlambat' : 'btn-kembalikan';
-                                                // Tambahkan tombol "Kembalikan" dengan kelas CSS yang sesuai
-                                                echo "<form action='tarik_buku.php' method='post'>";
-                                                echo "<input type='hidden' name='peminjaman_id' value='" . $row['peminjaman_id'] . "'>";
-                                                echo "<button type='submit' class='$buttonClass'>Kembalikan</button>";
-                                                echo "</form>";
-                                                echo "</td>";
-                                                echo "</tr>";
-                                            }
-                                     ?>
+// Tampilkan data peminjaman dalam tabel
+while ($row = mysqli_fetch_assoc($result)) {
+    echo "<tr>";
+    echo "<td>" . $row['nama_lengkap'] . "</td>"; // Menampilkan nama lengkap pengguna
+    echo "<td>" . $row['judul_buku'] . "</td>"; // Menampilkan judul buku
+    echo "<td>" . $row['tgl_pinjam'] . "</td>";
+    echo "<td>" . $row['status_pinjam'] . "</td>";
+    echo "<td>" . $row['tgl_kembali'] . "</td>";
+    echo "<td>";
+    // Tambahkan kelas CSS khusus jika status pinjam adalah 'Terlambat'
+    $buttonClass = $row['status_pinjam'] == 'Terlambat' ? 'btn-kembalikan-terlambat' : 'btn-kembalikan';
+    // Tambahkan tombol "Kembalikan" dengan kelas CSS yang sesuai
+    echo "<form action='tarik_buku.php' method='post'>";
+    echo "<input type='hidden' name='peminjaman_id' value='" . $row['peminjaman_id'] . "'>";
+    echo "<button type='submit' class='$buttonClass'>Kembalikan</button>";
+    echo "</form>";
+    echo "</td>";
+    echo "</tr>";
+}
+?>
                                 </tbody>
                             </table>
                         </div>
@@ -403,6 +451,35 @@
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('form-filter').submit(function(e) {
+            e.preventDefault(); // Menghentikan pengiriman formulir default
+
+            // Ambil nilai tanggal mulai dan tanggal selesai dari formulir
+            var tgl_pinjam = $('#tgl_pinjam').val();
+            var tgl_kembali = $('#tgl_kembali').val();
+
+            // Kirim data formulir menggunakan AJAX
+            $.ajax({
+                type: 'GET',
+                url: 'filter_peminjaman.php', // Ganti dengan URL ke file pemrosesan filter Anda
+                data: {
+                    tgl_pinjam: tgl_pinjam,
+                    tgl_kembali: tgl_kembali
+                }, // Kirim data tanggal mulai dan tanggal selesai
+                success: function(response) {
+                    // Ganti isi tabel dengan hasil filter yang diterima dari server
+                    $('.container table').replaceWith(response);
+                },
+                error: function(xhr, status, error) {
+                    // Tangani kesalahan jika ada
+                    console.error(error); // Tampilkan pesan kesalahan dalam konsol browser
+                }
+            });
+        });
+    });
+    </script>
 
     <script>
     $(document).ready(function() {
@@ -431,6 +508,7 @@
         });
     });
     </script>
+
     <script>
     document.addEventListener("DOMContentLoaded", function() {
         const tables = document.querySelectorAll("table");

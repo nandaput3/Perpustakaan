@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 06, 2024 at 01:54 AM
+-- Generation Time: Mar 07, 2024 at 12:30 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -48,8 +48,8 @@ CREATE TABLE `buku` (
 
 INSERT INTO `buku` (`buku_id`, `perpus_id`, `judul`, `sinopsis`, `cover`, `pdf_path`, `penulis`, `penerbit`, `tahun_terbit`, `kategori_id`, `stok`, `created_at`) VALUES
 (113, 1, 'Ubur Ubur Lembur', 'Hal kedua yang gue nggak sempat kasih tahu Iman: jadi orang yang dikenal publik harus tahan dengan asumsi-asumsi orang. Misalnya, orang-orang penuh dengan asumsi yang salah. Gue kurusan dikit, dikomentarin orang yang baru ketemu, ‘Bang Radit, kurusan, deh. Buat film baru, ya?’ Gue geleng, ‘Enggak.’ Gue bilang, ‘Emang lagi diet aja.’ Dia malah balas bilang, ‘Ah, bohong! Paling abis putus cinta, kan?’  Giliran gue potong rambut botak, ada orang yang ketemu gue di mall nanya, ‘Wah botak sekarang? Lagi shooting Tuyul dan Mbak Yul Reborn, ya, Bang?’ Kalau udah gitu gue cuma terkekeh sambil jawab, ‘Enggak, lagi cosplay jadi kacang Sukro, nih.’', '../asset/WhatsApp Image 2024-02-28 at 19.21.30.jpeg', '../pdf/Ubur-Ubur Lembur (Raditya Dika) (Z-Library).pdf', 'Raditya Dika', 'Gramedia', '2018-02-07', 3, '5', '2024-03-05 17:06:44'),
-(115, 1, 'Kambing Jantan', 'Setelah lulus SMU, Dika dilanda kebimbangan soal jurusan kuliah dan kampus yang akan dipilihnya. Ayahnya ingin Dika kuliah kedokteran di Kampus Indonesia, sedangkan ibunya ingin ia kuliah jurusan finance di Australia.   Setelah melewati berbagai pertimbangan, diperoleh hasil kalau Dika harus kuliah finance di Australia. Sebenarnya, keputusan ini sangat tidak sesuai dengan minat Dika. Terlebih, hijrah ke Australia membuatnya harus berpisah jarak dan waktu dengan pacarnya, Kebo. Baik Dika mapun Kebo, keduanya sama-sama tidak siap untuk LDR. Dan benar saja, hubungan jarak jauh membuat pengeluaran keduanya menjadi lebih besar, komunikasi terganggu, dan perbedaan pemikiran di antara mereka.   Masalah tak hanya sampai di situ, Dika yang terpaksa kuliah di jurusan finance juga merasa sulit untuk mencerna pelajaran. Untungnya, ia memiliki teman yang juga berasal dari Indonesia tepatnya Kediri yaitu Hariyanto (Edric Tjandra), yang menjadi tempat curhat sekaligus membantunya menjalani hari-hari ', '../asset/WhatsApp Image 2024-02-28 at 19.21.31.jpeg', '../pdf/Kambing Jantan by Raditya Dika (z-lib.org).pdf', 'Raditya Dika', 'Gramedia', '2005-02-08', 1, '5', '2024-03-05 17:06:52'),
-(117, 1, 'Koala Kumal', 'Dika (Raditya Dika) baru saja batal menikah, karena pacarnya, Andrea (Acha Septriasa), selingkuh dengan James (Nino Fernandez). Patah hatinya membuat Dika kesulitan menulis bab terakhir bukunya. Suatu hari, Dika bertemu dengan Trisna (Sheryl Sheinafia), cewek unik yang menolong Dika dari perjodohan kacau sang Mama Dika (Cut Mini Theo) dan yang akan membuat pandangan Dika terhadap dunia menjadi berbeda.  Dika pun pergi bersama Trisna. Mereka menjadi semakin akrab. Trisna yang berniat membantu Dika menyelesaikan bab terakhir bukunya, menemukan alasannya: Dika masih patah hati. Trisna mencoba membuat Dika berhenti patah hati. Trisna menyuruh Dika melakukan balas dendam kepada Andrea', '../asset/WhatsApp Image 2024-02-28 at 19.21.30 (2).jpeg', '../pdf/Koala Kumal by Raditya Dika (z-lib.org).pdf', 'Raditya Dika', 'Gramedia', '2024-03-04', 1, '4', '2024-03-05 17:07:46'),
+(115, 1, 'Kambing Jantan', 'Setelah lulus SMU, Dika dilanda kebimbangan soal jurusan kuliah dan kampus yang akan dipilihnya. Ayahnya ingin Dika kuliah kedokteran di Kampus Indonesia, sedangkan ibunya ingin ia kuliah jurusan finance di Australia.   Setelah melewati berbagai pertimbangan, diperoleh hasil kalau Dika harus kuliah finance di Australia. Sebenarnya, keputusan ini sangat tidak sesuai dengan minat Dika. Terlebih, hijrah ke Australia membuatnya harus berpisah jarak dan waktu dengan pacarnya, Kebo. Baik Dika mapun Kebo, keduanya sama-sama tidak siap untuk LDR. Dan benar saja, hubungan jarak jauh membuat pengeluaran keduanya menjadi lebih besar, komunikasi terganggu, dan perbedaan pemikiran di antara mereka.   Masalah tak hanya sampai di situ, Dika yang terpaksa kuliah di jurusan finance juga merasa sulit untuk mencerna pelajaran. Untungnya, ia memiliki teman yang juga berasal dari Indonesia tepatnya Kediri yaitu Hariyanto (Edric Tjandra), yang menjadi tempat curhat sekaligus membantunya menjalani hari-hari ', '../asset/WhatsApp Image 2024-02-28 at 19.21.31.jpeg', '../pdf/Kambing Jantan by Raditya Dika (z-lib.org).pdf', 'Raditya Dika', 'Gramedia', '2005-02-08', 1, '4', '2024-03-06 20:50:38'),
+(117, 1, 'Koala Kumal', 'Dika (Raditya Dika) baru saja batal menikah, karena pacarnya, Andrea (Acha Septriasa), selingkuh dengan James (Nino Fernandez). Patah hatinya membuat Dika kesulitan menulis bab terakhir bukunya. Suatu hari, Dika bertemu dengan Trisna (Sheryl Sheinafia), cewek unik yang menolong Dika dari perjodohan kacau sang Mama Dika (Cut Mini Theo) dan yang akan membuat pandangan Dika terhadap dunia menjadi berbeda.  Dika pun pergi bersama Trisna. Mereka menjadi semakin akrab. Trisna yang berniat membantu Dika menyelesaikan bab terakhir bukunya, menemukan alasannya: Dika masih patah hati. Trisna mencoba membuat Dika berhenti patah hati. Trisna menyuruh Dika melakukan balas dendam kepada Andrea', '../asset/WhatsApp Image 2024-02-28 at 19.21.30 (2).jpeg', '../pdf/Koala Kumal by Raditya Dika (z-lib.org).pdf', 'Raditya Dika', 'Gramedia', '2024-03-04', 1, '4', '2024-03-06 22:10:42'),
 (119, 1, 'Danur', 'Risa (Prilly Latuconsina) adalah seorang gadis indigo — dia memiliki kemampuan untuk melihat makhluk gaib. Sejak kecil, Risa menjalani hidup kesepian: ayahnya bekerja di luar negeri dan hanya berkunjung enam bulan sekali, sementara ibunya, Elly (Kinaryosih), bekerja sebagai seorang guru. Ketika Risa (Asha Kenyeri Bermudez) genap usia delapan tahun, dia berharap dikaruniai teman. Tak disangka, tiga bocah laki-laki sebayanya: Janshen, Peter, dan William hadir secara tiba-tiba. Anehnya, hanya Risa yang dapat melihat mereka. Mereka akhirnya mengungkapkan bahwa mereka adalah hantu orang Indo yang mati saat masa pendudukan Jepang di Hindia Belanda. Muak dengan keanehan yang dialami Risa, Elly memanggil Asep, seorang dukun yang juga memiliki indra indigo. Dia menjelaskan bahwa Risa dapat melihat makhluk gaib karena dia dapat mencium bau danur, atau mayat. Asep memperlihatkan wujud asli Janshen (Kevin Bzezovski Taroreh), Peter (Gama Haritz), dan William (Emiliano Fernando Cortizo) kepada Risa ', '../asset/WhatsApp Image 2024-03-04 at 11.21.13.jpeg', '../pdf/danur.pdf', 'Risa Rasaswati', 'Bukune', '2017-03-30', 4, '4', '2024-03-05 17:07:57'),
 (121, 1, 'Breaking Dawn', 'Setelah ia berhasil meneguhkan pilihan antara Edward dan Jacob, Bella akhirnya menyetujui persyaratan yang diajukan Edward apabila ia ingin menjadi mahluk immortal seperti Edward dan keluarga Cullen lainnya, yaitu menikah dengan Edward. Hanya berselang beberapa bulan setelah upacara kelulusan, Edward dan Bella pun menikah. Seluruh persiapan pra-pernikahan disiapkan dan diatur sedemikian rupa oleh Alice, seluruh keluarga Cullen berbahagia untuk Edward dan Bella, bahkan Rosalie yang dulu membenci Bella kini sudah bisa menerima Bella dengan tangan terbuka.', '../asset/WhatsApp Image 2024-02-28 at 19.21.32.jpeg', '../pdf/assetBreaking Dawn (Awal yang Baru) (Stephenie Meyer) (Z-Library).pdf', 'Stephenie Meyer', 'Little, Brown and Company', '2008-03-08', 3, '5', '2024-03-05 17:13:27'),
 (122, 1, 'Grey dan Jingga', '\"Cinta itu seperti panggung teater... Di sana kita akan berperan menjadi karakter yang mengisi satu sama lain. Kita biarkan segenap emosi mengalir bersama kisahnya... Dan ketika panggung berakhir, kita akan sadar bahwa kita sendirilah sutradara yang sesungguhnya; yang pandai mendramatisasi dan terbuai sendiri di dalam emosi, sementara kenyataan tetap wajar apa adanya.\" Grey & Jingga adalah sebuah komik yang berawal di Facebook penulisnya dan menerbitkan satu halaman comic strip setiap hari Senin dan Kamis. Komik ini berkisah tentang Grey dan Jingga; sepasang teman masa kecil yang bertemu kembali di kampus lewat Klub Teater. Tak butuh lama bagi keduanya untuk kembali akrab seperti waktu mereka masih kecil dulu. Akan tetapi meskipun Grey dan Jingga memiliki perasaan yang sama, namun perasaan itu tidak mudah untuk diungkapkan - dan malah membuat segalanya menjadi lebih rumit dari yang seharusnya.  \"Kau sering membicarakanku di hadapannya, itu berarti aku masih mendapat tempat di hatimu, t', '../asset/assetWhatsApp Image 2024-03-05 at 23.19.44.jpeg', '../pdf/asset2. Grey dan Jingga - Days of The Violet (Sweta Kartika) (z-lib.org).pdf', ' Sweta Kartika', 'M&C (MNC)', '2017-08-08', 2, '4', '2024-03-05 17:12:52'),
@@ -100,7 +100,8 @@ CREATE TABLE `buku_ulasan` (
 --
 
 INSERT INTO `buku_ulasan` (`ulasan_id`, `buku_id`, `user_id`, `ulasan`, `rating`, `created_at`) VALUES
-(27, 119, 136, 'BAGUS BANGET', 4, '2024-03-05 16:33:01');
+(27, 119, 136, 'BAGUS BANGET', 4, '2024-03-05 16:33:01'),
+(28, 119, 133, 'REKOMEN BANGET BUAT DIBACA', 5, '2024-03-06 17:32:33');
 
 -- --------------------------------------------------------
 
@@ -114,13 +115,6 @@ CREATE TABLE `koleksi_pribadi` (
   `buku_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `koleksi_pribadi`
---
-
-INSERT INTO `koleksi_pribadi` (`koleksi_id`, `user_id`, `buku_id`, `created_at`) VALUES
-(154, 136, 115, '2024-03-05 17:54:51');
 
 -- --------------------------------------------------------
 
@@ -143,14 +137,7 @@ CREATE TABLE `peminjaman` (
 --
 
 INSERT INTO `peminjaman` (`peminjaman_id`, `buku_id`, `tgl_pinjam`, `user_id`, `tgl_kembali`, `status_pinjam`, `created_at`) VALUES
-(643, 115, '2024-03-05', 136, '2024-03-05', 'dikembalikan', '2024-03-05 13:34:50'),
-(644, 115, '2024-03-05', 136, '2024-03-05', 'dikembalikan', '2024-03-05 13:00:40'),
-(645, 117, '2024-03-05', 136, '2024-03-05', 'dikembalikan', '2024-03-05 13:08:12'),
-(646, 117, '2024-03-05', 136, '2024-03-05', 'dikembalikan', '2024-03-05 13:34:30'),
-(647, 117, '2024-03-05', 136, '2024-03-06', 'dipinjam', '2024-03-05 14:05:00'),
-(648, 119, '2024-03-05', 136, '2024-03-06', 'dipinjam', '2024-03-05 16:33:04'),
-(649, 126, '2024-03-05', 136, '2024-03-06', 'dipinjam', '2024-03-05 17:10:35'),
-(650, 122, '2024-03-05', 136, '2024-03-06', 'dipinjam', '2024-03-05 17:12:52');
+(652, 117, '2024-03-06', 133, '2024-03-07', 'dikembalikan', '2024-03-06 22:10:42');
 
 -- --------------------------------------------------------
 
@@ -294,7 +281,7 @@ ALTER TABLE `buku_kategori`
 -- AUTO_INCREMENT for table `buku_ulasan`
 --
 ALTER TABLE `buku_ulasan`
-  MODIFY `ulasan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `ulasan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `koleksi_pribadi`
@@ -306,7 +293,7 @@ ALTER TABLE `koleksi_pribadi`
 -- AUTO_INCREMENT for table `peminjaman`
 --
 ALTER TABLE `peminjaman`
-  MODIFY `peminjaman_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=651;
+  MODIFY `peminjaman_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=653;
 
 --
 -- AUTO_INCREMENT for table `peminjaman_detail`

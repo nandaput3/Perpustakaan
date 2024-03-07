@@ -295,8 +295,9 @@
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
                             echo '<div class="mySlides fade">';
+                            echo '<a href="detail_buku.php?id=' . $row["buku_id"] . '">';
                             echo '<img src="asset/' . $row["cover"] . '" alt="' . $row["judul"] . '">';
-                            echo '</div>';
+                            echo '</a>';                            echo '</div>';
                         }
                     } else {
                         echo "0 results";

@@ -266,7 +266,10 @@ return strstr($email, '@', true); // Mengambil bagian sebelum '@'
                                 </ul>
                             </div>
                         </li>
+                        <a class="dropdown-item" href="anggota.php">
+                            <i class="fas fa-home fa-sm fa-fw mr-2 text-gray-400"></i>
 
+                        </a>
                         <div class="topbar-divider d-none d-sm-block"></div>
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
